@@ -1,9 +1,10 @@
 # 📌 Overview
 
-このアプリケーションは、物理商品およびデジタル商品の販売を想定したE-Commerce Webアプリです。  
-Stripeを用いた決済機能を備えており、カート追加や商品購入といった一連のフローを実装しています。
+This application is an e-commerce web app designed for selling both physical and digital products.  
+It includes a payment feature using Stripe and implements the full shopping flow, including adding items to the cart and completing purchases.
 
-本アプリは、[Recursion](https://recursionist.io/) の「Backend Project 5: Server with Database」コースの課題として開発されました。
+This project was developed as part of [Recursion](https://recursionist.io/)'s "Backend Project 5: Server with Database" course.
+
 
 # 📸 Demo
 (to be added later)
