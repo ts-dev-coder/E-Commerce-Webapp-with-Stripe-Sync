@@ -29,3 +29,18 @@ Backend：PHP / Laravel
 Database：MySQL
 
 Others：Stripe / CodeRabbit(Code review)
+
+
+# ✅ TaskList
+## Features
+ - [ ] Create, edit, and delete user accounts
+
+ - [ ] View products
+
+ - [ ] Add products to cart
+
+ - [ ] Edit product cards
+
+ - [ ] Remove products from cart
+
+ - [ ] Place an order for products
