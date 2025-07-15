@@ -30,6 +30,16 @@ Database：MySQL
 
 Others：Stripe / CodeRabbit(Code review)
 
+# 🗂️ Database Schema
+
+The following is the database schema diagram for this application:
+
+![Database Schema](./docs/db/er-diagram.png)
+
+This diagram was created using `dbdiagram.io`, and the original source file can be found at `docs/db/ecommerce_schema.dbml`.
+
+
+
 
 # ✅ TaskList
 ## Features
