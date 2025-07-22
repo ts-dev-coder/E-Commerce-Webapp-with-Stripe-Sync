@@ -39,7 +39,7 @@ The following is the database schema diagram for this application:
 
 This diagram was created using `dbdiagram.io`, and the original source file can be found at `docs/db/ecommerce_schema.dbml`.
 
-# Routes
+# 🧭Routes
 
 ## GET
 - / : Top page
