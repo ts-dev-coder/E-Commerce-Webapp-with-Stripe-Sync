@@ -14,5 +14,8 @@ class Cart extends Model
         'user_id'
     ];
 
-    # TODO: Add relation definition
+    public function items()
+    {
+        return $this->hasMany(CartItem::class);
+    }
 }
