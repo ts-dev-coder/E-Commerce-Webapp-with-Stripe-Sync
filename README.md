@@ -39,8 +39,31 @@ The following is the database schema diagram for this application:
 
 This diagram was created using `dbdiagram.io`, and the original source file can be found at `docs/db/ecommerce_schema.dbml`.
 
+# Routes
 
+## GET
+- / : Top page
+- /product/{id} : Product detal page
+- /cart : Cart page
+- /order : Order page
+- /order/complete : thanks page (after order page)
+- /checkout : Checkout page
+- /login : Login page
+- /register : Register page
 
+## POST
+- /login : Login
+- /register : register
+- /cart : Add product to the cart
+- /checkout : submit the purchase procedure infomation
+
+## PUT
+(to be added later)
+
+## DELETE
+- /cart/{product_id} : Remove an product from the cart
+- /account : Delete the user account
+- /orders/{order_id} : Cancel the order
 
 # ✅ TaskList
 ## Features
