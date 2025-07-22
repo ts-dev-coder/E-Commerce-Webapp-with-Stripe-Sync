@@ -63,18 +63,4 @@ This diagram was created using `dbdiagram.io`, and the original source file can 
 ## DELETE
 - /cart/{product_id} : Remove an product from the cart
 - /account : Delete the user account
-- /orders/{order_id} : Cancel the order
-
-# ✅ TaskList
-## Features
- - [ ] Create, edit, and delete user accounts
-
- - [ ] View products
-
- - [ ] Add products to cart
-
- - [ ] Edit product cards
-
- - [ ] Remove products from cart
-
- - [ ] Place an order for products
+- /orders/{order_id} : Cancel the order 
