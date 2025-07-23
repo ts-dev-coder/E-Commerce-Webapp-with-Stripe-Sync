@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Model
 {
-    public function __invoke()
+    public function index()
     {
         $user = Auth::user();
 

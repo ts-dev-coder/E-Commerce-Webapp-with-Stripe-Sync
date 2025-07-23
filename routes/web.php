@@ -10,7 +10,7 @@ use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/products/{id}', ProductDetailController::class)->name('product-detail');
-Route::get('/cart', CartController::class)->name('cart');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/checkout', CheckoutController::class)->name('checkout');
 Route::get('/order/complete', OrderCompleteController::class)->name('order-complete');
 
