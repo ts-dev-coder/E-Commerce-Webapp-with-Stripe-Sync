@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Http\Requests\StoreCartRequest;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,5 +33,23 @@ class CartController extends Model
             'products' => $products,
             'cartItemCount' => $cartItemCount
         ]);
+    }
+
+    /**
+     * Validation and product existence check are handled in the StoreCartRequest class.
+     */
+    public function store(StoreCartRequest $request)
+    {
+        // TODO: Separate the logic for authenticated and non-authenticated cases after the authentication feature is implemented on the frontend.
+        $cart = Cart::where('user_id', 1)->first();
+        
+        // TODO: CartItem内に同一の商品のデータを検索
+        // TODO: あれば、quantityを更新する
+        // TODO: なければ、新たなCartItemとして保存
+        
+        return response()->json([
+            'message' => 'hello world',
+            'cart' => $cart
+        ]); 
     }
 }
