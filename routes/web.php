@@ -14,6 +14,11 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/checkout', CheckoutController::class)->name('checkout');
 Route::get('/order/complete', OrderCompleteController::class)->name('order-complete');
 
+Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+
+
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
