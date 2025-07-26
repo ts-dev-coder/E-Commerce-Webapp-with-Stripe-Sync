@@ -2,17 +2,22 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
-use App\Models\CartController;
-use App\Models\CheckoutController;
-use App\Models\OrderCompleteController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderCompleteController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('/products/{id}', ProductDetailController::class)->name('product-detail');
-Route::get('/cart', CartController::class)->name('cart');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/checkout', CheckoutController::class)->name('checkout');
 Route::get('/order/complete', OrderCompleteController::class)->name('order-complete');
+
+Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+
+
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
