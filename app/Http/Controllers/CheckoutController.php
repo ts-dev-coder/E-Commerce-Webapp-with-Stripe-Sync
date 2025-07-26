@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Model
 {
-    public function __invoke()
+    public function index()
     {
         $user = Auth::user();
 
