@@ -15,7 +15,7 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.in
 Route::get('/order/complete', OrderCompleteController::class)->name('order-complete');
 
 Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-// Route::post('/checkout', [])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
