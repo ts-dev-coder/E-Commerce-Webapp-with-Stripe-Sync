@@ -116,6 +116,9 @@ class StoreCheckoutRequest extends FormRequest
 
             'shipping.phone_number.required_if' => 'The phone number is required when not using a saved address.',
             'shipping.phone_number.regex' => 'The phone number format must be 0X-XXXX-XXXX.',
+
+            'payment_method.required' => 'The payment method is required.',
+            'payment_method.in' => 'The selected payment method is invalid. Only "stripe" is allowed.',
         ];
     }
 
