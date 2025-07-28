@@ -27,16 +27,16 @@ class StoreCheckoutRequest extends FormRequest
     {
         return [
             // Product
-            'product_id' => 'required|int|exists:products,id',
-            'quantity' => 'required|int|min:1',
+            'product_id' => ['required', 'int', 'exists:products,id'],
+            'quantity' => ['required', 'int', 'min:1'],
 
             // Address 
-            'use_saved_address' => 'required|boolean',
-            'address_id' => 'required_if:use_saved_address,true|int|exists:addresses,id',
+            'use_saved_address' => ['required', 'boolean'],
+            'address_id' => ['required_if:use_saved_address,true', 'int', 'exists:addresses,id'],
 
             'shipping.postal_code' => [
                 'required_if:use_saved_address,false',
-                'regex:/^\d{3}-\d{4}$/' // 郵便番号形式チェック（例: 123-4567）
+                'regex:/^\d{3}-\d{4}$/'
             ],
             'shipping.prefecture' => [
                 'required_if:use_saved_address,false',
@@ -65,7 +65,7 @@ class StoreCheckoutRequest extends FormRequest
             ],
             'shipping.phone_number' => [
                 'required_if:use_saved_address,false',
-                'regex:/^0\d{1,4}-\d{1,4}-\d{4}$/', // 電話番号形式（例: 090-1234-5678）
+                'regex:/^0\d{1,4}-\d{1,4}-\d{4}$/'
             ],
         ]; 
     }
