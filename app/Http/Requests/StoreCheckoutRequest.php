@@ -26,13 +26,14 @@ class StoreCheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Product
-            'product_id' => ['required', 'int', 'exists:products,id'],
-            'quantity' => ['required', 'int', 'min:1'],
+            // Cart (array of products)
+            'cart' => ['required', 'array', 'min:1'],
+            'cart.*.product_id' => ['required', 'integer', 'exists:products,id'],
+            'cart.*.quantity' => ['required', 'integer', 'min:1'],
 
             // Address 
             'use_saved_address' => ['required', 'boolean'],
-            'address_id' => ['required_if:use_saved_address,true', 'int', 'exists:addresses,id'],
+            'address_id' => ['required_if:use_saved_address,true', 'integer', 'exists:addresses,id'],
 
             'shipping.postal_code' => [
                 'required_if:use_saved_address,false',
@@ -77,19 +78,21 @@ class StoreCheckoutRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'product_id.required' => 'The product ID is required.',
-            'product_id.int' => 'The product ID must be an integer.',
-            'product_id.exists' => 'The selected product does not exist.',
-
-            'quantity.required' => 'The quantity is required.',
-            'quantity.int' => 'The quantity must be an integer.',
-            'quantity.min' => 'The quantity must be at least 1.',
+            'cart.required' => 'The cart is required.',
+            'cart.array' => 'The cart must be an array.',
+            'cart.min' => 'The cart must contain at least one product.',
+            'cart.*.product_id.required' => 'The product ID is required.',
+            'cart.*.product_id.integer' => 'The product ID must be an integer.',
+            'cart.*.product_id.exists' => 'The selected product does not exist.',
+            'cart.*.quantity.required' => 'The quantity is required.',
+            'cart.*.quantity.integer' => 'The quantity must be an integer.',
+            'cart.*.quantity.min' => 'The quantity must be at least 1.',
 
             'use_saved_address.required' => 'Please specify whether to use a saved address.',
             'use_saved_address.boolean' => 'The saved address selection must be true or false.',
 
             'address_id.required_if' => 'Please select a saved address when using one.',
-            'address_id.int' => 'The address ID must be an integer.',
+            'address_id.integer' => 'The address ID must be an integer.',
             'address_id.exists' => 'The selected address does not exist.',
 
             'shipping.postal_code.required_if' => 'The postal code is required when not using a saved address.',
