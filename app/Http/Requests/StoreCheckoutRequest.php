@@ -67,6 +67,10 @@ class StoreCheckoutRequest extends FormRequest
                 'required_if:use_saved_address,false',
                 'regex:/^0\d{1,4}-\d{1,4}-\d{4}$/'
             ],
+            'payment_method' => [
+                'required',
+                'in:stripe'
+            ]
         ]; 
     }
 
