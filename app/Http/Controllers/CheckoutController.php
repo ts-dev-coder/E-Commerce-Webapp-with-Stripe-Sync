@@ -37,4 +37,26 @@ class CheckoutController extends Model
             'registeredPaymentMethod' => $registeredPaymentMethod
         ]);
     }
+
+    public function store()
+    {
+        $user = Auth::user();
+
+        /**
+         * Provided data
+         * payment method, address and cart infomation
+         */
+
+        // Validation
+        // Reconfirmation of product and price
+        // Preparing for payments with Stripe
+        // Provisional registration of an order
+        // Stripe payment confirmation
+        // Registration of an order and update product stock
+
+        return response()->json([
+            'status' => 'suucess',
+            'message' => 'hello world'
+        ]);
+    }
 }
