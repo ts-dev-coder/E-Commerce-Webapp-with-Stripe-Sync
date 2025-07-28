@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCheckoutRequest;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +39,7 @@ class CheckoutController extends Model
         ]);
     }
 
-    public function store()
+    public function store(StoreCheckoutRequest $request)
     {
         $user = Auth::user();
 
