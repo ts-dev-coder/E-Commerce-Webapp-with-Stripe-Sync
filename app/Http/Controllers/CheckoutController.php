@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCheckoutRequest;
+use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,21 +45,51 @@ class CheckoutController extends Model
     {
         $user = Auth::user();
 
-        /**
-         * Provided data
-         * payment method, address and cart infomation
-         */
+        $cartItems = $request->validated('cart');
+        $productIds = collect($cartItems)->pluck('product_id')->all();
+        $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
 
-        // Validation
-        // Reconfirmation of product and price
-        // Preparing for payments with Stripe
-        // Provisional registration of an order
-        // Stripe payment confirmation
-        // Registration of an order and update product stock
+        // TODO: Refactor business logic (such as stock validation and cart checks) into a separate service class for better maintainability and testability in the future.
+        $errors = [];
+        foreach ($cartItems as $item) {
+            $product = $products->get($item['product_id']);
+            if (!$product) {
+                $errors[] = [
+                    'product_id' => $item['product_id'],
+                    'message' => "Product with ID {$item['product_id']} not found."
+                ];
+                continue;
+            }
+            if ($product->stock <= 0) {
+                $errors[] = [
+                    'product_id' => $item['product_id'],
+                    'message' => "The product '{$product->name}' is out of stock."
+                ];
+                continue;
+            }
+            if ($product->stock < $item['quantity']) {
+                $errors[] = [
+                    'product_id' => $item['product_id'],
+                    'message' => "The requested quantity for '{$product->name}' exceeds the available stock."
+                ];
+            }
+        }
+
+        if (!empty($errors)) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $errors
+            ], 422);
+        }
+
+        // Stripe
+        
+        // Add Order
 
         return response()->json([
-            'status' => 'suucess',
-            'message' => 'hello world'
+            'status' => 'success',
+            'message' => 'hello world',
+            'cart' => $request->validated()
         ]);
     }
 }
