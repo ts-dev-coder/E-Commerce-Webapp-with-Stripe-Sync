@@ -26,9 +26,48 @@ class StoreCheckoutRequest extends FormRequest
     public function rules(): array
     {
         return [
+            // Product
             'product_id' => 'required|int|exists:products,id',
             'quantity' => 'required|int|min:1',
-        ];
+
+            // Address 
+            'use_saved_address' => 'required|boolean',
+            'address_id' => 'required_if:use_saved_address,true|int|exists:addresses,id',
+
+            'shipping.postal_code' => [
+                'required_if:use_saved_address,false',
+                'regex:/^\d{3}-\d{4}$/' // 郵便番号形式チェック（例: 123-4567）
+            ],
+            'shipping.prefecture' => [
+                'required_if:use_saved_address,false',
+                'string',
+                'max:20'
+            ],
+            'shipping.city' => [
+                'required_if:use_saved_address,false',
+                'string',
+                'max:50'
+            ],
+            'shipping.street' => [
+                'required_if:use_saved_address,false',
+                'string',
+                'max:100'
+            ],
+            'shipping.building' => [
+                'nullable',
+                'string',
+                'max:100'
+            ],
+            'shipping.recipient_name' => [
+                'required_if:use_saved_address,false',
+                'string',
+                'max:100'
+            ],
+            'shipping.phone_number' => [
+                'required_if:use_saved_address,false',
+                'regex:/^0\d{1,4}-\d{1,4}-\d{4}$/', // 電話番号形式（例: 090-1234-5678）
+            ],
+        ]; 
     }
 
     public function messages(): array
@@ -41,6 +80,38 @@ class StoreCheckoutRequest extends FormRequest
             'quantity.required' => 'The quantity is required.',
             'quantity.int' => 'The quantity must be an integer.',
             'quantity.min' => 'The quantity must be at least 1.',
+
+            'use_saved_address.required' => 'Please specify whether to use a saved address.',
+            'use_saved_address.boolean' => 'The saved address selection must be true or false.',
+
+            'address_id.required_if' => 'Please select a saved address when using one.',
+            'address_id.int' => 'The address ID must be an integer.',
+            'address_id.exists' => 'The selected address does not exist.',
+
+            'shipping.postal_code.required_if' => 'The postal code is required when not using a saved address.',
+            'shipping.postal_code.regex' => 'The postal code format must be 123-4567.',
+
+            'shipping.prefecture.required_if' => 'The prefecture is required when not using a saved address.',
+            'shipping.prefecture.string' => 'The prefecture must be a valid string.',
+            'shipping.prefecture.max' => 'The prefecture may not be greater than 20 characters.',
+
+            'shipping.city.required_if' => 'The city is required when not using a saved address.',
+            'shipping.city.string' => 'The city must be a valid string.',
+            'shipping.city.max' => 'The city may not be greater than 50 characters.',
+
+            'shipping.street.required_if' => 'The street address is required when not using a saved address.',
+            'shipping.street.string' => 'The street must be a valid string.',
+            'shipping.street.max' => 'The street may not be greater than 100 characters.',
+
+            'shipping.building.string' => 'The building name must be a valid string.',
+            'shipping.building.max' => 'The building name may not be greater than 100 characters.',
+
+            'shipping.recipient_name.required_if' => 'The recipient name is required when not using a saved address.',
+            'shipping.recipient_name.string' => 'The recipient name must be a valid string.',
+            'shipping.recipient_name.max' => 'The recipient name may not be greater than 100 characters.',
+
+            'shipping.phone_number.required_if' => 'The phone number is required when not using a saved address.',
+            'shipping.phone_number.regex' => 'The phone number format must be 0X-XXXX-XXXX.',
         ];
     }
 
