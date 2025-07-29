@@ -75,9 +75,6 @@ class CartController extends Model
             $existsCartItem->quantity = $totalQuantity;
             $existsCartItem->save();
 
-            $product->stock = $totalQuantity;
-            $product->save();
-
             $cartItemCount = CartItem::where('cart_id', $cart->id)
                             ->count('*');
 
