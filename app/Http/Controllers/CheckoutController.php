@@ -7,6 +7,8 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+// use Stripe\Checkout\Session;
+// use Stripe\Stripe;
 
 class CheckoutController extends Model
 {
@@ -82,14 +84,29 @@ class CheckoutController extends Model
             ], 422);
         }
 
-        // Stripe
-        
-        // Add Order
+        // TODO: Implement after developing the frontend
+        // Stripe::setApiKey(config('services.stripe.secret'));
+        // $session = Session::create([
+        //     TODO: Change to cart items data
+        //     'line_items' => [[
+        //         'price_data' => [
+        //             'currency' => 'jpy',
+        //             'product_data' => [
+        //                 'name' => 'サンプル商品',
+        //             ],
+        //             'unit_amount' => 1200, // ¥1200
+        //         ],
+        //         'quantity' => 1,
+        //     ]],
+        //     'mode' => 'payment',
+        //     'success_url' => route('checkout.success'),
+        //     'cancel_url' => route('checkout.cancel'),
+        // ]);
 
+        // return redirect($session->url);
         return response()->json([
             'status' => 'success',
-            'message' => 'hello world',
-            'cart' => $request->validated()
+            'message' => 'Order complete.'
         ]);
     }
 }
