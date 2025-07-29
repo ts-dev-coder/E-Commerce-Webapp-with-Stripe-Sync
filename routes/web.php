@@ -11,13 +11,13 @@ use Inertia\Inertia;
 Route::get('/', HomeController::class)->name('home');
 Route::get('/products/{id}', ProductDetailController::class)->name('product-detail');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::get('/checkout', CheckoutController::class)->name('checkout');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::get('/order/complete', OrderCompleteController::class)->name('order-complete');
 
 Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
-
-
+// TODO: Add success route and cancel route for stripe
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
