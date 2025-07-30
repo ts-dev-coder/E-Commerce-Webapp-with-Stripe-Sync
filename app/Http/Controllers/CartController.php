@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DestroyCartItemRequest;
 use App\Http\Requests\StoreCartRequest;
 
 use App\Models\Cart;
@@ -102,5 +103,14 @@ class CartController extends Controller
                 'cartItemCount' => $cartItemCount
             ], 201); 
         }
+    }
+
+    public function destroy(DestroyCartItemRequest $request)
+    {
+        // Delete cart item from the cart
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deleted cart item successfully.'
+        ]);
     }
 }
