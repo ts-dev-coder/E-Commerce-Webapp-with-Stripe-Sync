@@ -8,10 +8,9 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class CartController extends Model
+class CartController extends Controller
 {
     public function index()
     {
