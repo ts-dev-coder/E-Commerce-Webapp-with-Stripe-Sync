@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DestroyCartItemRequest;
 use App\Http\Requests\StoreCartRequest;
 
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class CartController extends Model
+class CartController extends Controller
 {
     public function index()
     {
@@ -103,5 +103,16 @@ class CartController extends Model
                 'cartItemCount' => $cartItemCount
             ], 201); 
         }
+    }
+
+    public function destroy(DestroyCartItemRequest $request)
+    {
+        $cartItem = CartItem::find($request->validated('cart_item_id'));
+        $cartItem->delete();
+        
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Cart item deleted successfully.'
+        ]);
     }
 }

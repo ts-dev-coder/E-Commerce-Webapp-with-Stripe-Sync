@@ -17,6 +17,8 @@ Route::get('/order/complete', OrderCompleteController::class)->name('order-compl
 Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
+Route::delete('/cart', [CartController::class, 'destroy'])->name('delete.destroy');
+
 // TODO: Add success route and cancel route for stripe
 
 Route::middleware(['auth', 'verified'])->group(function () {

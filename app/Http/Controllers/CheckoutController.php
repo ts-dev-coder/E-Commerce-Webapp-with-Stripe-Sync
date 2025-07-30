@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCheckoutRequest;
 use App\Models\Cart;
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Support\Facades\Auth;
 // use Stripe\Checkout\Session;
 // use Stripe\Stripe;
 
-class CheckoutController extends Model
+class CheckoutController extends Controller
 {
     public function index()
     {

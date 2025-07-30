@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class OrderCompleteController extends Model
+class OrderCompleteController extends Controller
 {
     public function __invoke()
     {
