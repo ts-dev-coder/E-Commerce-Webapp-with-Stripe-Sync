@@ -107,10 +107,12 @@ class CartController extends Controller
 
     public function destroy(DestroyCartItemRequest $request)
     {
-        // Delete cart item from the cart
+        $cartItem = CartItem::find($request->validated('cart_item_id'));
+        $cartItem->delete();
+        
         return response()->json([
             'status' => 'success',
-            'message' => 'Deleted cart item successfully.'
+            'message' => 'Cart item deleted successfully.'
         ]);
     }
 }
