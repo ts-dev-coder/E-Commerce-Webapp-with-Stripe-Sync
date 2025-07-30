@@ -11,6 +11,7 @@ class DestroyCartItemRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        // TODO: Check if the user is authorized to delete the cart item
         return true;
     }
 
