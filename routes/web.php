@@ -21,9 +21,7 @@ Route::delete('/cart', [CartController::class, 'destroy'])->name('delete.destroy
 // TODO: Add success route and cancel route for stripe
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    
 });
 
 require __DIR__.'/settings.php';
