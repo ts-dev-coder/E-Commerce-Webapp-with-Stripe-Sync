@@ -8,7 +8,7 @@ use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', HomeController::class)->name('home')->middleware(['auth']);
+Route::get('/', HomeController::class)->name('home');
 Route::get('/products/{id}', ProductDetailController::class)->name('product-detail');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
