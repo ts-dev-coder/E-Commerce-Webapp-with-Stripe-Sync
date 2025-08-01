@@ -10,6 +10,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
@@ -22,7 +23,7 @@ class CartController extends Controller
 
         // TODO: If user is not login, use the session id
         $cart = Cart::with('items.product')
-                    ->where('user_id', 1)
+                    ->where('user_id', $user->id)
                     ->first();
 
         $products = $cart->items->pluck('product');
@@ -31,8 +32,7 @@ class CartController extends Controller
 
         $cartItemCount = count($products);
 
-        // TODO: Change return page component
-        return response()->json([
+        return Inertia::render('cart', [
             'message' => 'suucess',
             'products' => $products,
             'cartItemCount' => $cartItemCount
