@@ -4,10 +4,14 @@ import { AppShell } from '@/components/app-shell';
 import { type BreadcrumbItem } from '@/types';
 import type { PropsWithChildren } from 'react';
 
-export default function AppHeaderLayout({ children, breadcrumbs }: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[] }>) {
+export default function AppHeaderLayout({
+    children,
+    breadcrumbs,
+    cartItemCount,
+}: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[]; cartItemCount: number }>) {
     return (
         <AppShell>
-            <AppHeader breadcrumbs={breadcrumbs} />
+            <AppHeader breadcrumbs={breadcrumbs} cartItemCount={cartItemCount} />
             <AppContent>{children}</AppContent>
         </AppShell>
     );
