@@ -23,7 +23,7 @@ class CartController extends Controller
 
         // TODO: If user is not login, use the session id
         $cart = Cart::with('items.product')
-                    ->where('user_id', 1)
+                    ->where('user_id', $user->id)
                     ->first();
 
         $products = $cart->items->pluck('product');
