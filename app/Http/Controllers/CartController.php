@@ -44,8 +44,9 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
+        $user = Auth::user();
         // TODO: Separate the logic for authenticated and non-authenticated cases after the authentication feature is implemented on the frontend.
-        $cart = Cart::where('user_id', 1)->first();
+        $cart = Cart::where('user_id', $user->id)->first();
         
         $existsCartItem = CartItem::where('cart_id', $cart->id)
                                     ->where('product_id', $request->validated('product_id'))
