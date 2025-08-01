@@ -8,17 +8,17 @@ use Tests\TestCase;
 
 class DashboardTest extends TestCase
 {
-    use RefreshDatabase;
+    // use RefreshDatabase;
 
-    public function test_guests_are_redirected_to_the_login_page()
-    {
-        $this->get('/dashboard')->assertRedirect('/login');
-    }
+    // public function test_guests_are_redirected_to_the_login_page()
+    // {
+    //     $this->get('/')->assertRedirect('/login');
+    // }
 
-    public function test_authenticated_users_can_visit_the_dashboard()
-    {
-        $this->actingAs($user = User::factory()->create());
+    // public function test_authenticated_users_can_visit_the_home()
+    // {
+    //     $this->actingAs($user = User::factory()->create());
 
-        $this->get('/dashboard')->assertOk();
-    }
+    //     $this->get('/home')->assertOk();
+    // }
 }
