@@ -11,7 +11,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, ShoppingCart } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -40,11 +40,13 @@ const activeItemStyles = 'text-neutral-900 dark:bg-neutral-800 dark:text-neutral
 
 interface AppHeaderProps {
     breadcrumbs?: BreadcrumbItem[];
+    cartItemCount: number;
 }
 
-export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
+export function AppHeader({ breadcrumbs = [], cartItemCount }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
+
     const getInitials = useInitials();
     return (
         <>
@@ -152,21 +154,47 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 ))}
                             </div>
                         </div>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" className="size-10 rounded-full p-1">
-                                    <Avatar className="size-8 overflow-hidden rounded-full">
-                                        <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
-                                        <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                                            {getInitials(auth.user.name)}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-56" align="end">
-                                <UserMenuContent user={auth.user} />
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Link href="/cart" className="relative ml-2 flex items-center">
+                            <ShoppingCart className="h-6 w-6 text-primary" />
+                            {cartItemCount > 0 && (
+                                <span
+                                    className={`absolute -top-2 -right-2 min-w-[20px] rounded-full bg-red-500 px-2 py-0.5 text-center text-xs text-white ${
+                                        cartItemCount > 99 ? 'px-1 text-[10px]' : ''
+                                    }`}
+                                    style={{ fontSize: cartItemCount > 99 ? '10px' : undefined }}
+                                >
+                                    {cartItemCount > 99 ? '99+' : cartItemCount}
+                                </span>
+                            )}
+                        </Link>
+                        {auth.user !== null ? (
+                            <>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="size-10 rounded-full p-1">
+                                            <Avatar className="size-8 overflow-hidden rounded-full">
+                                                <AvatarImage src={auth.user.avatar} alt={auth.user.name} />
+                                                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
+                                                    {getInitials(auth.user.name)}
+                                                </AvatarFallback>
+                                            </Avatar>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56" align="end">
+                                        <UserMenuContent user={auth.user} />
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </>
+                        ) : (
+                            <div className="space-x-2">
+                                <Link href="/login">
+                                    <Button variant={'ghost'}>Login</Button>
+                                </Link>
+                                <Link href="/register">
+                                    <Button variant={'ghost'}>Register</Button>
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
