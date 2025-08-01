@@ -11,7 +11,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
             </CardHeader>
             <CardContent className="flex flex-1 flex-col">
                 {/* TODO: Add product image */}
-                <img src={''} alt={product.name} className="mb-4 h-40 w-full rounded object-cover" />
+                <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className="mb-4 h-40 w-full rounded object-cover" />
                 <p className="mb-2 text-sm text-muted-foreground">{product.description}</p>
                 <div className="flex-1" />
                 <div className="mb-2 flex items-baseline justify-center">
