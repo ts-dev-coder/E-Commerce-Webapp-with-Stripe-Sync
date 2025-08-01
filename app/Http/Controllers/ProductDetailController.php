@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class ProductDetailController extends Controller
 {
@@ -24,12 +25,12 @@ class ProductDetailController extends Controller
         //       from the database
         $cartItemCount = 0;
 
-        return response()->json([
+        return Inertia::render('product-detail', [
             'message' => 'success',
             'product' => $product,
             'id' => $id,
             'cartItemCount' => $cartItemCount,
             'user' => $user
-        ], 200);
+        ]);
     }
 }
