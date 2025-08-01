@@ -10,6 +10,7 @@ use App\Models\CartItem;
 use App\Models\Product;
 
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class CartController extends Controller
 {
@@ -31,8 +32,7 @@ class CartController extends Controller
 
         $cartItemCount = count($products);
 
-        // TODO: Change return page component
-        return response()->json([
+        return Inertia::render('cart', [
             'message' => 'suucess',
             'products' => $products,
             'cartItemCount' => $cartItemCount
