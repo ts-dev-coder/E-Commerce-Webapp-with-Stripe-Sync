@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCheckoutRequest;
+use App\Models\Address;
 use App\Models\Cart;
 use App\Models\Product;
 
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+
 // use Stripe\Checkout\Session;
 // use Stripe\Stripe;
 
@@ -18,13 +21,13 @@ class CheckoutController extends Controller
 
         // TODO: Refactor to use Eloquent relationship from User model instead of
         //       querying directly
-        $registeredDeliveryAddress = Address::where('user_id', 1)->get()->first();
+        $registeredDeliveryAddress = Address::where('user_id', $user->id)->get()->first();
 
         // TODO: Add payments table
         $registeredPaymentMethod = null;
 
         $cart = Cart::with('items.product')
-                    ->where('user_id', 1)
+                    ->where('user_id', $user->id)
                     ->first();
 
         $products = $cart->items->pluck('product');
@@ -34,7 +37,7 @@ class CheckoutController extends Controller
         $cartItemCount = count($products);
 
         // TODO: Change response data to page component
-        return response()->json([
+        return Inertia::render('checkout', [
             'message' => 'hello world',
             'products' => $products,
             'cartItemCount' => $cartItemCount,
