@@ -15,7 +15,7 @@ class HomeController extends Controller
         $products = Product::where('is_published', true)
                             ->orderBy('created_at', 'desc')
                             ->limit(10)
-                            ->get('id');
+                            ->get(['id', 'name', 'description', 'price', 'stock']);
 
         // TODO: If the user is logged in, retrieve the count of cart items
         //       from the database
