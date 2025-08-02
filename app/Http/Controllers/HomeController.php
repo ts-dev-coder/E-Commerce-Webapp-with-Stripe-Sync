@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+
+use App\Models\Cart;
+use App\Models\CartItem;
+use App\Models\Product;
+
+use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
@@ -17,9 +22,10 @@ class HomeController extends Controller
                             ->limit(10)
                             ->get(['id', 'name', 'description', 'price', 'stock']);
 
-        // TODO: If the user is logged in, retrieve the count of cart items
-        //       from the database
         $cartItemCount = 0;
+        if ($user && $user->cart) {
+            $cartItemCount = $user->cart->items()->count();
+        }
 
         return Inertia::render('home', [
             'user' => $user,

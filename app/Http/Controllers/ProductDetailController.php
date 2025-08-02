@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\Product;
+
 
 class ProductDetailController extends Controller
 {
@@ -21,9 +24,10 @@ class ProductDetailController extends Controller
              ], 404);
         }
 
-        // TODO: If the user is logged in, retrieve the count of cart items
-        //       from the database
         $cartItemCount = 0;
+        if ($user && $user->cart) {
+            $cartItemCount = $user->cart->items()->count();
+        }
 
         return Inertia::render('product-detail', [
             'message' => 'success',
