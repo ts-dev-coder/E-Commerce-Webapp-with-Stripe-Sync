@@ -4,12 +4,9 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 
-use App\Models\Cart;
-use App\Models\CartItem;
-use App\Models\Product;
-
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Product;
 
 class HomeController extends Controller
 {
