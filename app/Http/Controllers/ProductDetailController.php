@@ -17,7 +17,6 @@ class ProductDetailController extends Controller
 
         $product = Product::find($id);
 
-        // TODO: If product is not exists, redirect top page
         if($product === null) {
              abort(404);
         }
