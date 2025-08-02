@@ -19,9 +19,7 @@ class ProductDetailController extends Controller
 
         // TODO: If product is not exists, redirect top page
         if($product === null) {
-             return response()->json([
-                'message' => 'error product is not found'
-             ], 404);
+             abort(404);
         }
 
         $cartItemCount = 0;
