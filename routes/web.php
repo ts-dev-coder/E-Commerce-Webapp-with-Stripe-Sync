@@ -11,11 +11,11 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/products/{id}', ProductDetailController::class)->name('product-detail');
 
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-Route::delete('/cart', [CartController::class, 'destroy'])->name('delete.destroy');
-
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('/cart', [CartController::class, 'destroy'])->name('delete.destroy');
+
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
