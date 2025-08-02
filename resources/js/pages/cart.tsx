@@ -25,7 +25,7 @@ export default function Cart({ products, cartItemCount }: Props) {
                     {products && products.length > 0 ? (
                         products.map((product: Product) => (
                             <div key={product.id} className="flex items-center rounded-lg bg-white p-4 shadow">
-                                <img src={''} alt={product.name} className="mr-4 h-24 w-24 rounded border object-cover" />
+                                <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className="mr-4 h-24 w-24 rounded border object-cover" />
                                 <div className="flex-1">
                                     <div className="text-lg font-semibold">{product.name}</div>
                                     <div className="mb-2 text-sm text-muted-foreground">{product.description}</div>
