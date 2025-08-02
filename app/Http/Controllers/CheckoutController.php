@@ -32,11 +32,8 @@ class CheckoutController extends Controller
 
         $products = $cart->items->pluck('product');
 
-        // TODO: If the user is logged in, retrieve the count of cart items
-        //       from the database
         $cartItemCount = count($products);
 
-        // TODO: Change response data to page component
         return Inertia::render('checkout', [
             'message' => 'hello world',
             'products' => $products,
