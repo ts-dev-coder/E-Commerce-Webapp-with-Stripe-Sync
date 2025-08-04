@@ -1,0 +1,36 @@
+Table users {
+  id bigint [pk]
+  name varchar
+  email varchar
+  email_verified_at datetime
+  password varchar
+  remember_token varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table products {
+  id bigint [pk]
+  name varchar(100) [not null]
+  description text
+  price int [not null, note: "unsigned"]
+  stock int [not null, note: "unsigned"]
+  is_publish boolean [default: false]
+  published_at datetime
+  available_from datetime
+  available_until datetime
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table categories {
+  id bigint [pk]
+  name varchar(100) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table category_product {
+  category_id bigint [ref: > categories.id]
+  product_id bigint [ref: > products.id]
+}
