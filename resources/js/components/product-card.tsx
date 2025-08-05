@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/react';
 
 export const ProductCard = ({ product }: { product: Product }) => {
     return (
-        <Card className="flex h-full w-full max-w-xs flex-col justify-between shadow-lg">
+        <Card className="flex min-h-full w-full max-w-xs flex-col justify-between shadow-lg">
             <CardHeader>
                 <CardTitle className="text-lg font-semibold">{product.name}</CardTitle>
             </CardHeader>

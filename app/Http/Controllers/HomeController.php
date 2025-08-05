@@ -6,7 +6,7 @@ use Inertia\Inertia;
 
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Product;
+use App\Models\Category;
 
 class HomeController extends Controller
 {
@@ -14,10 +14,16 @@ class HomeController extends Controller
     {
         $user = Auth::user();
 
-        $products = Product::where('is_published', true)
-                            ->orderBy('created_at', 'desc')
-                            ->limit(10)
-                            ->get(['id', 'name', 'description', 'price', 'stock']);
+        $categories = Category::all();
+        $result = [];
+        foreach ($categories as $category) {
+            $products = $category->products()
+                        ->where('is_published', true)
+                        ->where('stock', '>', 0)
+                        ->limit(5)
+                        ->get(['id', 'name', 'description', 'price']);
+            $result[$category->name] = $products;
+        }
 
         $cartItemCount = 0;
         if ($user && $user->cart) {
@@ -25,8 +31,7 @@ class HomeController extends Controller
         }
 
         return Inertia::render('home', [
-            'user' => $user,
-            'products' => $products,
+            'categoryProducts' => $result,
             'cartItemCount' => $cartItemCount
         ]);
     }
