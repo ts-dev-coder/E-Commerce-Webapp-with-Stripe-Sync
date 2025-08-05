@@ -1,6 +1,7 @@
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Product } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
@@ -38,9 +39,9 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
         });
     };
 
-    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = Math.max(1, Math.min(product.stock, Number(e.target.value)));
-        setData('quantity', value);
+    const handleQuantityChange = (value: string) => {
+        const updatedQuantity = Math.max(1, Math.min(product.stock, Number(value)));
+        setData('quantity', updatedQuantity);
     };
 
     return (
@@ -55,7 +56,11 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                             </CardHeader>
                             <CardContent>
                                 <div className="mb-4 flex justify-center">
-                                    <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className="h-56 w-full rounded object-cover" />
+                                    <img
+                                        src={'https://placehold.co/400x300?text=No+Image'}
+                                        alt={product.name}
+                                        className="h-56 w-full rounded object-cover"
+                                    />
                                 </div>
                                 <p className="mb-4 text-center text-sm text-muted-foreground">{product.description}</p>
                                 <div className="mb-4 flex items-baseline justify-center">
@@ -68,15 +73,16 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                                 <form onSubmit={submit}>
                                     <div className="mb-4 flex items-center justify-center gap-2">
                                         <input type="hidden" value={product.id} />
-                                        <span className="text-sm">個数</span>
-                                        <input
-                                            type="number"
-                                            min={1}
-                                            max={product.stock}
-                                            value={data.quantity}
-                                            onChange={handleQuantityChange}
-                                            className="w-16 rounded border px-2 py-1 text-center"
-                                        />
+                                        <Select onValueChange={handleQuantityChange} defaultValue={String(data.quantity)}>
+                                            <SelectTrigger className="w-14">
+                                                <SelectValue placeholder="個数" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="1">1</SelectItem>
+                                                <SelectItem value="2">2</SelectItem>
+                                                <SelectItem value="3">3</SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                     </div>
                                     <Button type="submit" className="w-full" variant="default" disabled={processing}>
                                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
