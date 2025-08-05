@@ -31,7 +31,7 @@ class HomeController extends Controller
         }
 
         return Inertia::render('home', [
-            'products' => $result,
+            'categoryProducts' => $result,
             'cartItemCount' => $cartItemCount
         ]);
     }
