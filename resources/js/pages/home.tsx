@@ -10,22 +10,48 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+type CategoryProducts = {
+    [categoryName: string]: Product[];
+};
+
 type Props = {
-    products: Product[];
+    categoryProducts: CategoryProducts;
     cartItemCount: number;
 };
 
-export default function Dashboard({ products, cartItemCount }: Props) {
+export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {products && products.length > 0 ? (
-                        products.map((product: Product) => <ProductCard key={product.id} product={product} />)
-                    ) : (
-                        <p className="text-gray-600">No products available.</p>
-                    )}
+                <div>
+                    {Object.keys(categoryProducts).map((categoryName) => {
+                        const products = categoryProducts[categoryName];
+                        return (
+                            <section key={categoryName} className="mb-6 flex min-h-[9rem] flex-col">
+                                <header className="mb-3 w-full">
+                                    <h2 className="text-2xl font-semibold underline decoration-slate-300 underline-offset-8">{categoryName}</h2>
+                                </header>
+
+                                {products && products.length > 0 ? (
+                                    <div className="relative">
+                                        {/* 横スクロール可能エリア */}
+                                        <div className="scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 flex space-x-4 overflow-x-auto pb-2">
+                                            {products.map((product, index) => (
+                                                <div key={product.id ?? index} className="w-64 flex-shrink-0">
+                                                    <ProductCard product={product} />
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="pointer-events-none absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-white to-transparent" />
+                                    </div>
+                                ) : (
+                                    <p className="text-gray-500 italic">No products available.</p>
+                                )}
+                            </section>
+                        );
+                    })}
                 </div>
             </div>
         </AppLayout>
