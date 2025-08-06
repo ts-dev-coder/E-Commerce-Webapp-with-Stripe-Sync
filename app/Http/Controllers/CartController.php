@@ -29,7 +29,6 @@ class CartController extends Controller
         $cartItemCount = count($products);
 
         return Inertia::render('cart', [
-            'message' => 'suucess',
             'products' => $products,
             'cartItemCount' => $cartItemCount
         ]);
