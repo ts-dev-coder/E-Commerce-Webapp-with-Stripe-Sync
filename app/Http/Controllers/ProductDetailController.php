@@ -27,11 +27,8 @@ class ProductDetailController extends Controller
         }
 
         return Inertia::render('product-detail', [
-            'message' => 'success',
             'product' => $product,
-            'id' => $id,
-            'cartItemCount' => $cartItemCount,
-            'user' => $user
+            'cartItemCount' => $cartItemCount
         ]);
     }
 }
