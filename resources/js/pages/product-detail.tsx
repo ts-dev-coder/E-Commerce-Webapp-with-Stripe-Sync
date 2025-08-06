@@ -96,7 +96,6 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                                         カートに追加
                                     </Button>
-                                    <InputError message={errors.product_id} />
                                     <InputError message={errors.quantity} />
                                 </form>
                             </CardContent>
