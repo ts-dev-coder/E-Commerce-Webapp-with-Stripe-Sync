@@ -1,7 +1,11 @@
-import { Button } from '@/components/ui/button';
-import AppLayout from '@/layouts/app-layout';
-import { Product, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+
+import AppLayout from '@/layouts/app-layout';
+
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+import { Product, type BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -25,7 +29,11 @@ export default function Cart({ products, cartItemCount }: Props) {
                     {products && products.length > 0 ? (
                         products.map((product: Product) => (
                             <div key={product.id} className="flex items-center rounded-lg bg-white p-4 shadow">
-                                <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className="mr-4 h-24 w-24 rounded border object-cover" />
+                                <img
+                                    src={'https://placehold.co/400x300?text=No+Image'}
+                                    alt={product.name}
+                                    className="mr-4 h-24 w-24 rounded border object-cover"
+                                />
                                 <div className="flex-1">
                                     <div className="text-lg font-semibold">{product.name}</div>
                                     <div className="mb-2 text-sm text-muted-foreground">{product.description}</div>
@@ -33,7 +41,19 @@ export default function Cart({ products, cartItemCount }: Props) {
                                         <span className="mr-1 text-base text-primary">¥</span>
                                         <span className="text-xl font-bold">{product.price}</span>
                                     </div>
-                                    <span className="text-xs text-gray-500">在庫: {product.stock}</span>
+                                    <div className='flex space-x-2 items-center'>
+                                        <span className="text-xs text-gray-500">在庫: {product.stock}</span>
+                                        <Select>
+                                            <SelectTrigger className="w-20">
+                                                <SelectValue placeholder="個数" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="1">1</SelectItem>
+                                                <SelectItem value="2">2</SelectItem>
+                                                <SelectItem value="3">3</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
                                 <div className="ml-4 flex flex-col items-end">
                                     <Button variant="outline" size="sm" className="mb-2">
