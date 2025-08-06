@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 
-Route::get('/products/{id}', ProductDetailController::class)->name('product-detail');
+Route::get('/products/{product}', ProductDetailController::class)->name('product-detail');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');

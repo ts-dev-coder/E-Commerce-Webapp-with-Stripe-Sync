@@ -11,15 +11,9 @@ use App\Models\Product;
 
 class ProductDetailController extends Controller
 {
-    public function __invoke(int $id)
-    {
+    public function __invoke(Product $product)
+    {        
         $user = Auth::user();
-
-        $product = Product::find($id);
-
-        if($product === null) {
-             abort(404);
-        }
 
         $cartItemCount = 0;
         if ($user && $user->cart) {
@@ -27,11 +21,8 @@ class ProductDetailController extends Controller
         }
 
         return Inertia::render('product-detail', [
-            'message' => 'success',
             'product' => $product,
-            'id' => $id,
-            'cartItemCount' => $cartItemCount,
-            'user' => $user
+            'cartItemCount' => $cartItemCount
         ]);
     }
 }
