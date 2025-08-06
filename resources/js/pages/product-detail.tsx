@@ -1,12 +1,16 @@
+import { LoaderCircle } from 'lucide-react';
+import { Head, useForm } from '@inertiajs/react';
+
+import { FormEventHandler } from 'react';
+
+import AppLayout from '@/layouts/app-layout';
+
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import AppLayout from '@/layouts/app-layout';
+
 import { type BreadcrumbItem, type Product } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -26,7 +30,7 @@ type AddCartForm = {
 };
 
 export default function ProductDetail({ product, cartItemCount }: Props) {
-    const { data, setData, post, processing, errors, reset } = useForm<Required<AddCartForm>>({
+    const { data, setData, post, processing, errors, setError, reset } = useForm<Required<AddCartForm>>({
         product_id: product.id,
         quantity: 1,
     });
@@ -34,14 +38,18 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
+        if (product.stock < data.quantity) {
+            setError('quantity', 'Sorry, you cannot order more than the available stock.');
+            return;
+        }
+
         post(route('cart.store'), {
             onFinish: () => reset('quantity'),
         });
     };
 
     const handleQuantityChange = (value: string) => {
-        const updatedQuantity = Math.max(1, Math.min(product.stock, Number(value)));
-        setData('quantity', updatedQuantity);
+        setData('quantity', Number(value));
     };
 
     return (
@@ -88,7 +96,6 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                                         カートに追加
                                     </Button>
-                                    <InputError message={errors.product_id} />
                                     <InputError message={errors.quantity} />
                                 </form>
                             </CardContent>
