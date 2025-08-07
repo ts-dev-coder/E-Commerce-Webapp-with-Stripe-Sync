@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+import { Label } from '@/components/ui/label';
 import { Product, type BreadcrumbItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -53,17 +54,16 @@ function CartItemCard({ item }: { item: Response }) {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="text-sm text-gray-500">数量:</span>
+                        <Label className="text-muted-foreground">数量:</Label>
                         <Select defaultValue={String(item.quantity)}>
-                            <SelectTrigger className="w-16">
+                            <SelectTrigger className="w-50">
                                 <SelectValue placeholder="個数" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="1">1</SelectItem>
-                                <SelectItem value="2">2</SelectItem>
-                                <SelectItem value="3">3</SelectItem>
-                                <SelectItem value="4">4</SelectItem>
-                                <SelectItem value="5">5</SelectItem>
+                                {Array.from({ length: item.product.max_quantity }).map((_, i) => {
+                                    const num = String(i + 1);
+                                    return <SelectItem value={num}>{num}</SelectItem>;
+                                })}
                             </SelectContent>
                         </Select>
                     </div>
@@ -87,9 +87,7 @@ function CartSubtotal({ data }: { data: Response[] }) {
 function CheckoutButton() {
     return (
         <div className="mt-6 flex w-full max-w-3xl justify-end">
-            <Button>
-                レジに進む
-            </Button>
+            <Button>レジに進む</Button>
         </div>
     );
 }
