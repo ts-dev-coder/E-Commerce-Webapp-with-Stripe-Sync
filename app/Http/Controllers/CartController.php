@@ -53,7 +53,7 @@ class CartController extends Controller
         $existsCartItem = CartItem::where('cart_id', $cart->id)
                                     ->where('product_id', $request->validated('product_id'))
                                     ->first();
-        $product = Product::find($request->validated('product_id'))->first();
+        $product = Product::find($request->validated('product_id'));
         if($product->stock <= 0) {
             return response()->json([
                 'status' => 'error',
