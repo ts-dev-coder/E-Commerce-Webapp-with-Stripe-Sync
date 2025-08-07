@@ -23,14 +23,14 @@ class CartController extends Controller
                     ->where('status', 'active')
                     ->first();
 
-        $products = $cart === null ? null : $cart->items->pluck('product');
+        $data = $cart === null ? null : $cart->items;
 
         // TODO: fetch the products image
 
-        $cartItemCount = $products === null ? 0 : count($products);
+        $cartItemCount = $data === null ? 0 : count($data);
 
         return Inertia::render('cart', [
-            'products' => $products,
+            'data' => $data,
             'cartItemCount' => $cartItemCount
         ]);
     }
