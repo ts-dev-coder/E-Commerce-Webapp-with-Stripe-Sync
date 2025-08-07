@@ -46,7 +46,7 @@ function CartItemCard({ item }: { item: Response }) {
                         <div className="mb-1 text-lg font-semibold">{item.product.name}</div>
                         <div className="mb-2 text-base font-bold text-primary">¥{item.price.toLocaleString()}</div>
                         <div className="mb-2">
-                            {item.quantity > 0 ? (
+                            {item.product.stock > 0 ? (
                                 <span className="rounded bg-green-50 px-2 py-0.5 text-xs text-green-600">在庫あり</span>
                             ) : (
                                 <span className="rounded bg-red-50 px-2 py-0.5 text-xs text-red-600">一時的に在庫切れ</span>
