@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 
@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
+import InputError from '@/components/input-error';
 import { Label } from '@/components/ui/label';
 import { Product, type BreadcrumbItem } from '@/types';
+import { FormEventHandler } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -32,7 +34,25 @@ type Props = {
     cartItemCount: number;
 };
 
+type DeleteCartItemForm = {
+    cart_item_id: number;
+};
+
 function CartItemCard({ item }: { item: Response }) {
+    const {
+        delete: cartItemDelete,
+        processing,
+        errors,
+    } = useForm<Required<DeleteCartItemForm>>({
+        cart_item_id: item.id,
+    });
+
+    const handleDeleteCartItem: FormEventHandler = (e) => {
+        e.preventDefault();
+
+        cartItemDelete(route('cart.destroy'));
+    };
+
     return (
         <Card className="shadow-md">
             <CardContent className="flex gap-6 p-6">
@@ -66,6 +86,13 @@ function CartItemCard({ item }: { item: Response }) {
                                 })}
                             </SelectContent>
                         </Select>
+                        <form onSubmit={handleDeleteCartItem}>
+                            <input type="hidden" value={item.id} />
+                            <Button variant={'ghost'} className="text-xs text-muted-foreground" disabled={processing}>
+                                削除
+                            </Button>
+                            <InputError message={errors.cart_item_id} />
+                        </form>
                     </div>
                 </div>
             </CardContent>
