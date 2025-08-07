@@ -1,5 +1,5 @@
-import { LoaderCircle } from 'lucide-react';
 import { Head, useForm } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
 
 import { FormEventHandler } from 'react';
 
@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { type BreadcrumbItem, type Product } from '@/types';
+import { Label } from '@/components/ui/label';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -81,14 +82,18 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                                 <form onSubmit={submit}>
                                     <div className="mb-4 flex items-center justify-center gap-2">
                                         <input type="hidden" value={product.id} />
-                                        <Select onValueChange={handleQuantityChange} defaultValue={String(data.quantity)}>
-                                            <SelectTrigger className="w-14">
+                                        <Label className='text-muted-foreground'>
+                                            数量: 
+                                        </Label>
+                                        <Select onValueChange={handleQuantityChange} defaultValue="1">
+                                            <SelectTrigger className='w-50'>
                                                 <SelectValue placeholder="個数" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="1">1</SelectItem>
-                                                <SelectItem value="2">2</SelectItem>
-                                                <SelectItem value="3">3</SelectItem>
+                                                {Array.from({ length: product.max_quantity }).map((_, i) => {
+                                                    const num = String(i + 1);
+                                                    return <SelectItem value={num}>{num}</SelectItem>;
+                                                })}
                                             </SelectContent>
                                         </Select>
                                     </div>
