@@ -10,8 +10,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-import { type BreadcrumbItem, type Product } from '@/types';
 import { Label } from '@/components/ui/label';
+import { type BreadcrumbItem, type Product } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -77,16 +77,18 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                                     <span className="text-2xl font-bold">{product.price}</span>
                                 </div>
                                 <div className="mb-4 flex justify-center">
-                                    <span className="text-xs text-gray-500">在庫: {product.stock}</span>
+                                    {product.stock > 0 ? (
+                                        <span className="rounded bg-green-50 px-2 py-0.5 text-xs text-green-600">在庫あり</span>
+                                    ) : (
+                                        <span className="rounded bg-red-50 px-2 py-0.5 text-xs text-red-600">一時的に在庫切れ</span>
+                                    )}
                                 </div>
                                 <form onSubmit={submit}>
                                     <div className="mb-4 flex items-center justify-center gap-2">
                                         <input type="hidden" value={product.id} />
-                                        <Label className='text-muted-foreground'>
-                                            数量: 
-                                        </Label>
+                                        <Label className="text-muted-foreground">数量:</Label>
                                         <Select onValueChange={handleQuantityChange} defaultValue="1">
-                                            <SelectTrigger className='w-50'>
+                                            <SelectTrigger className="w-50">
                                                 <SelectValue placeholder="個数" />
                                             </SelectTrigger>
                                             <SelectContent>
