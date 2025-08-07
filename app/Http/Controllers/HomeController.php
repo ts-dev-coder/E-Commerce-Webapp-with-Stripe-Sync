@@ -21,7 +21,7 @@ class HomeController extends Controller
                         ->where('is_published', true)
                         ->where('stock', '>', 0)
                         ->limit(5)
-                        ->get(['id', 'name', 'description', 'price']);
+                        ->get(['id', 'name', 'description', 'price', 'max_quantity']);
             $result[$category->name] = $products;
         }
 
