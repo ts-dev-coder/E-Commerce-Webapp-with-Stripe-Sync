@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 import { Product, type BreadcrumbItem } from '@/types';
@@ -14,66 +15,96 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+type Response = {
+    id: number;
+    cart_id: number;
+    product_id: number;
+    quantity: number;
+    price: number;
+    created_at: string;
+    updated_at: string;
+    product: Product;
+};
+
 type Props = {
-    products: Product[];
+    data: Response[];
     cartItemCount: number;
 };
 
-export default function Cart({ products, cartItemCount }: Props) {
+function CartItemCard({ item }: { item: Response }) {
+    return (
+        <Card className="shadow-md">
+            <CardContent className="flex gap-6 p-6">
+                <img
+                    src={'https://placehold.co/400x300?text=No+Image'}
+                    alt={item.product.name}
+                    className="size-36 rounded-lg border border-gray-200 object-cover"
+                />
+                <div className="flex flex-1 flex-col justify-between">
+                    <div>
+                        <div className="mb-1 text-lg font-semibold">{item.product.name}</div>
+                        <div className="mb-2 text-base font-bold text-primary">¥{item.price.toLocaleString()}</div>
+                        <div className="mb-2">
+                            {item.quantity > 0 ? (
+                                <span className="rounded bg-green-50 px-2 py-0.5 text-xs text-green-600">在庫あり</span>
+                            ) : (
+                                <span className="rounded bg-red-50 px-2 py-0.5 text-xs text-red-600">一時的に在庫切れ</span>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-500">数量:</span>
+                        <Select defaultValue={String(item.quantity)}>
+                            <SelectTrigger className="w-16">
+                                <SelectValue placeholder="個数" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="1">1</SelectItem>
+                                <SelectItem value="2">2</SelectItem>
+                                <SelectItem value="3">3</SelectItem>
+                                <SelectItem value="4">4</SelectItem>
+                                <SelectItem value="5">5</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
+function CartSubtotal({ data }: { data: Response[] }) {
+    const totalQuantity = data.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = data.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    return (
+        <div className="mt-8 flex items-center justify-between rounded-lg border bg-gray-50 px-6 py-4">
+            <div className="text-base font-medium text-gray-700">小計（{totalQuantity}個の商品）(税込み)</div>
+            <div className="text-xl font-bold text-primary">¥{totalPrice.toLocaleString()}</div>
+        </div>
+    );
+}
+
+function CheckoutButton() {
+    return (
+        <div className="mt-6 flex w-full max-w-3xl justify-end">
+            <Button>
+                レジに進む
+            </Button>
+        </div>
+    );
+}
+
+export default function Cart({ data, cartItemCount }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
             <div className="flex min-h-screen flex-col items-center py-8">
                 <h2 className="mb-6 text-2xl font-bold">ショッピングカート</h2>
                 <div className="w-full max-w-3xl space-y-4">
-                    {products && products.length > 0 ? (
-                        products.map((product: Product) => (
-                            <div key={product.id} className="flex items-center rounded-lg bg-white p-4 shadow">
-                                <img
-                                    src={'https://placehold.co/400x300?text=No+Image'}
-                                    alt={product.name}
-                                    className="mr-4 h-24 w-24 rounded border object-cover"
-                                />
-                                <div className="flex-1">
-                                    <div className="text-lg font-semibold">{product.name}</div>
-                                    <div className="mb-2 text-sm text-muted-foreground">{product.description}</div>
-                                    <div className="mb-2 flex items-baseline">
-                                        <span className="mr-1 text-base text-primary">¥</span>
-                                        <span className="text-xl font-bold">{product.price}</span>
-                                    </div>
-                                    <div className='flex space-x-2 items-center'>
-                                        <span className="text-xs text-gray-500">在庫: {product.stock}</span>
-                                        <Select>
-                                            <SelectTrigger className="w-20">
-                                                <SelectValue placeholder="個数" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="1">1</SelectItem>
-                                                <SelectItem value="2">2</SelectItem>
-                                                <SelectItem value="3">3</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                </div>
-                                <div className="ml-4 flex flex-col items-end">
-                                    <Button variant="outline" size="sm" className="mb-2">
-                                        削除
-                                    </Button>
-                                </div>
-                            </div>
-                        ))
-                    ) : (
-                        <p className="text-center text-gray-600">カートに商品はありません。</p>
-                    )}
+                    {data && data.map((item) => <CartItemCard key={item.id} item={item} />)}
+                    <CartSubtotal data={data} />
                 </div>
-                {/* レジに進むボタンセクション */}
-                {products && products.length > 0 && (
-                    <div className="mt-8 flex w-full max-w-3xl justify-end">
-                        <Button className="px-8 py-3 text-lg" variant="default">
-                            レジに進む
-                        </Button>
-                    </div>
-                )}
+                <CheckoutButton />
             </div>
         </AppLayout>
     );
