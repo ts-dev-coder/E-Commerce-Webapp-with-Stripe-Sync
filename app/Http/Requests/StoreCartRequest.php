@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\MaxPurchaseLimit;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -25,8 +26,8 @@ class StoreCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_id' => 'required|int|exists:products,id',
-            'quantity' => 'required|int|min:1',
+            'product_id' => ['required', 'int', 'exists:products,id'],
+            'quantity' => ['required', 'int', 'min:1', new MaxPurchaseLimit($this->input('product_id'))],
         ];
     }
 
