@@ -48,4 +48,5 @@ export interface Product {
     description?: string;
     price: number;
     stock: number;
+    max_quantity: number;
 }

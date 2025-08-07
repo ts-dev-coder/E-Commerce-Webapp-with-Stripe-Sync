@@ -16,6 +16,7 @@ class Product extends Model
         'stock',
         'is_published',
         'published_at', 
+        'max_quantity'
     ];
 
     # TODO: Add relation definition
