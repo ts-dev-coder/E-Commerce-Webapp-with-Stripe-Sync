@@ -82,7 +82,7 @@ function CartItemCard({ item }: { item: Response }) {
                             <SelectContent>
                                 {Array.from({ length: item.product.max_quantity }).map((_, i) => {
                                     const num = String(i + 1);
-                                    return <SelectItem value={num}>{num}</SelectItem>;
+                                    return <SelectItem key={num} value={num}>{num}</SelectItem>;
                                 })}
                             </SelectContent>
                         </Select>
