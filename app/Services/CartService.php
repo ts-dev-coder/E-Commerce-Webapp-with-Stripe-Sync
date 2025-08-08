@@ -17,4 +17,10 @@ class CartService
       
       return ($existsQuantity + $reqQuantity) <= $product->stock;
   }
+
+  public function updateQuantity(CartItem $cartItem, int $reqQuantity): void
+  {
+      $cartItem->quantity = $cartItem->quantity + $reqQuantity;
+      $cartItem->save();
+  }
 }
