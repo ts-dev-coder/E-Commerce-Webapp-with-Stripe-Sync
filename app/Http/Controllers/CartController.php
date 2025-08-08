@@ -58,24 +58,11 @@ class CartController extends Controller
         }
 
         $user = Auth::user();
-        
-        $cart = $user->cart()->first();
-        if($cart === null) {
-            $cart = $user->cart()->create([]);
-        }
+        $cart = $cartService->getOrCreateCart($user);
+        $existsCartItem = $cartService->getCartItem($cart, $product->id);
 
-        $existsCartItem = $cart->items()
-                                ->where('product_id', $request->validated('product_id'))
-                                ->first();
-
-        if($existsCartItem === null) {
-            CartItem::create([
-                'quantity' => $requestQuantity,
-                'price' => $product->price,
-                'cart_id' => $cart->id,
-                'product_id' => $product->id
-            ]);
-
+        if ($existsCartItem === null) {
+            $cartService->addCartItem($cart, $product, $requestQuantity);
             $cartItemCount = CartItem::where('cart_id', $cart->id)
                                         ->count('*');
             return response()->json([
