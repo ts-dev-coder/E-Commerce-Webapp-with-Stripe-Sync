@@ -8,7 +8,7 @@ use App\Http\Requests\StoreCartRequest;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
-
+use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -38,74 +38,70 @@ class CartController extends Controller
     /**
      * Validation and product existence check are handled in the StoreCartRequest class.
      */
-    public function store(StoreCartRequest $request)
+    public function store(StoreCartRequest $request, CartService $cartService)
     {
-        $user = Auth::user();
-        
-        $cart = Cart::where('user_id', $user->id)->first();
-
-        if($cart === null) {
-            $cart = Cart::create([
-                'user_id' => $user->id
-            ]);
-        }
-        
-        $existsCartItem = CartItem::where('cart_id', $cart->id)
-                                    ->where('product_id', $request->validated('product_id'))
-                                    ->first();
         $product = Product::find($request->validated('product_id'));
-        if($product->stock <= 0) {
+        $productStock = $product->stock;
+        if($productStock <= 0) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'The product is out of stock.'
+            ], 422);
+        }
+
+        $requestQuantity = $request->validated('quantity');
+        if($productStock < $requestQuantity) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Insufficient stock for the requested quantity.'
             ], 422);
         }
 
-        if($existsCartItem) {
-            $stock = $product->stock;
-
-            $requestQuantity = $request->validated('quantity');
-            $existingQuantity = $existsCartItem->quantity;
-            $totalQuantity = $requestQuantity + $existingQuantity;
-
-            if($totalQuantity > $stock) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Requested quantity exceeds available stock.'
-                ], 422);
-            }
-
-            $existsCartItem->quantity = $totalQuantity;
-            $existsCartItem->save();
-
-            $cartItemCount = CartItem::where('cart_id', $cart->id)
-                            ->count('*');
-
-            return response()->json([
-                'status' => 'success',
-                'type' => 'update',
-                'message' => 'The quantity has been updated.',
-                'cartItemCount' => $cartItemCount,
-            ], 200); 
+        $user = Auth::user();
+        
+        $cart = $user->cart()->first();
+        if($cart === null) {
+            $cart = $user->cart()->create([]);
         }
-        else {
+
+        $existsCartItem = $cart->items()
+                                ->where('product_id', $request->validated('product_id'))
+                                ->first();
+
+        if($existsCartItem === null) {
             CartItem::create([
-                'quantity' => $request->validated('quantity'),
+                'quantity' => $requestQuantity,
                 'price' => $product->price,
                 'cart_id' => $cart->id,
-                'product_id' => $request->validated('product_id')
+                'product_id' => $product->id
             ]);
 
             $cartItemCount = CartItem::where('cart_id', $cart->id)
-                                      ->count('*');
-
+                                        ->count('*');
             return response()->json([
-                'status' => 'success',
+                'status' => 'seccess',
                 'type' => 'created',
                 'message' => 'The product has been added to the cart.',
                 'cartItemCount' => $cartItemCount
-            ], 201); 
+            ], 201);
         }
+
+        if(!$cartService->canAddProduct($product, $existsCartItem, $requestQuantity)) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Insufficient stock for the requested quantity.',
+            ], 422);
+        }
+
+        $cartService->updateQuantity($existsCartItem, $requestQuantity);
+        $cartItemCount = CartItem::where('cart_id', $cart->id)
+                                    ->count('*');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Product added to cart successfully.',
+            'cartItemCount' => $cartItemCount
+        ]);
+        
     }
 
     public function destroy(DestroyCartItemRequest $request)
