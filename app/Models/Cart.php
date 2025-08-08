@@ -10,8 +10,8 @@ class Cart extends Model
     use HasFactory;
 
     protected $fillable = [
-        'session_id',
-        'user_id'
+        'user_id',
+        'status'
     ];
 
     public function items()
