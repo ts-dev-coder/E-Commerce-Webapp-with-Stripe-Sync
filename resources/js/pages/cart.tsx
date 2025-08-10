@@ -38,6 +38,11 @@ type DeleteCartItemForm = {
     cart_item_id: number;
 };
 
+type UpdateCartItemQuantityForm = {
+    readonly product_id: number;
+    quantity: number;
+};
+
 function CartItemCard({ item }: { item: Response }) {
     const {
         delete: cartItemDelete,
@@ -45,6 +50,11 @@ function CartItemCard({ item }: { item: Response }) {
         errors,
     } = useForm<Required<DeleteCartItemForm>>({
         cart_item_id: item.id,
+    });
+
+    const {data} = useForm<Required<UpdateCartItemQuantityForm>>({
+        product_id: item.product.id,
+        quantity: item.quantity
     });
 
     const handleDeleteCartItem: FormEventHandler = (e) => {
@@ -75,14 +85,18 @@ function CartItemCard({ item }: { item: Response }) {
                     </div>
                     <div className="flex items-center gap-2">
                         <Label className="text-muted-foreground">数量:</Label>
-                        <Select defaultValue={String(item.quantity)}>
+                        <Select defaultValue={String(data.quantity)}>
                             <SelectTrigger className="w-50">
                                 <SelectValue placeholder="個数" />
                             </SelectTrigger>
                             <SelectContent>
                                 {Array.from({ length: item.product.max_quantity }).map((_, i) => {
                                     const num = String(i + 1);
-                                    return <SelectItem key={num} value={num}>{num}</SelectItem>;
+                                    return (
+                                        <SelectItem key={num} value={num}>
+                                            {num}
+                                        </SelectItem>
+                                    );
                                 })}
                             </SelectContent>
                         </Select>
