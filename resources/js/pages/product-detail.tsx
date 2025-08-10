@@ -94,7 +94,7 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                                             <SelectContent>
                                                 {Array.from({ length: product.max_quantity }).map((_, i) => {
                                                     const num = String(i + 1);
-                                                    return <SelectItem value={num}>{num}</SelectItem>;
+                                                    return <SelectItem key={num} value={num}>{num}</SelectItem>;
                                                 })}
                                             </SelectContent>
                                         </Select>
