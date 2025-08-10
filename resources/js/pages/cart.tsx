@@ -39,7 +39,7 @@ type DeleteCartItemForm = {
 };
 
 type UpdateCartItemQuantityForm = {
-    readonly product_id: number;
+    product_id: number;
     quantity: number;
 };
 
@@ -52,15 +52,24 @@ function CartItemCard({ item }: { item: Response }) {
         cart_item_id: item.id,
     });
 
-    const {data} = useForm<Required<UpdateCartItemQuantityForm>>({
+    const { data, setData } = useForm<Required<UpdateCartItemQuantityForm>>({
         product_id: item.product.id,
-        quantity: item.quantity
+        quantity: item.quantity,
     });
 
     const handleDeleteCartItem: FormEventHandler = (e) => {
         e.preventDefault();
 
         cartItemDelete(route('cart.destroy'));
+    };
+
+    const handleQuantityChange = (value: string) => {
+        const updatedQuantity = Number(value);
+        if (Number.isNaN(updatedQuantity)) {
+            console.log(`${value} is not number type.`);
+        }
+
+        setData('quantity', updatedQuantity);
     };
 
     return (
@@ -85,7 +94,7 @@ function CartItemCard({ item }: { item: Response }) {
                     </div>
                     <div className="flex items-center gap-2">
                         <Label className="text-muted-foreground">数量:</Label>
-                        <Select defaultValue={String(data.quantity)}>
+                        <Select defaultValue={String(data.quantity)} onValueChange={handleQuantityChange}>
                             <SelectTrigger className="w-50">
                                 <SelectValue placeholder="個数" />
                             </SelectTrigger>
