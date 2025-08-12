@@ -105,9 +105,6 @@ class CartController extends Controller
         $cartItem = CartItem::find($request->validated('cart_item_id'));
         $cartItem->delete();
         
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Cart item deleted successfully.'
-        ]);
+        return redirect()->back();
     }
 }
