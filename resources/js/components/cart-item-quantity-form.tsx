@@ -26,8 +26,8 @@ export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quant
                 <Button type="submit" size={'sm'}>
                     -
                 </Button>
-                <div className="rounded-lg border border-slate-400/50 px-4 py-1">
-                    <span>{data.quantity}</span>
+                <div className="w-14 rounded-lg border border-slate-400/50 px-4 py-1 text-center">
+                    <span className='text-sm font-semibold'>{data.quantity}</span>
                 </div>
                 <Button type="submit" size={'sm'}>
                     +
