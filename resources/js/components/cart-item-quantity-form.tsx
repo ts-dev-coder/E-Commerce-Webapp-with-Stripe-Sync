@@ -29,8 +29,6 @@ export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quant
     const handleMinus = () => {
         const updatedQuantity = data.quantity - 1;
         if (isValidQuantity(updatedQuantity) === false) {
-            // TODO: Add errro message
-            console.log('Invalid data.');
             return;
         }
 
@@ -40,8 +38,6 @@ export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quant
     const handlePlus = () => {
         const updatedQuantity = data.quantity + 1;
         if (isValidQuantity(updatedQuantity) === false) {
-            // TODO: Add errro message
-            console.log('Invalid data.');
             return;
         }
         setData('quantity', updatedQuantity);
@@ -60,9 +56,7 @@ export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quant
                     +
                 </Button>
             </div>
-            <div>
-                <span className="text-sm text-red-500">error message</span>
-            </div>
+            {/* TODO: If server respose is error, Display error message */}
         </form>
     );
 }
