@@ -29,7 +29,7 @@ export function CartItemQuantityForm({ productId, maxQuantity, quantity }: Props
         return true;
     };
 
-    const updateQuantity = (delta: number) => {
+    const changeQuantity = (delta: number) => {
         const updatedQuantity = data.quantity + delta;
         if (isValidQuantity(updatedQuantity) === false) {
             return;
@@ -41,13 +41,13 @@ export function CartItemQuantityForm({ productId, maxQuantity, quantity }: Props
     return (
         <form>
             <div className="flex items-center gap-x-2">
-                <Button type="button" size={'sm'} onClick={() => updateQuantity(-1)} disabled={availableMinus}>
+                <Button type="button" size={'sm'} onClick={() => changeQuantity(-1)} disabled={availableMinus}>
                     -
                 </Button>
                 <div className="w-14 rounded-lg border border-slate-400/50 px-4 py-1 text-center">
                     <span className="text-sm font-semibold">{data.quantity}</span>
                 </div>
-                <Button type="button" size={'sm'} onClick={() => updateQuantity(1)} disabled={availablePlus}>
+                <Button type="button" size={'sm'} onClick={() => changeQuantity(1)} disabled={availablePlus}>
                     +
                 </Button>
             </div>
