@@ -14,11 +14,14 @@ type UpdateCartItemQuantityForm = {
     quantity: number;
 };
 
-export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quantity }: Props) {
+export function CartItemQuantityForm({ productId, maxQuantity, quantity }: Props) {
     const { data, setData } = useForm<UpdateCartItemQuantityForm>({
         product_id: productId,
         quantity: quantity,
     });
+
+    const availableMinus = data.quantity === 1;
+    const availablePlus = data.quantity >= maxQuantity;
 
     const isValidQuantity = (updatedQuantity: number): boolean => {
         if (updatedQuantity <= 0 || updatedQuantity > maxQuantity) return false;
@@ -46,13 +49,13 @@ export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quant
     return (
         <form>
             <div className="flex items-center gap-x-2">
-                <Button type="button" size={'sm'} onClick={handleMinus}>
+                <Button type="button" size={'sm'} onClick={handleMinus} disabled={availableMinus}>
                     -
                 </Button>
                 <div className="w-14 rounded-lg border border-slate-400/50 px-4 py-1 text-center">
                     <span className="text-sm font-semibold">{data.quantity}</span>
                 </div>
-                <Button type="button" size={'sm'} onClick={handlePlus}>
+                <Button type="button" size={'sm'} onClick={handlePlus} disabled={availablePlus}>
                     +
                 </Button>
             </div>
