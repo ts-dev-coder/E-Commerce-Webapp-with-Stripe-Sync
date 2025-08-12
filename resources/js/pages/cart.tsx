@@ -1,15 +1,15 @@
+import { FormEventHandler } from 'react';
+
 import { Head, useForm } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 
+import { CartItemQuantityForm } from '@/components/cart-item-quantity-form';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-import InputError from '@/components/input-error';
-import { Label } from '@/components/ui/label';
-import { Product, type BreadcrumbItem } from '@/types';
-import { FormEventHandler } from 'react';
+import { type BreadcrumbItem, type Product } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -74,18 +74,12 @@ function CartItemCard({ item }: { item: Response }) {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Label className="text-muted-foreground">数量:</Label>
-                        <Select defaultValue={String(item.quantity)}>
-                            <SelectTrigger className="w-50">
-                                <SelectValue placeholder="個数" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {Array.from({ length: item.product.max_quantity }).map((_, i) => {
-                                    const num = String(i + 1);
-                                    return <SelectItem value={num}>{num}</SelectItem>;
-                                })}
-                            </SelectContent>
-                        </Select>
+                        <CartItemQuantityForm
+                            cartItemId={item.id}
+                            productId={item.product_id}
+                            quantity={item.quantity}
+                            maxQuantity={item.product.max_quantity}
+                        />
                         <form onSubmit={handleDeleteCartItem}>
                             <input type="hidden" value={item.id} />
                             <Button variant={'ghost'} className="text-xs text-muted-foreground" disabled={processing}>
