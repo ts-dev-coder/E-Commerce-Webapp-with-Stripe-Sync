@@ -1,15 +1,15 @@
+import { FormEventHandler } from 'react';
+
 import { Head, useForm } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 
+import { CartItemQuantityForm } from '@/components/cart-item-quantity-form';
+import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-import InputError from '@/components/input-error';
-import { Label } from '@/components/ui/label';
-import { Product, type BreadcrumbItem } from '@/types';
-import { FormEventHandler } from 'react';
+import { type BreadcrumbItem, type Product } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -38,11 +38,6 @@ type DeleteCartItemForm = {
     cart_item_id: number;
 };
 
-type UpdateCartItemQuantityForm = {
-    product_id: number;
-    quantity: number;
-};
-
 function CartItemCard({ item }: { item: Response }) {
     const {
         delete: cartItemDelete,
@@ -52,24 +47,10 @@ function CartItemCard({ item }: { item: Response }) {
         cart_item_id: item.id,
     });
 
-    const { data, setData } = useForm<Required<UpdateCartItemQuantityForm>>({
-        product_id: item.product.id,
-        quantity: item.quantity,
-    });
-
     const handleDeleteCartItem: FormEventHandler = (e) => {
         e.preventDefault();
 
         cartItemDelete(route('cart.destroy'));
-    };
-
-    const handleQuantityChange = (value: string) => {
-        const updatedQuantity = Number(value);
-        if (Number.isNaN(updatedQuantity)) {
-            console.log(`${value} is not number type.`);
-        }
-
-        setData('quantity', updatedQuantity);
     };
 
     return (
@@ -93,22 +74,12 @@ function CartItemCard({ item }: { item: Response }) {
                         </div>
                     </div>
                     <div className="flex items-center gap-2">
-                        <Label className="text-muted-foreground">数量:</Label>
-                        <Select defaultValue={String(data.quantity)} onValueChange={handleQuantityChange}>
-                            <SelectTrigger className="w-50">
-                                <SelectValue placeholder="個数" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {Array.from({ length: item.product.max_quantity }).map((_, i) => {
-                                    const num = String(i + 1);
-                                    return (
-                                        <SelectItem key={num} value={num}>
-                                            {num}
-                                        </SelectItem>
-                                    );
-                                })}
-                            </SelectContent>
-                        </Select>
+                        <CartItemQuantityForm
+                            cartItemId={item.id}
+                            productId={item.product_id}
+                            quantity={item.quantity}
+                            maxQuantity={item.product.max_quantity}
+                        />
                         <form onSubmit={handleDeleteCartItem}>
                             <input type="hidden" value={item.id} />
                             <Button variant={'ghost'} className="text-xs text-muted-foreground" disabled={processing}>
