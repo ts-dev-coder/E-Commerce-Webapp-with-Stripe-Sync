@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\DestroyCartItemRequest;
 use App\Http\Requests\StoreCartRequest;
-
+use App\Http\Requests\UpdateCartQuantityRequest;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -89,6 +89,15 @@ class CartController extends Controller
             'cartItemCount' => $cartItemCount
         ]);
         
+    }
+
+    public function updateQuantity(UpdateCartQuantityRequest $request, CartItem $item) {
+
+        $item->update([
+            'quantity' => $request->validated('quantity')
+        ]);
+
+        return redirect()->back();
     }
 
     public function destroy(DestroyCartItemRequest $request)
