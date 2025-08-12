@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import { FormEventHandler } from 'react';
+import { FormEventHandler, useState } from 'react';
 
 import { Button } from './ui/button';
 
@@ -21,9 +21,8 @@ export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quant
         quantity: quantity,
     });
 
-    // TODO: 2から１の変更時にform eventが発火しない為、下記の2つの状態を変更する
-    const availableMinus = data.quantity === 1;
-    const availablePlus = data.quantity >= maxQuantity;
+    const [availableMinus, setAvailableMinus] = useState(data.quantity === 1);
+    const [availablePlus, setAvailablePlus] = useState(data.quantity >= maxQuantity);
 
     const isValidQuantity = (updatedQuantity: number): boolean => {
         if (updatedQuantity <= 0 || updatedQuantity > maxQuantity) return false;
@@ -46,6 +45,8 @@ export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quant
         patch(route('cart.updateQuantity', { item: cartItemId }), {
             onSuccess: () => {
                 console.log('success');
+                setAvailableMinus(data.quantity === 1);
+                setAvailablePlus(data.quantity === maxQuantity);
             },
         });
     };
