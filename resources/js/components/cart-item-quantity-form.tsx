@@ -1,6 +1,13 @@
 import { Button } from './ui/button';
 
-export function CartItemQuantityForm() {
+type Props = {
+    readonly cartItemId: number;
+    readonly productId: number;
+    readonly maxQuantity: number;
+    quantity: number;
+};
+
+export function CartItemQuantityForm({ cartItemId, productId, maxQuantity, quantity }: Props) {
     return (
         <form>
             <div className="flex items-center gap-x-2">
