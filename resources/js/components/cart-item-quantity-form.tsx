@@ -29,33 +29,25 @@ export function CartItemQuantityForm({ productId, maxQuantity, quantity }: Props
         return true;
     };
 
-    const handleMinus = () => {
-        const updatedQuantity = data.quantity - 1;
+    const updateQuantity = (delta: number) => {
+        const updatedQuantity = data.quantity + delta;
         if (isValidQuantity(updatedQuantity) === false) {
             return;
         }
 
-        setData('quantity', updatedQuantity);
-    };
-
-    const handlePlus = () => {
-        const updatedQuantity = data.quantity + 1;
-        if (isValidQuantity(updatedQuantity) === false) {
-            return;
-        }
         setData('quantity', updatedQuantity);
     };
 
     return (
         <form>
             <div className="flex items-center gap-x-2">
-                <Button type="button" size={'sm'} onClick={handleMinus} disabled={availableMinus}>
+                <Button type="button" size={'sm'} onClick={() => updateQuantity(-1)} disabled={availableMinus}>
                     -
                 </Button>
                 <div className="w-14 rounded-lg border border-slate-400/50 px-4 py-1 text-center">
                     <span className="text-sm font-semibold">{data.quantity}</span>
                 </div>
-                <Button type="button" size={'sm'} onClick={handlePlus} disabled={availablePlus}>
+                <Button type="button" size={'sm'} onClick={() => updateQuantity(1)} disabled={availablePlus}>
                     +
                 </Button>
             </div>
