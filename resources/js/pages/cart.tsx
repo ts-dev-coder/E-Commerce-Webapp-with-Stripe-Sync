@@ -1,6 +1,6 @@
 import { FormEventHandler } from 'react';
 
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 
@@ -108,7 +108,9 @@ function CartSubtotal({ data }: { data: Response[] }) {
 function CheckoutButton() {
     return (
         <div className="mt-6 flex w-full max-w-3xl justify-end">
-            <Button>レジに進む</Button>
+            <Link href='/checkout'>
+                <Button>レジに進む</Button>
+            </Link>
         </div>
     );
 }
