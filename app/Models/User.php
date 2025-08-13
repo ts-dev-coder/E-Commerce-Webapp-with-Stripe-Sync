@@ -51,4 +51,9 @@ class User extends Authenticatable
         return $this->hasOne(Cart::class, 'user_id', 'id');
     }
 
+    public function defaultAddress()
+    {
+        return $this->hasOne(Address::class)->where('is_default', true);
+    }
+
 }
