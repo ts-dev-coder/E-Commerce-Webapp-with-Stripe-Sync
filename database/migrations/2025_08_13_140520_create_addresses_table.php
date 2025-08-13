@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('street', 150);         // 町名・丁目・番地・号
             $table->string('building', 150)->nullable(); // 建物名・部屋番号
 
-            $table->string('phone_number', 10); // 電話番号
+            $table->string('phone_number', 11); // 電話番号
 
             $table->boolean('is_default')->default(false); // デフォルトとするかどうかの判定フラグ
 
