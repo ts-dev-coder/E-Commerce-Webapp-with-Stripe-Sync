@@ -32,7 +32,7 @@ class CheckoutController extends Controller
 
         // TODO: fetch the products image
 
-        $cartItemCount = $cartItems === null ? 0 : count($cartItems);
+        $cartItemCount = count($cartItems);
 
         $defaultAddress = $user->defaultAddress;
 
