@@ -52,7 +52,7 @@ export default function Cart({ cartItems, cartItemCount }: Props) {
                     ))}
                     <CartSubtotal cartItems={cartItems} />
                 </div>
-                <CheckoutButton />
+                {cartItems.length > 0 && <CheckoutButton />}
             </div>
         </AppLayout>
     );
