@@ -26,6 +26,10 @@ class CheckoutController extends Controller
                     ->first();
         $cartItems = $cart->items;
 
+        if($cartItems->isEmpty()) {
+            return redirect()->route('cart.index');
+        }
+
         // TODO: fetch the products image
 
         $cartItemCount = $cartItems === null ? 0 : count($cartItems);
