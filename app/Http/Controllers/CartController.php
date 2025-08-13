@@ -23,7 +23,7 @@ class CartController extends Controller
                     ->where('status', 'active')
                     ->first();
 
-        $cartItems = $cart === null ? null : $cart->items;
+        $cartItems = $cart->items;
 
         // TODO: fetch the products image
 
