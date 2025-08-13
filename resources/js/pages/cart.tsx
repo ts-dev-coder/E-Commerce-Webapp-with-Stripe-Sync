@@ -2,8 +2,8 @@ import { Head, Link } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 
-import { Button } from '@/components/ui/button';
 import { CartItemCard } from '@/components/cart-item-card';
+import { Button } from '@/components/ui/button';
 
 import { CartItem, type BreadcrumbItem } from '@/types';
 
@@ -15,13 +15,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 type Props = {
-    data: CartItem[];
+    cartItems: CartItem[];
     cartItemCount: number;
 };
 
-function CartSubtotal({ data }: { data: CartItem[] }) {
-    const totalQuantity = data.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = data.reduce((sum, item) => sum + item.price * item.quantity, 0);
+function CartSubtotal({ cartItems }: { cartItems: CartItem[] }) {
+    const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+    const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     return (
         <div className="mt-8 flex items-center justify-between rounded-lg border bg-gray-50 px-6 py-4">
             <div className="text-base font-medium text-gray-700">小計（{totalQuantity}個の商品）(税込み)</div>
@@ -40,15 +40,17 @@ function CheckoutButton() {
     );
 }
 
-export default function Cart({ data, cartItemCount }: Props) {
+export default function Cart({ cartItems, cartItemCount }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
             <div className="flex min-h-screen flex-col items-center py-8">
                 <h2 className="mb-6 text-2xl font-bold">ショッピングカート</h2>
                 <div className="w-full max-w-3xl space-y-4">
-                    {data && data.map((item) => <CartItemCard key={item.id} item={item} />)}
-                    <CartSubtotal data={data} />
+                    {cartItems.map((item) => (
+                        <CartItemCard key={item.id} item={item} />
+                    ))}
+                    <CartSubtotal cartItems={cartItems} />
                 </div>
                 <CheckoutButton />
             </div>
