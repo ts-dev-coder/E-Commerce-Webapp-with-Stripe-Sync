@@ -1,81 +1,125 @@
+import { Head } from '@inertiajs/react';
+
+import AppLayout from '@/layouts/app-layout';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+
+import { CartItemCard } from '@/components/cart-item-card';
+
+import { type BreadcrumbItem, type CartItem } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
+        title: 'Home',
+        href: '/',
     },
 ];
 
-type Props = {
-    cartItemCount: number;
+type Address = {
+    id: number;
+    userId: number;
+    recipiendName: string;
+    postalCode: string;
+    prefecture: string;
+    city: string;
+    street: string;
+    building: string;
+    phoneNumber: number;
+    isDefault: boolean;
 };
 
-export default function Checkout({ cartItemCount }: Props) {
+type Props = {
+    cartItems: CartItem[];
+    cartItemCount: number;
+    defaultAddress: Address;
+};
+
+export default function Checkout({ cartItems, cartItemCount, defaultAddress }: Props) {
+    const mainAddress = defaultAddress.prefecture + defaultAddress.city + defaultAddress.street + defaultAddress.building;
+
+    const SHIPPING_FEE = 500;
+    const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalPrice = subTotal + SHIPPING_FEE;
+
     return (
         <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
             <Head title="Checkout" />
-            <div className="flex min-h-screen flex-col items-center py-8">
-                <h2 className="mb-6 text-2xl font-bold">レジ</h2>
-                <div className="w-full max-w-xl space-y-8">
-                    {/* 配送先情報 */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>配送先情報</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div>
-                                <Label htmlFor="name">氏名</Label>
-                                <Input id="name" name="name" placeholder="山田 太郎" />
-                            </div>
-                            <div>
-                                <Label htmlFor="postal">郵便番号</Label>
-                                <Input id="postal" name="postal" placeholder="123-4567" />
-                            </div>
-                            <div>
-                                <Label htmlFor="address">住所</Label>
-                                <Input id="address" name="address" placeholder="東京都新宿区..." />
-                            </div>
-                            <div>
-                                <Label htmlFor="phone">電話番号</Label>
-                                <Input id="phone" name="phone" placeholder="090-1234-5678" />
-                            </div>
-                        </CardContent>
-                    </Card>
-                    {/* 支払方法 */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>支払方法</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <RadioGroup defaultValue="credit">
-                                <div className="mb-2 flex items-center space-x-2">
-                                    <RadioGroupItem value="credit" id="credit" />
-                                    <Label htmlFor="credit">クレジットカード</Label>
-                                </div>
-                                <div className="mb-2 flex items-center space-x-2">
-                                    <RadioGroupItem value="cod" id="cod" />
-                                    <Label htmlFor="cod">代金引換</Label>
-                                </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="bank" id="bank" />
-                                    <Label htmlFor="bank">銀行振込</Label>
-                                </div>
-                            </RadioGroup>
-                        </CardContent>
-                    </Card>
-                    <div className="flex justify-end">
-                        <Button className="px-8 py-3 text-lg" variant="default">
-                            注文を確定する
-                        </Button>
+            <div className="grid grid-cols-12 py-5">
+                <div className="col-span-7 space-y-5">
+                    <div className="w-full max-w-xl">
+                        {/* Address */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>お届け先</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <RadioGroup defaultValue="default">
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="default" id="default" />
+                                        <Label htmlFor="default">{mainAddress}</Label>
+                                    </div>
+                                </RadioGroup>
+                            </CardContent>
+                        </Card>
+                        <div className="mt-4 flex items-center justify-end">
+                            <Button>新しい住所を登録する</Button>
+                        </div>
                     </div>
+
+                    {/* Payment method */}
+                    <div className="w-full max-w-xl">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>お支払方法</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <RadioGroup defaultValue="stripe">
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="stripe" id="stripe" />
+                                        <Label htmlFor="stripe">Stripe</Label>
+                                    </div>
+                                </RadioGroup>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    <hr className="w-full max-w-xl" />
+
+                    {/* CartItems */}
+                    <h2 className="text-2xl font-semibold">カート内商品</h2>
+                    <div className="w-full max-w-xl space-y-5">
+                        {cartItems.length > 0 ? (
+                            cartItems.map((item) => <CartItemCard item={item} />)
+                        ) : (
+                            <span className="text-lg font-semibold">カート内に商品はありません</span>
+                        )}
+                    </div>
+                </div>
+
+                <div className="col-span-5">
+                    <Card>
+                        <CardContent>
+                            <Button>購入する</Button>
+                            <hr className="my-6" />
+                            <div className="flex flex-col space-y-3">
+                                <span className="flex w-full items-center justify-between text-sm">
+                                    商品の小計 : <span>￥{subTotal.toLocaleString()}</span>
+                                </span>
+                                <span className="flex w-full items-center justify-between text-sm">
+                                    配送料 : <span>￥{SHIPPING_FEE}</span>
+                                </span>
+                                <span className="flex w-full items-center justify-between text-sm">
+                                    合計 : <span>￥{totalPrice.toLocaleString()}</span>
+                                </span>
+                                <div className="flex w-full items-center justify-between text-lg font-semibold">
+                                    ご請求額 : <span>￥{totalPrice.toLocaleString()}</span>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
         </AppLayout>

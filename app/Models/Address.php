@@ -18,7 +18,6 @@ class Address extends Model
         'building',
         'phone_number',
         'is_default',
-        'address_type',
         'user_id'
     ];
 

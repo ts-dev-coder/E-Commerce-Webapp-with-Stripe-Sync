@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCheckoutRequest;
-use App\Models\Address;
+
 use App\Models\Cart;
 use App\Models\Product;
 
 use Illuminate\Support\Facades\Auth;
+
 use Inertia\Inertia;
 
 // use Stripe\Checkout\Session;
@@ -19,27 +20,26 @@ class CheckoutController extends Controller
     {
         $user = Auth::user();
 
-        // TODO: Refactor to use Eloquent relationship from User model instead of
-        //       querying directly
-        $registeredDeliveryAddress = Address::where('user_id', $user->id)->get()->first();
-
-        // TODO: Add payments table
-        $registeredPaymentMethod = null;
-
         $cart = Cart::with('items.product')
                     ->where('user_id', $user->id)
+                    ->where('status', 'active')
                     ->first();
+        $cartItems = $cart->items;
 
-        $products = $cart->items->pluck('product');
+        if($cartItems->isEmpty()) {
+            return redirect()->route('cart.index');
+        }
 
-        $cartItemCount = count($products);
+        // TODO: fetch the products image
+
+        $cartItemCount = count($cartItems);
+
+        $defaultAddress = $user->defaultAddress;
 
         return Inertia::render('checkout', [
-            'message' => 'hello world',
-            'products' => $products,
+            'cartItems' => $cartItems,
             'cartItemCount' => $cartItemCount,
-            'registeredDeliveryAddress' => $registeredDeliveryAddress,
-            'registeredPaymentMethod' => $registeredPaymentMethod
+            'defaultAddress' => $defaultAddress
         ]);
     }
 
