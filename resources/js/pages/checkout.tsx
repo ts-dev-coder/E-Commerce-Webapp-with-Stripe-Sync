@@ -162,11 +162,13 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                     <hr className="w-full max-w-xl" />
 
                     {/* CartItems */}
-                    <h2 className="text-xl font-semibold">カート内商品</h2>
+                    <h2 className="text-2xl font-semibold">カート内商品</h2>
                     <div className="w-full max-w-xl space-y-5">
-                        {cartItems.map((item) => (
+                        {cartItems.length > 0 ? cartItems.map((item) => (
                             <CartItemCard item={item} />
-                        ))}
+                        )) : (
+                            <span className='text-lg font-semibold'>カート内に商品はありません</span>
+                        )}
                     </div>
                 </div>
 
