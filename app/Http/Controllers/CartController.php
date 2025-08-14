@@ -63,8 +63,6 @@ class CartController extends Controller
 
         if ($existsCartItem === null) {
             $cartService->addCartItem($cart, $product, $requestQuantity);
-            $cartItemCount = CartItem::where('cart_id', $cart->id)
-                                        ->count('*');
 
             return redirect()->route('product-detail', ['product' => $request->validated('product_id')]);
         }
@@ -77,8 +75,6 @@ class CartController extends Controller
         }
 
         $cartService->updateQuantity($existsCartItem, $requestQuantity);
-        $cartItemCount = CartItem::where('cart_id', $cart->id)
-                                    ->count('*');
 
         return redirect()->route('product-detail', ['product' => $request->validated('product_id')]);        
     }
