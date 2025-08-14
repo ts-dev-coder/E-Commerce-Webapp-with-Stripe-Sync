@@ -65,12 +65,8 @@ class CartController extends Controller
             $cartService->addCartItem($cart, $product, $requestQuantity);
             $cartItemCount = CartItem::where('cart_id', $cart->id)
                                         ->count('*');
-            return response()->json([
-                'status' => 'seccess',
-                'type' => 'created',
-                'message' => 'The product has been added to the cart.',
-                'cartItemCount' => $cartItemCount
-            ], 201);
+
+            return redirect()->route('product-detail', ['product' => $request->validated('product_id')]);
         }
 
         if(!$cartService->canAddProduct($product, $existsCartItem, $requestQuantity)) {
@@ -83,12 +79,8 @@ class CartController extends Controller
         $cartService->updateQuantity($existsCartItem, $requestQuantity);
         $cartItemCount = CartItem::where('cart_id', $cart->id)
                                     ->count('*');
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Product added to cart successfully.',
-            'cartItemCount' => $cartItemCount
-        ]);
-        
+
+        return redirect()->route('product-detail', ['product' => $request->validated('product_id')]);        
     }
 
     public function updateQuantity(UpdateCartQuantityRequest $request, CartItem $item) {
