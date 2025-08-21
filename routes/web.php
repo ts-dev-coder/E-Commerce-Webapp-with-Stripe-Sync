@@ -6,6 +6,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
 
@@ -21,6 +22,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
     // TODO: Add success route and cancel route for stripe
+    Route::get('/checkout/success', function () {
+        return Inertia::render('checkout-success');
+    })->name('checkout.success');
+    Route::get('/checkout/cancel', function () {
+        return Inertia::render('checkout-cancel');
+    })->name('checkout.cancel');
+
 });
 
 require __DIR__.'/settings.php';
