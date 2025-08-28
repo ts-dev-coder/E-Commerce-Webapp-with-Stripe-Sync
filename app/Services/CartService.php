@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\CartItem;
 use App\Models\Product;
+use Illuminate\Support\Collection;
 
 class CartService
 {
@@ -46,5 +47,19 @@ class CartService
           'cart_id' => $cart->id,
           'product_id' => $product->id
       ]);
+  }
+
+  public function getTotalAmount(Collection $items): int
+  {
+    // TODO: config fileに移すかどうか考える
+    $shippingFee = 500;
+    return $this->calculateTotalAmount($items) + $shippingFee;
+  }
+
+  private function calculateTotalAmount(Collection $items): int
+  {
+    return $items->sum(function ($item) {
+        return $item->price * $item->quantity;
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
 
@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { CartItemCard } from '@/components/cart-item-card';
 
 import { type BreadcrumbItem, type CartItem } from '@/types';
+import { FormEventHandler } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -37,12 +38,26 @@ type Props = {
     defaultAddress: Address;
 };
 
+type CheckoutForm = {
+    delivery_address_id: number;
+};
+
 export default function Checkout({ cartItems, cartItemCount, defaultAddress }: Props) {
     const mainAddress = defaultAddress.prefecture + defaultAddress.city + defaultAddress.street + defaultAddress.building;
 
     const SHIPPING_FEE = 500;
     const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const totalPrice = subTotal + SHIPPING_FEE;
+
+    const { post } = useForm<CheckoutForm>({
+        delivery_address_id: defaultAddress.id,
+    });
+
+    const handleCheckout: FormEventHandler = (e) => {
+        e.preventDefault();
+
+        post(route('checkout.store'));
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
@@ -102,7 +117,9 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                 <div className="col-span-5">
                     <Card>
                         <CardContent>
-                            <Button>購入する</Button>
+                            <form onSubmit={handleCheckout}>
+                                <Button type="submit">購入する</Button>
+                            </form>
                             <hr className="my-6" />
                             <div className="flex flex-col space-y-3">
                                 <span className="flex w-full items-center justify-between text-sm">
