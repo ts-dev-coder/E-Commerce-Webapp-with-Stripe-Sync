@@ -10,18 +10,9 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_code',
-        'status',
-        'total_price',
-        'shipping_fee',
-        'recipient_name',
-        'postal_code',
-        'phone_number',
-        'ordered_at',
-        'paid_at',
-        'shipped_at',
-        'address_id',
-        'user_id'
+        'user_id',
+        'total_amount',
+        'shipping_address_id'
     ];
 
     # TODO: Add relation definition
