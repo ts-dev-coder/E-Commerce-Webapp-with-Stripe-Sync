@@ -10,11 +10,10 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'price',
-        'quantity',
-        'subtotal',
         'order_id',
-        'product_id'
+        'product_id',
+        'quantity',
+        'price'
     ];
 
     # TODO: Add relation definition
