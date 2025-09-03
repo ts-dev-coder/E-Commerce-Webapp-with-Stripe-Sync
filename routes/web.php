@@ -4,13 +4,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
-
+use App\Http\Controllers\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', HomeController::class)->name('home');
 
 Route::get('/products/{product}', ProductDetailController::class)->name('product-detail');
+
+// Stripe
+Route::post('/webhook/stripe', [StripeWebhookController::class, 'handle']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -21,7 +24,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
-    // TODO: Add success route and cancel route for stripe
     Route::get('/checkout/success', function () {
         return Inertia::render('checkout-success');
     })->name('checkout.success');
@@ -29,6 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('checkout-cancel');
     })->name('checkout.cancel');
 
+    
 });
 
 require __DIR__.'/settings.php';
