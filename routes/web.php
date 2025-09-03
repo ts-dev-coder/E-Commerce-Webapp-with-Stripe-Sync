@@ -24,8 +24,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
-    // TODO: Add success route and cancel route for stripe
-    Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+    Route::get('/checkout/success', function () {
+        return Inertia::render('checkout-success');
+    })->name('checkout.success');
     Route::get('/checkout/cancel', function () {
         return Inertia::render('checkout-cancel');
     })->name('checkout.cancel');
