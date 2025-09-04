@@ -47,9 +47,9 @@ This diagram was created using `dbdiagram.io`, and the original source file can 
 - / : Top page
 - /product/{id} : Product detal page
 - /cart : Cart page
-- /order : Order page
-- /order/complete : thanks page (after order page)
 - /checkout : Checkout page
+- /checkout/success : Order compolete
+- /checkout/cancel : Order Cancel
 - /login : Login page
 - /register : Register page
 
@@ -60,9 +60,10 @@ This diagram was created using `dbdiagram.io`, and the original source file can 
 - /checkout : submit the purchase procedure infomation
 
 ## PUT
-(to be added later)
+- /cart/items/{item} : Update quantity of product in the cart
 
 ## DELETE
-- /cart/{product_id} : Remove an product from the cart
-- /account : Delete the user account
-- /orders/{order_id} : Cancel the order 
+- /cart : Remove the product from the cart
+
+## Stripe
+- /webhook/stripe : Create the order if chekcout is success
