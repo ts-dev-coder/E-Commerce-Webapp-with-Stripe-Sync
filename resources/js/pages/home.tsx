@@ -36,11 +36,9 @@ export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
                                 {products && products.length > 0 ? (
                                     <div className="relative">
                                         {/* 横スクロール可能エリア */}
-                                        <div className="scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 flex space-x-4 overflow-x-auto pb-2">
-                                            {products.map((product, index) => (
-                                                <div key={product.id ?? index} className="w-64 flex-shrink-0">
-                                                    <ProductCard product={product} />
-                                                </div>
+                                        <div className="scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 flex overflow-x-auto pb-2">
+                                            {products.map((product) => (
+                                                <ProductCard product={product} key={product.id} />
                                             ))}
                                         </div>
 
