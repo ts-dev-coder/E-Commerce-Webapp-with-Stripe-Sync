@@ -20,7 +20,7 @@ class CategoryProductSeeder extends Seeder
         foreach ($productIds as $productId) {
             $categoryId = $categoryIds[array_rand($categoryIds)];
 
-            DB::table('category_product')->insert([
+            DB::table('category_product')->updateOrInsert([
                 'category_id' => $categoryId,
                 'product_id'  => $productId
             ]);
