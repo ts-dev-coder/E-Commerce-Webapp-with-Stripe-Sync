@@ -6,11 +6,11 @@ import { FormEventHandler } from 'react';
 import AppLayout from '@/layouts/app-layout';
 
 import InputError from '@/components/input-error';
+
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-import { Label } from '@/components/ui/label';
 import { type BreadcrumbItem, type Product } from '@/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -56,57 +56,84 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
-            <div>
-                <div className="mt-8 flex justify-center">
-                    <div className="w-full max-w-md">
-                        <Card className="rounded-xl shadow-lg">
-                            <CardHeader>
-                                <CardTitle className="text-center text-2xl font-bold">{product.name}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="mb-4 flex justify-center">
-                                    <img
-                                        src={'https://placehold.co/400x300?text=No+Image'}
-                                        alt={product.name}
-                                        className="h-56 w-full rounded object-cover"
-                                    />
+
+            <div className="grid grid-cols-12 pt-4">
+                <div className="col-span-5">
+                    {/* 商品画像 */}
+                    <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className="size-11/12" />
+                </div>
+
+                <div className="col-span-4 flex flex-col space-y-5">
+                    {/* 商品名 */}
+                    <span className="text-2xl">{product.name}</span>
+
+                    {/* 商品説明 */}
+                    <div className="flex flex-col">
+                        <p className="mb-2 text-xl font-semibold">この商品について</p>
+                        {product.description}
+                    </div>
+
+                    {/* 商品価格 */}
+                    <span className="text-2xl font-semibold">{product.price.toLocaleString('ja-JP')}円</span>
+                </div>
+
+                <div className="col-span-3">
+                    <div className="space-y-3 rounded-lg border p-3">
+                        {/* 商品価格 */}
+                        <p className="text-2xl font-semibold">{product.price.toLocaleString('ja-JP')}円</p>
+
+                        {/* 在庫状況 */}
+                        {/* TODO: 在庫状況のUIをコンポーネント化する */}
+                        {product.stock > 0 ? (
+                            <p className="inline-flex rounded bg-green-50 px-2 py-0.5 text-green-600">在庫あり</p>
+                        ) : (
+                            <p className="inline-flex rounded bg-red-50 px-2 py-0.5 text-red-600">一時的に在庫切れ</p>
+                        )}
+
+                        {product.stock > 0 && (
+                            <>
+                                <div className="flex items-center">
+                                    <Label className="mr-2 text-muted-foreground">数量:</Label>
+                                    <Select onValueChange={handleQuantityChange} defaultValue="1">
+                                        <SelectTrigger className="w-50">
+                                            <SelectValue placeholder="個数" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {Array.from({ length: product.max_quantity }).map((_, i) => {
+                                                const num = String(i + 1);
+                                                return (
+                                                    <SelectItem key={num} value={num}>
+                                                        {num}
+                                                    </SelectItem>
+                                                );
+                                            })}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
-                                <p className="mb-4 text-center text-sm text-muted-foreground">{product.description}</p>
-                                <div className="mb-4 flex items-baseline justify-center">
-                                    <span className="mr-1 text-base text-primary">¥</span>
-                                    <span className="text-2xl font-bold">{product.price}</span>
+                                {/* 各ボタン専用のVariantを追加する */}
+                                <div className="flex flex-col space-y-2">
+                                    {/* カート追加ボタン */}
+                                    <form onSubmit={submit}>
+                                        <Button
+                                            type="submit"
+                                            className="w-full"
+                                            variant={'addCart'}
+                                        >
+                                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                                            カートに入れる
+                                        </Button>
+                                        <InputError message={errors.quantity} />
+                                    </form>
+
+                                    <form onSubmit={() => console.log('Now buy.')}>
+                                        {/* 今すぐ買うボタン */}
+                                        <Button type="submit" className="w-full" variant={'buyNow'}>
+                                            今すぐ買う
+                                        </Button>
+                                    </form>
                                 </div>
-                                <div className="mb-4 flex justify-center">
-                                    {product.stock > 0 ? (
-                                        <span className="rounded bg-green-50 px-2 py-0.5 text-xs text-green-600">在庫あり</span>
-                                    ) : (
-                                        <span className="rounded bg-red-50 px-2 py-0.5 text-xs text-red-600">一時的に在庫切れ</span>
-                                    )}
-                                </div>
-                                <form onSubmit={submit}>
-                                    <div className="mb-4 flex items-center justify-center gap-2">
-                                        <input type="hidden" value={product.id} />
-                                        <Label className="text-muted-foreground">数量:</Label>
-                                        <Select onValueChange={handleQuantityChange} defaultValue="1">
-                                            <SelectTrigger className="w-50">
-                                                <SelectValue placeholder="個数" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {Array.from({ length: product.max_quantity }).map((_, i) => {
-                                                    const num = String(i + 1);
-                                                    return <SelectItem key={num} value={num}>{num}</SelectItem>;
-                                                })}
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <Button type="submit" className="w-full" variant="default" disabled={processing}>
-                                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                                        カートに追加
-                                    </Button>
-                                    <InputError message={errors.quantity} />
-                                </form>
-                            </CardContent>
-                        </Card>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
