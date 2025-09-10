@@ -49,14 +49,16 @@ export default function Cart({ cartItems, cartItemCount }: Props) {
 
             <div className="grid grid-cols-12 pt-4">
                 {cartItems && cartItems.length > 0 ? (
-                    <div className="col-span-8">
-                        <div className="divide-y-1">
-                            {cartItems.map((item) => (
-                                <CartItemCard item={item} />
-                            ))}
+                    <>
+                        <div className="col-span-8">
+                            <div className="divide-y-1">
+                                {cartItems.map((item) => (
+                                    <CartItemCard item={item} />
+                                ))}
+                            </div>
                         </div>
                         <CartSubtotal cartItems={cartItems} />
-                    </div>
+                    </>
                 ) : (
                     <div className="col-span-12 size-full text-center">
                         <h1 className="text-2xl font-semibold">カート内は空です</h1>
