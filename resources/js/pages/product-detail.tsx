@@ -60,7 +60,7 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
             <div className="grid grid-cols-12 pt-4">
                 <div className="col-span-5">
                     {/* 商品画像 */}
-                    <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className='size-11/12'/>
+                    <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className="size-11/12" />
                 </div>
 
                 <div className="col-span-4 flex flex-col space-y-5">
@@ -114,7 +114,11 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                                 <div className="flex flex-col space-y-2">
                                     {/* カート追加ボタン */}
                                     <form onSubmit={submit}>
-                                        <Button type="submit" className="w-full">
+                                        <Button
+                                            type="submit"
+                                            className="w-full"
+                                            variant={'addCart'}
+                                        >
                                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                                             カートに入れる
                                         </Button>
@@ -123,7 +127,7 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
 
                                     <form onSubmit={() => console.log('Now buy.')}>
                                         {/* 今すぐ買うボタン */}
-                                        <Button type="submit" className="w-full">
+                                        <Button type="submit" className="w-full" variant={'buyNow'}>
                                             今すぐ買う
                                         </Button>
                                     </form>

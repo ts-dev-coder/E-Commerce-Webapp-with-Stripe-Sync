@@ -19,6 +19,8 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        addCart: "rounded-2xl bg-yellow-400/80 text-base font-normal text-black hover:cursor-pointer hover:bg-yellow-400",
+        buyNow: "rounded-2xl bg-orange-400/80 text-base font-normal text-black hover:cursor-pointer hover:bg-orange-400"
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
