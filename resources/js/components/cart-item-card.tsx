@@ -1,15 +1,15 @@
-import { FormEventHandler } from 'react';
+import { LoaderCircle } from 'lucide-react';
 
 import { useForm } from '@inertiajs/react';
 
-import { Card, CardContent } from '@/components/ui/card';
-
-import { Product } from '@/types';
+import { FormEventHandler } from 'react';
 
 import { Button } from './ui/button';
 
 import { CartItemQuantityForm } from './cart-item-quantity-form';
 import InputError from './input-error';
+
+import { Product } from '@/types';
 
 type Response = {
     id: number;
@@ -42,42 +42,48 @@ export const CartItemCard = ({ item }: { item: Response }) => {
     };
 
     return (
-        <Card key={item.id} className="shadow-md">
-            <CardContent className="flex gap-6 p-6">
-                <img
-                    src={'https://placehold.co/400x300?text=No+Image'}
-                    alt={'product-image'}
-                    className="size-36 rounded-lg border border-gray-200 object-cover"
-                />
-                <div className="flex flex-1 flex-col justify-between">
-                    <div>
-                        <div className="mb-1 text-lg font-semibold">{item.product.name}</div>
-                        <div className="mb-2 text-base font-bold text-primary">¥{item.product.price}</div>
-                        <div className="mb-2">
-                            {item.product.stock > 0 ? (
-                                <span className="rounded bg-green-50 px-2 py-0.5 text-xs text-green-600">在庫あり</span>
-                            ) : (
-                                <span className="rounded bg-red-50 px-2 py-0.5 text-xs text-red-600">一時的に在庫切れ</span>
-                            )}
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <CartItemQuantityForm
-                            cartItemId={item.id}
-                            productId={item.product_id}
-                            quantity={item.quantity}
-                            maxQuantity={item.product.max_quantity}
-                        />
-                        <form onSubmit={handleDeleteCartItem}>
-                            <input type="hidden" value={item.id} />
-                            <Button variant={'ghost'} className="text-xs text-muted-foreground" disabled={processing}>
-                                削除
-                            </Button>
-                            <InputError message={errors.cart_item_id} />
-                        </form>
-                    </div>
+        <div className="mx-auto flex py-2">
+            <div className="h-40 w-52">
+                {/* 商品画像 */}
+                <img src={'https://placehold.co/400x300?text=No+Image'} alt={'product-image'} className="size-full object-contain" />
+            </div>
+
+            <div className="flex-1 space-y-2 px-4">
+                {/* 商品名 */}
+                <div className="flex items-center justify-between">
+                    <div className="line-clamp-2 min-h-10 w-10/12 text-lg">{item.product.name}</div>
+
+                    {/* 商品価格 */}
+                    <div className="text-xl font-semibold">{item.product.price.toLocaleString('ja-JP')}円</div>
                 </div>
-            </CardContent>
-        </Card>
+
+                {/* 在庫状況 */}
+                {item.product.stock > 0 ? (
+                    <p className="inline-flex rounded bg-green-50 px-2 py-0.5 text-green-600">在庫あり</p>
+                ) : (
+                    <p className="lllllrounded inline-flex bg-red-50 px-2 py-0.5 text-red-600">一時的に在庫切れ</p>
+                )}
+
+                <div className="flex items-center space-x-4">
+                    {/* 購入個数 */}
+                    <CartItemQuantityForm
+                        cartItemId={item.id}
+                        productId={item.product_id}
+                        quantity={item.quantity}
+                        maxQuantity={item.product.max_quantity}
+                    />
+
+                    {/* 削除フォーム */}
+                    <form onSubmit={handleDeleteCartItem}>
+                        <input type="hidden" value={item.id} />
+                        <Button type="submit" variant={'ghost'} className="cursor-pointer text-xs text-muted-foreground" disabled={processing}>
+                            {processing && <LoaderCircle className="size-4" />}
+                            削除
+                        </Button>
+                        <InputError message={errors.cart_item_id} />
+                    </form>
+                </div>
+            </div>
+        </div>
     );
 };
