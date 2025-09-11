@@ -105,7 +105,7 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
 
                     {/* CartItems */}
                     <h2 className="text-2xl font-semibold">カート内商品</h2>
-                    <div className="w-full max-w-xl space-y-5">
+                    <div className="w-full space-y-5">
                         {cartItems.length > 0 ? (
                             cartItems.map((item) => <CartItemCard item={item} />)
                         ) : (
