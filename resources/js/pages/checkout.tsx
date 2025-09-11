@@ -105,7 +105,7 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
 
                     {/* CartItems */}
                     <h2 className="text-2xl font-semibold">カート内商品</h2>
-                    <div className="w-full max-w-xl space-y-5">
+                    <div>
                         {cartItems.length > 0 ? (
                             cartItems.map((item) => <CartItemCard item={item} />)
                         ) : (
@@ -118,7 +118,7 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                     <Card>
                         <CardContent>
                             <form onSubmit={handleCheckout}>
-                                <Button type="submit">購入する</Button>
+                                <Button type="submit" variant={'addCart'}>購入する</Button>
                             </form>
                             <hr className="my-6" />
                             <div className="flex flex-col space-y-3">
