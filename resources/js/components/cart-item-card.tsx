@@ -1,6 +1,6 @@
 import { LoaderCircle } from 'lucide-react';
 
-import { useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 
 import { FormEventHandler } from 'react';
 
@@ -51,7 +51,9 @@ export const CartItemCard = ({ item }: { item: Response }) => {
             <div className="flex-1 space-y-2 px-4">
                 {/* 商品名 */}
                 <div className="flex items-center justify-between">
-                    <div className="line-clamp-2 min-h-10 w-10/12 text-lg">{item.product.name}</div>
+                    <Link href={route('product-detail', item.id)} className="w-full">
+                        <div className="line-clamp-2 min-h-10 w-10/12 text-lg hover:text-red-700 hover:underline">{item.product.name}</div>
+                    </Link>
 
                     {/* 商品価格 */}
                     <div className="text-xl font-semibold">{item.product.price.toLocaleString('ja-JP')}円</div>
