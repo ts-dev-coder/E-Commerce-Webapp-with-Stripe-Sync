@@ -118,7 +118,7 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                     <Card>
                         <CardContent>
                             <form onSubmit={handleCheckout}>
-                                <Button type="submit">購入する</Button>
+                                <Button type="submit" variant={'addCart'}>購入する</Button>
                             </form>
                             <hr className="my-6" />
                             <div className="flex flex-col space-y-3">
