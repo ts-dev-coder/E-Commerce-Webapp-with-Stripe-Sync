@@ -6,33 +6,27 @@ use Inertia\Inertia;
 
 use Illuminate\Support\Facades\Auth;
 
-use App\Models\Category;
+use App\Services\HomeService;
 
 class HomeController extends Controller
 {
+    protected $homeService;
+
+    public function __construct(HomeService $homeService)
+    {
+        $this->homeService = $homeService;
+    }
+
     public function __invoke()
     {
         $user = Auth::user();
 
-        $categories = Category::all();
-        $result = [];
-        foreach ($categories as $category) {
-            $products = $category->products()
-                        ->where('is_published', true)
-                        ->where('stock', '>', 0)
-                        ->limit(5)
-                        ->get(['id', 'name', 'description', 'price', 'max_quantity']);
-            $result[$category->name] = $products;
-        }
-
-        $cartItemCount = 0;
-        if ($user && $user->cart) {
-            $cartItemCount = $user->cart->items()->count();
-        }
-
+        $categoryProducts = $this->homeService->getHomeData();
+        $cartItemCount = $user?->cartItemCount() ?? 0;
+        
         return Inertia::render('home', [
-            'categoryProducts' => $result,
+            'categoryProducts' => $categoryProducts,
             'cartItemCount' => $cartItemCount
-        ]);
+        ]);        
     }
 }
