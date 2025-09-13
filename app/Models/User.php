@@ -56,4 +56,9 @@ class User extends Authenticatable
         return $this->hasOne(Address::class)->where('is_default', true);
     }
 
+    public function cartItemCount(): int 
+    {
+        return $this->cart?->items->count() ?? 0;
+    }
+
 }
