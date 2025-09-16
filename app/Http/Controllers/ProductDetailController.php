@@ -15,10 +15,7 @@ class ProductDetailController extends Controller
     {        
         $user = Auth::user();
 
-        $cartItemCount = 0;
-        if ($user && $user->cart) {
-            $cartItemCount = $user->cart->items()->count();
-        }
+        $cartItemCount = $user?->cartItemCount() ?? 0;
 
         return Inertia::render('product-detail', [
             'product' => $product,
