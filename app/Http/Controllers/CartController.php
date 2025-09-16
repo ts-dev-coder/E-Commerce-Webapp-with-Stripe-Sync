@@ -17,19 +17,18 @@ use App\Repositories\CartRepository;
 
 use App\Services\CartService;
 
-
 class CartController extends Controller
 {
     public function index(CartRepository $cartRepository)
     {
         $user = Auth::user();
-        
+
         $activeCart = $cartRepository->getActiveCart($user->id);
+
         $cartItems = $activeCart->items;
+        $cartItemCount = $cartItems->isEmpty() ? 0 : count($cartItems);
 
         // TODO: fetch the products image
-
-        $cartItemCount = $cartItems === null ? 0 : count($cartItems);
 
         return Inertia::render('cart', [
             'cartItems' => $cartItems,
