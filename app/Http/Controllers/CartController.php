@@ -91,11 +91,9 @@ class CartController extends Controller
         return redirect()->back();
     }
 
-    public function destroy(DestroyCartItemRequest $request)
+    public function destroy(DestroyCartItemRequest $request, CartRepository $cartRepository)
     {
-        $cartItem = CartItem::find($request->validated('cart_item_id'));
-        $cartItem->delete();
-        
+        $cartRepository->deleteCartItem($request->validated('cart_item_id'));
         return redirect()->back();
     }
 }
