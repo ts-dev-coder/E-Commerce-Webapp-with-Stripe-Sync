@@ -2,28 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
+
+use Illuminate\Support\Facades\Auth;
+
 use App\Http\Requests\DestroyCartItemRequest;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartQuantityRequest;
-use App\Models\Cart;
+
 use App\Models\CartItem;
 use App\Models\Product;
+
+use App\Repositories\CartRepository;
+
 use App\Services\CartService;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+
 
 class CartController extends Controller
 {
-    public function index()
+    public function index(CartRepository $cartRepository)
     {
         $user = Auth::user();
-
-        $cart = Cart::with('items.product')
-                    ->where('user_id', $user->id)
-                    ->where('status', 'active')
-                    ->first();
-
-        $cartItems = $cart->items;
+        
+        $activeCart = $cartRepository->getActiveCart($user->id);
+        $cartItems = $activeCart->items;
 
         // TODO: fetch the products image
 
