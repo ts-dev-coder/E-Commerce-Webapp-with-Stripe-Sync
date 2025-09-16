@@ -80,12 +80,14 @@ class CartController extends Controller
         return redirect()->route('product-detail', ['product' => $request->validated('product_id')]);        
     }
 
-    public function updateQuantity(UpdateCartQuantityRequest $request, CartItem $item) {
-
-        $item->update([
-            'quantity' => $request->validated('quantity')
-        ]);
-
+    public function updateQuantity(
+        UpdateCartQuantityRequest $request, 
+        CartItem $item, 
+        CartRepository $cartRepository
+    ) 
+    {
+        $cartRepository->updateQuantity($item, $request->validated('quantity'));
+        
         return redirect()->back();
     }
 
