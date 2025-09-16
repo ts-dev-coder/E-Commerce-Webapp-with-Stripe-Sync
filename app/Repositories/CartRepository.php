@@ -20,4 +20,12 @@ class CartRepository
         'quantity' => $updatedQuantity
     ]);
   }
+
+  public function deleteCartItem(int $cartItemId) {
+    $cartItem = CartItem::find($cartItemId);
+
+    if($cartItem) {
+      $cartItem->delete();
+    }
+  }
 }
