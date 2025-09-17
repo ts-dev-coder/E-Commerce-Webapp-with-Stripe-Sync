@@ -7,12 +7,15 @@ use App\Models\CartItem;
 
 class CartRepository
 {
-  public function getActiveCart(int $id) {
-
+  public function getOrCreateActiveCart(int $userId): Cart {
     return Cart::with('items.product')
-                ->where('user_id', $id)
-                ->where('status', 'active')
-                ->first();
+        ->where('user_id', $userId)
+        ->where('status', 'active')
+        ->first()
+        ?? Cart::create([
+            'user_id' => $userId,
+            'status' => 'active',
+        ]);
   }
 
   public function updateQuantity(CartItem $cartItem, int $updatedQuantity) {
