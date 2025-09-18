@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Product;
 
 class CartRepository
 {
@@ -31,4 +32,13 @@ class CartRepository
       $cartItem->delete();
     }
   }
-}
+
+  public function addCartItem(Cart $activeCart, Product $product, int $quantity): CartItem {
+    return CartItem::create([
+        'cart_id' => $activeCart->id,
+        'product_id' => $product->id,
+        'price' => $product->price,
+        'quantity' => $quantity,
+    ]);
+  }
+} 
