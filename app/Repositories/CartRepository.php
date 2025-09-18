@@ -33,8 +33,8 @@ class CartRepository
     }
   }
 
-  public function addCartItem(Cart $activeCart, Product $product, int $quantity): CartItem {
-    return CartItem::create([
+  public function addCartItem(Cart $activeCart, Product $product, int $quantity): void {
+    CartItem::create([
         'cart_id' => $activeCart->id,
         'product_id' => $product->id,
         'price' => $product->price,
