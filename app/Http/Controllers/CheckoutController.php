@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
+use Inertia\Inertia;
+
+use Illuminate\Support\Facades\Auth;
+
 use App\Http\Requests\StoreCheckoutRequest;
 
 use App\Models\Cart;
-use App\Models\Product;
 use App\Repositories\CartRepository;
 use App\Services\CartService;
-use Illuminate\Support\Facades\Auth;
 
-use Inertia\Inertia;
 
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
+
 
 class CheckoutController extends Controller
 {
