@@ -4,62 +4,47 @@ namespace App\Services;
 
 use App\Models\CartItem;
 use App\Models\Product;
-use Illuminate\Support\Collection;
+use App\Repositories\CartRepository;
 
-class CartService
-{
-  public function canAddProduct(
-    Product $product, 
-    CartItem $cartItem, 
-    int $reqQuantity
-  ): bool
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
+
+class CartService {
+  private CartRepository $cartRepository;
+
+  public function __construct(CartRepository $cartRepository)
   {
-      $existsQuantity = $cartItem->quantity;
-      
-      return ($existsQuantity + $reqQuantity) <= $product->stock;
+    $this->cartRepository = $cartRepository;
   }
 
-  public function updateQuantity(CartItem $cartItem, int $reqQuantity): void
-  {
-      $cartItem->quantity = $cartItem->quantity + $reqQuantity;
-      $cartItem->save();
-  }
-  
-  public function getOrCreateCart($user)
-  {
-      $cart = $user->cart()->first();
-      if ($cart === null) {
-          $cart = $user->cart()->create([]);
-      }
-      return $cart;
+  public function addToCart(int $productId, int $requestedQuantity): void {
+
+    $product = Product::find($productId);
+    /**
+     * -------------------------------
+     * 商品内の同一商品であれば、個数の更新
+     * 新規の追加であれば、CartItems tableへ追加
+     * -------------------------------
+     */
+    $this->updateOrCreateCartItem($product, $requestedQuantity);
+
   }
 
-  public function getCartItem($cart, $productId)
-  {
-      return $cart->items()->where('product_id', $productId)->first();
+  private function updateOrCreateCartItem(Product $product, int $requestedQuantity): void {
+    $activeCart = $this->cartRepository->getOrCreateActiveCart(Auth::id());
+    
+    $cartItem = $this->findCartItemByProduct($activeCart->items, $product->id);
+
+    if($cartItem === null) {
+      $this->cartRepository->addCartItem($activeCart, $product, $requestedQuantity);
+    }
+    else {
+      $updatedQuantity = $cartItem->quantity + $requestedQuantity;
+      $this->cartRepository->updateQuantity($cartItem, $updatedQuantity);
+    }
   }
 
-  public function addCartItem($cart, $product, $quantity)
-  {
-      return CartItem::create([
-          'quantity' => $quantity,
-          'price' => $product->price,
-          'cart_id' => $cart->id,
-          'product_id' => $product->id
-      ]);
-  }
-
-  public function getTotalAmount(Collection $items): int
-  {
-    // TODO: config fileに移すかどうか考える
-    $shippingFee = 500;
-    return $this->calculateTotalAmount($items) + $shippingFee;
-  }
-
-  private function calculateTotalAmount(Collection $items): int
-  {
-    return $items->sum(function ($item) {
-        return $item->price * $item->quantity;
-    });
+  private function findCartItemByProduct(Collection $cartItems, int $productId): ?CartItem {
+    return $cartItems->first(fn ($item) => $item->product_id === $productId);
   }
 }
