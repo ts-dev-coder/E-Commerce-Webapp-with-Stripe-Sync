@@ -41,14 +41,9 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(StoreCheckoutRequest $request, CartService $cartService)
+    public function store(StoreCheckoutRequest $request, CartService $cartService, CartRepository $cartRepository)
     {
-
-        $user = Auth::user();
-        $cart = Cart::with('items.product')
-                    ->where('user_id', $user->id)
-                    ->where('status', 'active')
-                    ->first();
+        $cart = $cartRepository->getOrCreateActiveCart(Auth::id());
 
         Stripe::setApiKey(config('services.stripe.secret'));
         $lineItems = $cart->items->map(function ($item) {
