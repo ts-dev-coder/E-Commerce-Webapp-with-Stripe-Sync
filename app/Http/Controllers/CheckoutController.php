@@ -30,13 +30,11 @@ class CheckoutController extends Controller
 
         // TODO: fetch the products image
 
-        $cartItemCount = count($cartItems);
-
         $defaultAddress = $user->defaultAddress;
 
         return Inertia::render('checkout', [
             'cartItems' => $cartItems,
-            'cartItemCount' => $cartItemCount,
+            'cartItemCount' => count($cartItems),
             'defaultAddress' => $defaultAddress
         ]);
     }
