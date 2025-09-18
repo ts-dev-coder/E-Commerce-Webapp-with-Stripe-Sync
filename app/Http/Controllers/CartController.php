@@ -11,7 +11,6 @@ use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartQuantityRequest;
 
 use App\Models\CartItem;
-use App\Models\Product;
 
 use App\Repositories\CartRepository;
 
@@ -21,9 +20,7 @@ class CartController extends Controller
 {
     public function index(CartRepository $cartRepository)
     {
-        $user = Auth::user();
-
-        $activeCart = $cartRepository->getActiveCart($user->id);
+        $activeCart = $cartRepository->getOrCreateActiveCart(Auth::id());
 
         $cartItems = $activeCart->items;
         $cartItemCount = $cartItems->isEmpty() ? 0 : count($cartItems);
@@ -41,43 +38,20 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request, CartService $cartService)
     {
-        $product = Product::find($request->validated('product_id'));
-        $productStock = $product->stock;
-        if($productStock <= 0) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'The product is out of stock.'
-            ], 422);
+        try {
+            $cartService->addToCart($request->validated('product_id'), $request->validated('quantity'));
+    
+            return redirect()->route('cart.index');
+
+        } catch(\RuntimeException $e) {
+            error_log($e->getMessage());
+
+            return redirect()->back()->withErrors(['quantity' => "An error occured. Please try again."]);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+
+            return redirect()->route('home');
         }
-
-        $requestQuantity = $request->validated('quantity');
-        if($productStock < $requestQuantity) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Insufficient stock for the requested quantity.'
-            ], 422);
-        }
-
-        $user = Auth::user();
-        $cart = $cartService->getOrCreateCart($user);
-        $existsCartItem = $cartService->getCartItem($cart, $product->id);
-
-        if ($existsCartItem === null) {
-            $cartService->addCartItem($cart, $product, $requestQuantity);
-
-            return redirect()->route('product-detail', ['product' => $request->validated('product_id')]);
-        }
-
-        if(!$cartService->canAddProduct($product, $existsCartItem, $requestQuantity)) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Insufficient stock for the requested quantity.',
-            ], 422);
-        }
-
-        $cartService->updateQuantity($existsCartItem, $requestQuantity);
-
-        return redirect()->route('product-detail', ['product' => $request->validated('product_id')]);        
     }
 
     public function updateQuantity(
