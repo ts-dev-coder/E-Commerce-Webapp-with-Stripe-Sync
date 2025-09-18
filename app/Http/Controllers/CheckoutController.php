@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCheckoutRequest;
 
 use App\Models\Cart;
 use App\Models\Product;
+use App\Repositories\CartRepository;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,15 +17,12 @@ use Stripe\Stripe;
 
 class CheckoutController extends Controller
 {
-    public function index()
+    public function index(CartRepository $cartRepository)
     {
         $user = Auth::user();
 
-        $cart = Cart::with('items.product')
-                    ->where('user_id', $user->id)
-                    ->where('status', 'active')
-                    ->first();
-        $cartItems = $cart->items;
+        $activeCart = $cartRepository->getOrCreateActiveCart($user->id);
+        $cartItems = $activeCart->items;
 
         if($cartItems->isEmpty()) {
             return redirect()->route('cart.index');
