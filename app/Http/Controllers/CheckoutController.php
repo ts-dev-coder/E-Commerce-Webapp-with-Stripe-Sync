@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Stripe\Checkout\Session;
-use Stripe\Stripe;
 use Inertia\Inertia;
 
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests\StoreCheckoutRequest;
 
-use App\Models\Cart;
 use App\Repositories\CartRepository;
-use App\Services\CartService;
-
-
-
+use App\Services\StripeCheckoutService;
 
 class CheckoutController extends Controller
 {
@@ -41,42 +35,11 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(StoreCheckoutRequest $request, CartService $cartService, CartRepository $cartRepository)
+    public function store(StoreCheckoutRequest $request, CartRepository $cartRepository, StripeCheckoutService $chekcoutService)
     {
         $cart = $cartRepository->getOrCreateActiveCart(Auth::id());
 
-        Stripe::setApiKey(config('services.stripe.secret'));
-        $lineItems = $cart->items->map(function ($item) {
-            return [
-                'price_data' => [
-                    'currency' => 'jpy',
-                    'product_data' => [
-                        'name' => $item->product->name,
-                    ],
-                    'unit_amount' => $item->price,
-                ],
-                'quantity' => $item->quantity,
-            ];
-        })->toArray();
-
-        $lineItems[] = [
-            'price_data' => [
-                'currency' => 'jpy',
-                'product_data' => [
-                    'name' => '配送料',
-                ],
-                'unit_amount' => 500, // 500円
-            ],
-            'quantity' => 1,
-        ];
-
-        // Checkout セッション作成
-        $session = Session::create([
-            'line_items' => $lineItems,
-            'mode' => 'payment',
-            'success_url' => route('checkout.success'),
-            'cancel_url' => route('checkout.cancel'),
-        ]);
+        $session = $chekcoutService->createCheckoutSession($cart);
             
         return Inertia::location($session->url);
     }
