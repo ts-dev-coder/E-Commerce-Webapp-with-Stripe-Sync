@@ -53,7 +53,7 @@ export default function Cart({ cartItems, cartItemCount }: Props) {
                         <div className="col-span-8">
                             <div className="divide-y-1">
                                 {cartItems.map((item) => (
-                                    <CartItemCard item={item} />
+                                    <CartItemCard key={item.id} item={item} />
                                 ))}
                             </div>
                         </div>
