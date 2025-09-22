@@ -24,14 +24,12 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index');
         }
 
-        // TODO: fetch the products image
-
-        $defaultAddress = $user->defaultAddress;
+        // TODO: fetch the products image;
 
         return Inertia::render('checkout', [
             'cartItems' => $cartItems,
             'cartItemCount' => $cartItems->count(),
-            'defaultAddress' => $defaultAddress
+            'defaultAddress' => $user->defaultAddress
         ]);
     }
 
