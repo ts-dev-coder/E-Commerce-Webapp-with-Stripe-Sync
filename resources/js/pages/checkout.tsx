@@ -30,27 +30,26 @@ type Address = {
     building: string;
     phoneNumber: number;
     isDefault: boolean;
+    full_address: string;
 };
 
 type Props = {
     cartItems: CartItem[];
     cartItemCount: number;
-    defaultAddress: Address;
+    defaultAddress: Address | null;
 };
 
 type CheckoutForm = {
-    delivery_address_id: number;
+    delivery_address_id: number | null;
 };
 
 export default function Checkout({ cartItems, cartItemCount, defaultAddress }: Props) {
-    const mainAddress = defaultAddress.prefecture + defaultAddress.city + defaultAddress.street + defaultAddress.building;
-
     const SHIPPING_FEE = 500;
     const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const totalPrice = subTotal + SHIPPING_FEE;
 
     const { post } = useForm<CheckoutForm>({
-        delivery_address_id: defaultAddress.id,
+        delivery_address_id: defaultAddress === null ? null : defaultAddress.id,
     });
 
     const handleCheckout: FormEventHandler = (e) => {
@@ -65,19 +64,22 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
             <div className="grid grid-cols-12 py-5">
                 <div className="col-span-7 space-y-5">
                     <div className="w-full max-w-xl">
-                        {/* Address */}
                         <Card>
                             <CardHeader>
                                 <CardTitle>お届け先</CardTitle>
                             </CardHeader>
-                            <CardContent>
-                                <RadioGroup defaultValue="default">
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="default" id="default" />
-                                        <Label htmlFor="default">{mainAddress}</Label>
-                                    </div>
-                                </RadioGroup>
-                            </CardContent>
+                            {defaultAddress === null ? (
+                                <div className="text-center font-semibold">登録している住所はありません</div>
+                            ) : (
+                                <CardContent>
+                                    <RadioGroup defaultValue="default">
+                                        <div className="flex items-center space-x-2">
+                                            <RadioGroupItem value="default" id="default" />
+                                            <Label htmlFor="default">{defaultAddress.full_address}</Label>
+                                        </div>
+                                    </RadioGroup>
+                                </CardContent>
+                            )}
                         </Card>
                         <div className="mt-4 flex items-center justify-end">
                             <Button>新しい住所を登録する</Button>
@@ -107,7 +109,7 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                     <h2 className="text-2xl font-semibold">カート内商品</h2>
                     <div>
                         {cartItems.length > 0 ? (
-                            cartItems.map((item) => <CartItemCard item={item} />)
+                            cartItems.map((item) => <CartItemCard key={item.id} item={item} />)
                         ) : (
                             <span className="text-lg font-semibold">カート内に商品はありません</span>
                         )}
@@ -118,7 +120,9 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                     <Card>
                         <CardContent>
                             <form onSubmit={handleCheckout}>
-                                <Button type="submit" variant={'addCart'}>購入する</Button>
+                                <Button type="submit" variant={'addCart'}>
+                                    購入する
+                                </Button>
                             </form>
                             <hr className="my-6" />
                             <div className="flex flex-col space-y-3">

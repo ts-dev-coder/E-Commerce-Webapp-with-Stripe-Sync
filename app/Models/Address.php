@@ -21,5 +21,13 @@ class Address extends Model
         'user_id'
     ];
 
-    # TODO: Add relation definition
+    protected $appends = ['full_address'];
+
+    public function getFullAddressAttribute()
+    {
+        return $this->prefecture
+             . $this->city
+             . $this->street
+             . $this->building;
+    }
 }
