@@ -109,7 +109,7 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                     <h2 className="text-2xl font-semibold">カート内商品</h2>
                     <div>
                         {cartItems.length > 0 ? (
-                            cartItems.map((item) => <CartItemCard item={item} />)
+                            cartItems.map((item) => <CartItemCard key={item.id} item={item} />)
                         ) : (
                             <span className="text-lg font-semibold">カート内に商品はありません</span>
                         )}
