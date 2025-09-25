@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { CartItemCard } from '@/components/cart-item-card';
 
+import { CreateShippingAddressModal } from '@/components/create-shipping-address-modal';
 import { type BreadcrumbItem, type CartItem } from '@/types';
 import { FormEventHandler } from 'react';
 
@@ -81,10 +82,9 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                                 </CardContent>
                             )}
                         </Card>
-                        <div className="mt-4 flex items-center justify-end">
-                            <Button>新しい住所を登録する</Button>
-                        </div>
                     </div>
+
+                    <CreateShippingAddressModal />
 
                     {/* Payment method */}
                     <div className="w-full max-w-xl">
