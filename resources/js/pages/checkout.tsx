@@ -38,13 +38,14 @@ type Props = {
     cartItems: CartItem[];
     cartItemCount: number;
     defaultAddress: Address | null;
+    addresses: Address[] | null;
 };
 
 type CheckoutForm = {
     delivery_address_id: number | null;
 };
 
-export default function Checkout({ cartItems, cartItemCount, defaultAddress }: Props) {
+export default function Checkout({ cartItems, cartItemCount, defaultAddress, addresses }: Props) {
     const SHIPPING_FEE = 500;
     const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const totalPrice = subTotal + SHIPPING_FEE;
