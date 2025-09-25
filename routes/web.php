@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CartController;
@@ -30,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/checkout/cancel', function () {
         return Inertia::render('checkout-cancel');
     })->name('checkout.cancel');
+
+    Route::post('/shipping-addresses', [AddressController::class, 'store'])->name('shipping-addresses');
 
     
 });
