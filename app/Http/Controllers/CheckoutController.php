@@ -29,7 +29,8 @@ class CheckoutController extends Controller
         return Inertia::render('checkout', [
             'cartItems' => $cartItems,
             'cartItemCount' => $cartItems->count(),
-            'defaultAddress' => $user->defaultAddress
+            'defaultAddress' => $user->defaultAddress,
+            'addresses' => $user->addresses
         ]);
     }
 

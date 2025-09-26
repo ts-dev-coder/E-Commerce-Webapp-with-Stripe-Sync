@@ -1,3 +1,4 @@
+import { FormEventHandler } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 
 import AppLayout from '@/layouts/app-layout';
@@ -8,10 +9,10 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { CartItemCard } from '@/components/cart-item-card';
-
 import { CreateShippingAddressModal } from '@/components/create-shipping-address-modal';
+
 import { type BreadcrumbItem, type CartItem } from '@/types';
-import { FormEventHandler } from 'react';
+
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -38,18 +39,19 @@ type Props = {
     cartItems: CartItem[];
     cartItemCount: number;
     defaultAddress: Address | null;
+    addresses: Address[] | null;
 };
 
 type CheckoutForm = {
     delivery_address_id: number | null;
 };
 
-export default function Checkout({ cartItems, cartItemCount, defaultAddress }: Props) {
+export default function Checkout({ cartItems, cartItemCount, defaultAddress, addresses }: Props) {
     const SHIPPING_FEE = 500;
     const subTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const totalPrice = subTotal + SHIPPING_FEE;
 
-    const { post } = useForm<CheckoutForm>({
+    const { post, setData } = useForm<CheckoutForm>({
         delivery_address_id: defaultAddress === null ? null : defaultAddress.id,
     });
 
@@ -57,6 +59,13 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
         e.preventDefault();
 
         post(route('checkout.store'));
+    };
+
+    const handleChangeShippingAddressId = (e: string) => {
+        const id = Number(e);
+        if (Number.isNaN(id)) return;
+
+        setData('delivery_address_id', id);
     };
 
     return (
@@ -73,11 +82,18 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress }: P
                                 <div className="text-center font-semibold">登録している住所はありません</div>
                             ) : (
                                 <CardContent>
-                                    <RadioGroup defaultValue="default">
+                                    <RadioGroup defaultValue={String(defaultAddress.id)} onValueChange={handleChangeShippingAddressId}>
                                         <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value="default" id="default" />
-                                            <Label htmlFor="default">{defaultAddress.full_address}</Label>
+                                            <RadioGroupItem value={String(defaultAddress.id)} id={String(defaultAddress.id)} />
+                                            <Label htmlFor={String(defaultAddress.id)}>{defaultAddress.full_address}</Label>
                                         </div>
+
+                                        {addresses?.map((address) => (
+                                            <div className="flex items-center space-x-2" key={address.id}>
+                                                <RadioGroupItem value={String(address.id)} id={String(address.id)} />
+                                                <Label htmlFor={String(address.id)}>{address.full_address}</Label>
+                                            </div>
+                                        ))}
                                     </RadioGroup>
                                 </CardContent>
                             )}
