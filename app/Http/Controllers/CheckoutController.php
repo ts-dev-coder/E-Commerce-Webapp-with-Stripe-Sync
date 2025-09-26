@@ -30,7 +30,7 @@ class CheckoutController extends Controller
             'cartItems' => $cartItems,
             'cartItemCount' => $cartItems->count(),
             'defaultAddress' => $user->defaultAddress,
-            'addresses' => $user->addresses
+            'addresses' => $user->nonDefaultAddresses
         ]);
     }
 
