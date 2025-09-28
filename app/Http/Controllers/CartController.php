@@ -24,7 +24,9 @@ class CartController extends Controller
 
         return Inertia::render('cart', [
             'cartItems' => $activeCart->items,
-            'cartItemCount' => $cartService->getCartItemCount(Auth::user())
+            'cartItemCount' => $cartService->getCartItemCount(Auth::user()),
+            'totalQuantity' => $cartService->getTotalQuantity($activeCart),
+            'subTotal' => $cartService->getSubtotal($activeCart)
         ]);
     }
 
