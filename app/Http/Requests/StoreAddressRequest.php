@@ -23,12 +23,12 @@ class StoreAddressRequest extends FormRequest
     {
         return [
             'recipient_name' => 'required|string|max:255',
-            'postal_code'    => 'required|string|max:20',
+            'postal_code'    => 'required|string|max:7',
             'prefecture'     => 'required|string|max:255',
             'city'           => 'required|string|max:255',
             'street'         => 'required|string|max:255',
             'building'       => 'nullable|string|max:255',
-            'phone_number'   => 'required|string|max:20',
+            'phone_number'   => 'required|string|max:11',
             'is_default'     => 'boolean',
         ];
     }
@@ -47,7 +47,7 @@ class StoreAddressRequest extends FormRequest
 
             'postal_code.required' => '郵便番号を入力してください。',
             'postal_code.string'   => '郵便番号は文字列で入力してください。',
-            'postal_code.max'      => '郵便番号は20文字以内で入力してください。',
+            'postal_code.max'      => '郵便番号は7文字以内で入力してください。',
 
             'prefecture.required' => '都道府県を入力してください。',
             'prefecture.string'   => '都道府県は文字列で入力してください。',
@@ -66,7 +66,7 @@ class StoreAddressRequest extends FormRequest
 
             'phone_number.required' => '電話番号を入力してください。',
             'phone_number.string'   => '電話番号は文字列で入力してください。',
-            'phone_number.max'      => '電話番号は20文字以内で入力してください。',
+            'phone_number.max'      => '電話番号は11文字以内で入力してください。',
 
             'is_default.boolean' => 'デフォルト住所の設定は真偽値で指定してください。',
         ];
