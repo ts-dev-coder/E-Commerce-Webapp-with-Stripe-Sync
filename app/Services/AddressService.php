@@ -6,12 +6,22 @@ use App\Models\User;
 
 class AddressService {
   public function toggleDefault(User $user) {
-    $defaultAddress = $user->defaultAddress();
+    $defaultAddress = $user->defaultAddress;
 
-    if($defaultAddress === null) {
-      return;
+    if($defaultAddress) {
+      $defaultAddress->update(['is_default' => false]);
+    }
+  }
+
+  public function storeAddress(User $user, array $data) {
+    if($user->addresses->isEmpty()) {
+      $data['is_default'] = true;
     }
 
-    $defaultAddress->update(['is_default' => false]);
+    $user->addresses()->create($data);
+
+    if($data['is_default']) {
+        $this->toggleDefault($user);
+    }
   }
 }
