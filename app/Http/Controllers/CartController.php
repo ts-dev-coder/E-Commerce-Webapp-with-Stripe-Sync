@@ -57,10 +57,10 @@ class CartController extends Controller
     public function updateQuantity(
         UpdateCartQuantityRequest $request, 
         CartItem $item, 
-        CartRepository $cartRepository
+        CartService $cartService
     ) 
     {
-        $cartRepository->updateQuantity($item, $request->validated('quantity'));
+        $cartService->updateCartItemQuantity($item, $request->validated('quantity'));
         
         return redirect()->back();
     }

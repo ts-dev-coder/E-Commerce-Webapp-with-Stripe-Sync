@@ -23,6 +23,10 @@ class CartService {
     return $this->cartRepository->getOrCreateActiveCart($user->id);
   }
 
+  public function updateCartItemQuantity(CartItem $cartItem, int $updatedQuantity) {
+    return $this->cartRepository->updateQuantity($cartItem, $updatedQuantity);
+  }
+
   public function addToCart(int $productId, int $requestedQuantity): void {
 
     $product = Product::find($productId);
