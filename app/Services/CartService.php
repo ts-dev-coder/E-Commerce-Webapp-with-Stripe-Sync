@@ -52,7 +52,7 @@ class CartService {
     return $subTotal + $tax + $shippingFee;
   }
 
-  public function getTaxRate(): int {
+  public function getTaxRate(): float {
     return config('cart.tax_rate');
   }
 
