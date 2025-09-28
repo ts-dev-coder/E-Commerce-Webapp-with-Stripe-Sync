@@ -20,14 +20,11 @@ class CartController extends Controller
     {
         $activeCart = $cartService->getOrCreateActiveCart(Auth::user());
 
-        $cartItems = $activeCart->items;
-        $cartItemCount = $cartItems->isEmpty() ? 0 : count($cartItems);
-
         // TODO: fetch the products image
 
         return Inertia::render('cart', [
-            'cartItems' => $cartItems,
-            'cartItemCount' => $cartItemCount
+            'cartItems' => $activeCart->items,
+            'cartItemCount' => $cartService->getCartItemCount(Auth::user())
         ]);
     }
 
