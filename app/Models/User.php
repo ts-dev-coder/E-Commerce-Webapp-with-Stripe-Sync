@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     public function cartItemCount(): int 
     {
-        return $this->cart?->items->count() ?? 0;
+        return $this->cart?->items->count();
     }
 
 }
