@@ -56,9 +56,13 @@ class User extends Authenticatable
         return $this->hasOne(Address::class)->where('is_default', true);
     }
 
-    public function addresses()
+    public function nonDefaultAddresses()
     {
         return $this->hasMany(Address::class)->where('is_default', false);
+    }
+
+    public function addresses() {
+        return $this->hasMany(Address::class);
     }
 
     public function cartItemCount(): int 

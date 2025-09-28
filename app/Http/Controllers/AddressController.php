@@ -4,27 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAddressRequest;
 
-use App\Models\Address;
-
-use App\Repositories\AddressRepository;
-
 use App\Services\AddressService;
 
 use Illuminate\Support\Facades\Auth;
 
 class AddressController extends Controller
 {
-    public function store(StoreAddressRequest $request, AddressRepository $addressRepository, AddressService $addressService) {
+    public function store(StoreAddressRequest $request, AddressService $addressService) {
 
-        if($request->validated('is_default')) {
-            $addressService->toggleDefault(Auth::user());
-        }
-
-        $validatedData = $request->validated();
-
-        $address = new Address($validatedData);
-
-        $addressRepository->createAddresss($address);
+        $addressService->storeAddress(Auth::user(), $request->validated());
 
         /**
          * 現状は、チェックアウト画面からのみ住所登録を行える設計なので
