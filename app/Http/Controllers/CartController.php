@@ -18,9 +18,9 @@ use App\Services\CartService;
 
 class CartController extends Controller
 {
-    public function index(CartRepository $cartRepository)
+    public function index(CartService $cartService)
     {
-        $activeCart = $cartRepository->getOrCreateActiveCart(Auth::id());
+        $activeCart = $cartService->getOrCreateActiveCart(Auth::user());
 
         $cartItems = $activeCart->items;
         $cartItemCount = $cartItems->isEmpty() ? 0 : count($cartItems);

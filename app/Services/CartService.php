@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Models\User;
+
 use App\Repositories\CartRepository;
 
 use Illuminate\Database\Eloquent\Collection;
@@ -15,6 +17,10 @@ class CartService {
   public function __construct(CartRepository $cartRepository)
   {
     $this->cartRepository = $cartRepository;
+  }
+
+  public function getOrCreateActiveCart(User $user) {
+    return $this->cartRepository->getOrCreateActiveCart($user->id);
   }
 
   public function addToCart(int $productId, int $requestedQuantity): void {
