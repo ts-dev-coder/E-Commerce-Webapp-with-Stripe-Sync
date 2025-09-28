@@ -45,7 +45,6 @@ class CartService {
      * -------------------------------
      */
     $this->updateOrCreateCartItem($product, $requestedQuantity);
-
   }
 
   private function updateOrCreateCartItem(Product $product, int $requestedQuantity): void {
