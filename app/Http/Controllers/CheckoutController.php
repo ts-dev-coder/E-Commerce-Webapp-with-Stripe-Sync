@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCheckoutRequest;
 
 use App\Repositories\CartRepository;
+
+use App\Services\CartService;
 use App\Services\StripeCheckoutService;
 
 class CheckoutController extends Controller
 {
-    public function index(CartRepository $cartRepository)
+    public function index(CartService $cartService)
     {
         $user = Auth::user();
 
-        $activeCart = $cartRepository->getOrCreateActiveCart($user->id);
+        $activeCart = $cartService->getOrCreateActiveCart($user);
         $cartItems = $activeCart->items;
 
         if($cartItems->isEmpty()) {
@@ -34,11 +36,11 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(StoreCheckoutRequest $request, CartRepository $cartRepository, StripeCheckoutService $chekcoutService)
+    public function store(StoreCheckoutRequest $request, CartService $cartService, StripeCheckoutService $chekcoutService)
     {
-        $cart = $cartRepository->getOrCreateActiveCart(Auth::id());
+        $activeCart = $cartService->getOrCreateActiveCart(Auth::user());
 
-        $session = $chekcoutService->createCheckoutSession($cart);
+        $session = $chekcoutService->createCheckoutSession($activeCart);
             
         return Inertia::location($session->url);
     }

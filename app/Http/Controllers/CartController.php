@@ -12,15 +12,13 @@ use App\Http\Requests\UpdateCartQuantityRequest;
 
 use App\Models\CartItem;
 
-use App\Repositories\CartRepository;
-
 use App\Services\CartService;
 
 class CartController extends Controller
 {
-    public function index(CartRepository $cartRepository)
+    public function index(CartService $cartService)
     {
-        $activeCart = $cartRepository->getOrCreateActiveCart(Auth::id());
+        $activeCart = $cartService->getOrCreateActiveCart(Auth::user());
 
         $cartItems = $activeCart->items;
         $cartItemCount = $cartItems->isEmpty() ? 0 : count($cartItems);
@@ -57,17 +55,17 @@ class CartController extends Controller
     public function updateQuantity(
         UpdateCartQuantityRequest $request, 
         CartItem $item, 
-        CartRepository $cartRepository
+        CartService $cartService
     ) 
     {
-        $cartRepository->updateQuantity($item, $request->validated('quantity'));
+        $cartService->updateCartItemQuantity($item, $request->validated('quantity'));
         
         return redirect()->back();
     }
 
-    public function destroy(DestroyCartItemRequest $request, CartRepository $cartRepository)
+    public function destroy(DestroyCartItemRequest $request, CartService $cartService)
     {
-        $cartRepository->deleteCartItem($request->validated('cart_item_id'));
+        $cartService->deleteCartItem($request->validated('cart_item_id'));
         return redirect()->back();
     }
 }
