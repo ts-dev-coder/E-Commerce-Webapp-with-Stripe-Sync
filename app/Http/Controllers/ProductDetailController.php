@@ -8,18 +8,15 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Models\Product;
 
+use App\Services\CartService;
 
 class ProductDetailController extends Controller
 {
-    public function __invoke(Product $product)
+    public function __invoke(Product $product, CartService $cartService)
     {        
-        $user = Auth::user();
-
-        $cartItemCount = $user?->cartItemCount() ?? 0;
-
         return Inertia::render('product-detail', [
             'product' => $product,
-            'cartItemCount' => $cartItemCount
+            'cartItemCount' => $cartService->getCartItemCount(Auth::user())
         ]);
     }
 }

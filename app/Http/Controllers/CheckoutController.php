@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests\StoreCheckoutRequest;
 
-use App\Repositories\CartRepository;
-
 use App\Services\CartService;
 use App\Services\StripeCheckoutService;
 
@@ -30,7 +28,7 @@ class CheckoutController extends Controller
 
         return Inertia::render('checkout', [
             'cartItems' => $cartItems,
-            'cartItemCount' => $cartItems->count(),
+            'cartItemCount' => $cartService->getCartItemCount($user),
             'defaultAddress' => $user->defaultAddress,
             'addresses' => $user->nonDefaultAddresses
         ]);
