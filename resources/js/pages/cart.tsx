@@ -28,7 +28,7 @@ function CartSubtotal({ totalQuantity, subTotal }: { totalQuantity: number; subT
             <div className="space-y-4 rounded-lg border p-4">
                 <div className="flex items-center justify-between">
                     <p className="text-lg">小計（{totalQuantity}個の商品）(税込み)</p>
-                    <p className="text-lg font-semibold">{subTotal}円</p>
+                    <p className="text-lg font-semibold">{subTotal.toLocaleString()}円</p>
                 </div>
                 <Link href={route('checkout.index')}>
                     <Button variant={'addCart'} className="w-full">
