@@ -10,18 +10,11 @@ use App\Services\HomeService;
 
 class HomeController extends Controller
 {
-    protected $homeService;
-
-    public function __construct(HomeService $homeService)
-    {
-        $this->homeService = $homeService;
-    }
-
-    public function __invoke()
+    public function __invoke(HomeService $homeService)
     {
         $user = Auth::user();
 
-        $categoryProducts = $this->homeService->getHomeData();
+        $categoryProducts = $homeService->getHomeData();
         $cartItemCount = $user?->cartItemCount() ?? 0;
         
         return Inertia::render('home', [
