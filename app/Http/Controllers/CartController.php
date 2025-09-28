@@ -12,8 +12,6 @@ use App\Http\Requests\UpdateCartQuantityRequest;
 
 use App\Models\CartItem;
 
-use App\Repositories\CartRepository;
-
 use App\Services\CartService;
 
 class CartController extends Controller
