@@ -31,7 +31,9 @@ class CheckoutController extends Controller
             'cartItemCount' => $cartService->getCartItemCount($user),
             'defaultAddress' => $user->defaultAddress,
             'addresses' => $user->nonDefaultAddresses,
-            'subTotal' => $cartService->getSubtotal($activeCart)
+            'shippingFee' => $cartService->getShippingFee(),
+            'subTotal' => $cartService->getSubtotal($activeCart),
+            'totalPrice' => $cartService->getTotal($activeCart)
         ]);
     }
 

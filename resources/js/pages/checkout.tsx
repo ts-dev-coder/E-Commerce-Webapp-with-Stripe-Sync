@@ -40,16 +40,18 @@ type Props = {
     cartItemCount: number;
     defaultAddress: Address | null;
     addresses: Address[] | null;
+    shippingFee: number;
     subTotal: number;
+    totalPrice: number;
 };
 
 type CheckoutForm = {
     delivery_address_id: number | null;
 };
 
-export default function Checkout({ cartItems, cartItemCount, defaultAddress, addresses, subTotal }: Props) {
-    const SHIPPING_FEE = 500;
-    const totalPrice = subTotal + SHIPPING_FEE;
+export default function Checkout({ cartItems, cartItemCount, defaultAddress, shippingFee, addresses, subTotal, totalPrice }: Props) {
+    // const SHIPPING_FEE = 500;
+    // const totalPrice = subTotal + SHIPPING_FEE;
 
     const { post, setData } = useForm<CheckoutForm>({
         delivery_address_id: defaultAddress === null ? null : defaultAddress.id,
@@ -143,10 +145,10 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress, add
                             <hr className="my-6" />
                             <div className="flex flex-col space-y-3">
                                 <span className="flex w-full items-center justify-between text-sm">
-                                    商品の小計 : <span>￥{subTotal}</span>
+                                    商品の小計 : <span>￥{subTotal.toLocaleString()}</span>
                                 </span>
                                 <span className="flex w-full items-center justify-between text-sm">
-                                    配送料 : <span>￥{SHIPPING_FEE}</span>
+                                    配送料 : <span>￥{shippingFee.toLocaleString()}</span>
                                 </span>
                                 <span className="flex w-full items-center justify-between text-sm">
                                     合計 : <span>￥{totalPrice.toLocaleString()}</span>
