@@ -27,6 +27,10 @@ class CartService {
     return $this->cartRepository->updateQuantity($cartItem, $updatedQuantity);
   }
 
+  public function deleteCartItem(int $cartItemId) {
+    return $this->cartRepository->deleteCartItem($cartItemId);
+  }
+
   public function addToCart(int $productId, int $requestedQuantity): void {
 
     $product = Product::find($productId);
