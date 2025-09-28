@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
@@ -33,6 +34,14 @@ class CartService {
 
   public function getCartItemCount(User $user) {
     return $user->cartItemCount();
+  }
+
+  public function getTotalQuantity(Cart $cart) {
+    return $cart->items->sum('quantity');
+  }
+
+  public function getSubtotal(Cart $cart): int {
+    return $cart->items->sum(fn($item) => $item->price * $item->quantity);
   }
 
   public function addToCart(int $productId, int $requestedQuantity): void {

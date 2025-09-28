@@ -18,19 +18,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 type Props = {
     cartItems: CartItem[];
     cartItemCount: number;
+    totalQuantity: number;
+    subTotal: number;
 };
 
-function CartSubtotal({ cartItems }: { cartItems: CartItem[] }) {
-    // バックエンド側で計算した値を使う
-    const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-    const totalPrice = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
+function CartSubtotal({ totalQuantity, subTotal }: { totalQuantity: number; subTotal: number }) {
     return (
         <div className="col-span-4 p-4">
             <div className="space-y-4 rounded-lg border p-4">
                 <div className="flex items-center justify-between">
                     <p className="text-lg">小計（{totalQuantity}個の商品）(税込み)</p>
-                    <p className="text-lg font-semibold">{totalPrice.toLocaleString()}円</p>
+                    <p className="text-lg font-semibold">{subTotal}円</p>
                 </div>
                 <Link href={route('checkout.index')}>
                     <Button variant={'addCart'} className="w-full">
@@ -42,7 +40,7 @@ function CartSubtotal({ cartItems }: { cartItems: CartItem[] }) {
     );
 }
 
-export default function Cart({ cartItems, cartItemCount }: Props) {
+export default function Cart({ cartItems, cartItemCount, totalQuantity, subTotal }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
@@ -57,7 +55,7 @@ export default function Cart({ cartItems, cartItemCount }: Props) {
                                 ))}
                             </div>
                         </div>
-                        <CartSubtotal cartItems={cartItems} />
+                        <CartSubtotal totalQuantity={totalQuantity} subTotal={subTotal} />
                     </>
                 ) : (
                     <div className="col-span-12 size-full text-center">
