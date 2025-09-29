@@ -25,14 +25,6 @@ class CartRepository
     ]);
   }
 
-  public function deleteCartItem(int $cartItemId) {
-    $cartItem = CartItem::find($cartItemId);
-
-    if($cartItem) {
-      $cartItem->delete();
-    }
-  }
-
   public function addCartItem(Cart $activeCart, Product $product, int $quantity): void {
     CartItem::create([
         'cart_id' => $activeCart->id,
