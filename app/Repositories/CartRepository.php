@@ -19,12 +19,6 @@ class CartRepository
         ]);
   }
 
-  public function updateQuantity(CartItem $cartItem, int $updatedQuantity) {
-    $cartItem->update([
-        'quantity' => $updatedQuantity
-    ]);
-  }
-
   public function addCartItem(Cart $activeCart, Product $product, int $quantity): void {
     CartItem::create([
         'cart_id' => $activeCart->id,

@@ -51,14 +51,9 @@ class CartController extends Controller
         }
     }
 
-    public function updateQuantity(
-        UpdateCartQuantityRequest $request, 
-        CartItem $item, 
-        CartService $cartService
-    ) 
+    public function updateQuantity(UpdateCartQuantityRequest $request, CartItem $item, CartService $cartService) 
     {
         $cartService->updateCartItemQuantity($item, $request->validated('quantity'));
-        
         return redirect()->back();
     }
 
