@@ -29,7 +29,8 @@ class CartService {
   }
 
   public function deleteCartItem(int $cartItemId) {
-    return $this->cartRepository->deleteCartItem($cartItemId);
+    $cartItem = CartItem::findOrfail($cartItemId);
+    $cartItem->delete();
   }
 
   public function getCartItemCount(User $user) {
