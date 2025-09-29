@@ -35,7 +35,8 @@ class CartService {
     $cartItem->delete();
   }
 
-  public function getCartItemCount(User $user) {
+  public function getCartItemCount(?User $user) {
+    if($user === null) return 0;
     return $user->cartItemCount();
   }
 
