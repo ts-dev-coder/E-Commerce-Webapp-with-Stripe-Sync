@@ -58,7 +58,6 @@ class CartController extends Controller
     ) 
     {
         $cartService->updateCartItemQuantity($item, $request->validated('quantity'));
-        
         return redirect()->back();
     }
 
