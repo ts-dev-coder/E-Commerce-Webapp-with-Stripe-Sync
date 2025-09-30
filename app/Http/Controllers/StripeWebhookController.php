@@ -29,33 +29,28 @@ class StripeWebhookController extends Controller
             return response()->json(['error' => 'Invalid payload'], 400);
         }
         
-        
-        if ($event->type === 'checkout.session.completed') {
-            $session = $event->data->object;
-
-            # TODO: Change the user id hard code
-            
-            DB::transaction(function () {
-                $cart = Cart::with('items.product')
-                    ->where('user_id', 1)
-                    ->where('status', 'active')
-                    ->first();
-
-                if (!$cart) {
-                    return;
-                }
-                
-                $order = Order::create([
-                    'user_id' => 1,
-                    'total_amount' => 3000,
-                    // TODO: Replace with shiping_address_id once the column is added to cart table.
-                    'shipping_address_id' => 1
-                ]);
-
-                $cart->update(['status' => 'success']);
-            });
+        $eventType = $event->type;
+        // 商品追加
+        if($eventType === 'product.created') {
+            error_log('商品の追加を行います。');
+        } 
+        // 商品価格の追加
+        else if ($eventType === 'price.created') {
+            error_log("商品価格の追加を行います。");
         }
-
+        // 商品情報更新
+        else if ($eventType === 'product.updated') {
+            error_log("商品情報の更新を行います。");
+        }
+        // 商品削除
+        else if ($eventType === 'product.deleted') {
+            error_log("商品の削除を行います。");
+        }
+        // 決済完了
+        else if ($eventType === 'checkout.session.completed') {
+            error_log("決済が完了しました。");
+        }
+        
         return response()->json(['status' => 'success']);
     }
 }
