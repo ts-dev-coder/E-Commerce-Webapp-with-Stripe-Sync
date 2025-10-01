@@ -1,14 +1,7 @@
 import { ProductCard } from '@/components/product-card';
 import AppLayout from '@/layouts/app-layout';
-import { Product, type BreadcrumbItem } from '@/types';
+import { Product } from '@/types';
 import { Head } from '@inertiajs/react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Home',
-        href: '/',
-    },
-];
 
 type CategoryProducts = {
     [categoryName: string]: Product[];
@@ -21,7 +14,7 @@ type Props = {
 
 export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
     return (
-        <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
+        <AppLayout cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div>
