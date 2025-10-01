@@ -1,7 +1,11 @@
-import { ProductCard } from '@/components/product-card';
-import AppLayout from '@/layouts/app-layout';
-import { Product } from '@/types';
 import { Head } from '@inertiajs/react';
+
+import { BannerCarousel } from '@/components/banner-carousel';
+import { ProductCard } from '@/components/product-card';
+
+import AppLayout from '@/layouts/app-layout';
+
+import { Product } from '@/types';
 
 type CategoryProducts = {
     [categoryName: string]: Product[];
@@ -16,6 +20,7 @@ export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
     return (
         <AppLayout cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
+            <BannerCarousel />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div>
                     {Object.keys(categoryProducts).map((categoryName) => {
