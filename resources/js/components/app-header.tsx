@@ -70,7 +70,7 @@ export function AppHeader({ cartItemCount }: AppHeaderProps) {
                 {/* Cart Icon */}
                 <div className='h-full w-fit flex items-center justify-center'>
                     <Link href='/cart' className='relative flex items-center size-full px-2'>
-                        <span className='absolute bg-blue-500 text-white min-w-[20px] text-center text-xs px-2 py-0.5 rounded-full top-0 left-5'>{cartItemCount}</span>
+                        <span className='absolute bg-blue-500 text-white min-w-[20px] text-center text-xs px-2 py-0.5 rounded-full -top-2.5 left-6'>{cartItemCount}</span>
                         <ShoppingCart className='hover:cursor-pointer size-7'/>
                     </Link>
                 </div>
