@@ -29,8 +29,8 @@ export function AppHeader({ cartItemCount }: AppHeaderProps) {
     const getInitials = useInitials();
 
     return (
-        <div>
-            <div className="mx-auto flex h-16 items-center md:max-w-[1600px] pt-2">
+        <div className='h-16'>
+            <div className="mx-auto flex items-center md:max-w-[1600px]">
                 {/* Mobile Menu */}
 
                 {/* Logo */}
