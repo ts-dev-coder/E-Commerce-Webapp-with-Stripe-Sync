@@ -8,7 +8,7 @@ export const BannerCarousel = () => {
     const plugin = React.useRef(Autoplay({ delay: 5000, stopOnInteraction: true }));
 
     return (
-        <div className="flex items-center justify-center bg-amber-500 px-3 py-4">
+        <div className="flex items-center justify-center px-3 py-4">
             <Carousel
                 className="relative size-full"
                 plugins={[plugin.current]}
