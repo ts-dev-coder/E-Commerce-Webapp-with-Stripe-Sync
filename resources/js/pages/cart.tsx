@@ -6,14 +6,7 @@ import { Button } from '@/components/ui/button';
 
 import { CartItemCard } from '@/components/cart-item-card';
 
-import { CartItem, type BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Home',
-        href: '/',
-    },
-];
+import { CartItem } from '@/types';
 
 type Props = {
     cartItems: CartItem[];
@@ -42,7 +35,7 @@ function CartSubtotal({ totalQuantity, subTotal }: { totalQuantity: number; subT
 
 export default function Cart({ cartItems, cartItemCount, totalQuantity, subTotal }: Props) {
     return (
-        <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
+        <AppLayout cartItemCount={cartItemCount}>
             <Head title="Dashboard" />
 
             <div className="grid grid-cols-12 pt-4">
