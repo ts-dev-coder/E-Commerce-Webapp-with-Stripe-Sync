@@ -60,7 +60,9 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
                     <span className="text-xl font-bold">￥{product.price.toLocaleString('ja-JP')}</span>
 
                     {/* Backend側で在庫状況を示すデータを作成して受け取るようにする */}
-                    <StockStatus status="low-stock" />
+                    <div className="w-fit">
+                        <StockStatus status="out-of-stock" />
+                    </div>
 
                     {product.stock > 0 && (
                         <>
