@@ -1,7 +1,7 @@
 import { FormEventHandler } from 'react';
 
-import { LoaderCircle } from 'lucide-react';
 import { Head, useForm } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
 
 import AppLayout from '@/layouts/app-layout';
 
@@ -88,8 +88,10 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
 
                                 <div className="flex gap-x-4">
                                     <form onSubmit={submit}>
-                                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                                        <Button type="submit">カートに入れる</Button>
+                                        <Button type="submit" disabled={processing}>
+                                            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
+                                            カートに入れる
+                                        </Button>
                                     </form>
 
                                     <Button variant={'outline'}>今すぐ購入する</Button>
