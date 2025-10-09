@@ -1,5 +1,5 @@
-import { FormEventHandler } from 'react';
 import { Head, useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
 
@@ -11,15 +11,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { CartItemCard } from '@/components/cart-item-card';
 import { CreateShippingAddressModal } from '@/components/create-shipping-address-modal';
 
-import { type BreadcrumbItem, type CartItem } from '@/types';
-
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Home',
-        href: '/',
-    },
-];
+import { type CartItem } from '@/types';
 
 type Address = {
     id: number;
@@ -50,9 +42,6 @@ type CheckoutForm = {
 };
 
 export default function Checkout({ cartItems, cartItemCount, defaultAddress, shippingFee, addresses, subTotal, totalPrice }: Props) {
-    // const SHIPPING_FEE = 500;
-    // const totalPrice = subTotal + SHIPPING_FEE;
-
     const { post, setData } = useForm<CheckoutForm>({
         delivery_address_id: defaultAddress === null ? null : defaultAddress.id,
     });
@@ -71,7 +60,7 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress, shi
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
+        <AppLayout cartItemCount={cartItemCount}>
             <Head title="Checkout" />
             <div className="grid grid-cols-12 py-5">
                 <div className="col-span-7 space-y-5">
