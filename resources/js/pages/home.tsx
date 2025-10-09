@@ -1,14 +1,13 @@
-import { ProductCard } from '@/components/product-card';
-import AppLayout from '@/layouts/app-layout';
-import { Product, type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Home',
-        href: '/',
-    },
-];
+import { BannerCarousel } from '@/components/banner-carousel';
+import { CategoryNavigation } from '@/components/category-navigation';
+import { FakeBanner } from '@/components/fake-banner';
+import { ProductCarousel } from '@/components/product-carousel';
+
+import AppLayout from '@/layouts/app-layout';
+
+import { type Product } from '@/types';
 
 type CategoryProducts = {
     [categoryName: string]: Product[];
@@ -19,37 +18,27 @@ type Props = {
     cartItemCount: number;
 };
 
-export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
+export default function Dashboard({ cartItemCount }: Props) {
     return (
-        <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
-            <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div>
-                    {Object.keys(categoryProducts).map((categoryName) => {
-                        const products = categoryProducts[categoryName];
-                        return (
-                            <section key={categoryName} className="mb-6 flex min-h-[9rem] flex-col">
-                                <header className="mb-3 w-full">
-                                    <h2 className="text-2xl font-semibold underline decoration-slate-300 underline-offset-8">{categoryName}</h2>
-                                </header>
+        <AppLayout cartItemCount={cartItemCount}>
+            <Head title="home" />
+            <BannerCarousel />
+            <div className="flex w-full flex-1 flex-col md:max-w-7xl">
+                <div className="flex flex-1">
+                    <CategoryNavigation />
+                    <div className="flex-1 px-6">
+                        <div>
+                            <FakeBanner
+                                className="bg-gradient-to-r from-red-400 to-pink-400 text-white"
+                                word="新規会員登録で１０００円クーポンプレゼント中"
+                            />
 
-                                {products && products.length > 0 ? (
-                                    <div className="relative">
-                                        {/* 横スクロール可能エリア */}
-                                        <div className="scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 flex overflow-x-auto pb-2">
-                                            {products.map((product) => (
-                                                <ProductCard product={product} key={product.id} />
-                                            ))}
-                                        </div>
-
-                                        <div className="pointer-events-none absolute top-0 right-0 h-full w-12 bg-gradient-to-l from-white to-transparent" />
-                                    </div>
-                                ) : (
-                                    <p className="text-gray-500 italic">No products available.</p>
-                                )}
-                            </section>
-                        );
-                    })}
+                            <FakeBanner className="bg-gradient-to-r from-sky-300 to-blue-500 text-white" word="対象アイテム毎日更新" />
+                        </div>
+                        <div>
+                            <ProductCarousel />
+                        </div>
+                    </div>
                 </div>
             </div>
         </AppLayout>

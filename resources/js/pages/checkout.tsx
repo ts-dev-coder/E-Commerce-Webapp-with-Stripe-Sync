@@ -1,25 +1,16 @@
-import { FormEventHandler } from 'react';
 import { Head, useForm } from '@inertiajs/react';
+import { FormEventHandler } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 import { CartItemCard } from '@/components/cart-item-card';
 import { CreateShippingAddressModal } from '@/components/create-shipping-address-modal';
 
-import { type BreadcrumbItem, type CartItem } from '@/types';
-
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Home',
-        href: '/',
-    },
-];
+import { type CartItem } from '@/types';
 
 type Address = {
     id: number;
@@ -50,9 +41,6 @@ type CheckoutForm = {
 };
 
 export default function Checkout({ cartItems, cartItemCount, defaultAddress, shippingFee, addresses, subTotal, totalPrice }: Props) {
-    // const SHIPPING_FEE = 500;
-    // const totalPrice = subTotal + SHIPPING_FEE;
-
     const { post, setData } = useForm<CheckoutForm>({
         delivery_address_id: defaultAddress === null ? null : defaultAddress.id,
     });
@@ -71,94 +59,95 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress, shi
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
+        <AppLayout cartItemCount={cartItemCount}>
             <Head title="Checkout" />
-            <div className="grid grid-cols-12 py-5">
-                <div className="col-span-7 space-y-5">
-                    <div className="w-full max-w-xl">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>お届け先</CardTitle>
-                            </CardHeader>
-                            {defaultAddress === null ? (
-                                <div className="text-center font-semibold">登録している住所はありません</div>
-                            ) : (
-                                <CardContent>
-                                    <RadioGroup defaultValue={String(defaultAddress.id)} onValueChange={handleChangeShippingAddressId}>
-                                        <div className="flex items-center space-x-2">
-                                            <RadioGroupItem value={String(defaultAddress.id)} id={String(defaultAddress.id)} />
-                                            <Label htmlFor={String(defaultAddress.id)}>{defaultAddress.full_address}</Label>
-                                        </div>
 
-                                        {addresses?.map((address) => (
-                                            <div className="flex items-center space-x-2" key={address.id}>
-                                                <RadioGroupItem value={String(address.id)} id={String(address.id)} />
-                                                <Label htmlFor={String(address.id)}>{address.full_address}</Label>
-                                            </div>
-                                        ))}
-                                    </RadioGroup>
-                                </CardContent>
-                            )}
-                        </Card>
-                    </div>
+            <div className="flex size-full p-2 md:max-w-7xl">
+                <div className="flex w-[800px] flex-col gap-y-10">
+                    {/* Address area */}
+                    <div className="space-y-3">
+                        <h2 className="text-2xl font-semibold">お届け先</h2>
 
-                    <CreateShippingAddressModal />
-
-                    {/* Payment method */}
-                    <div className="w-full max-w-xl">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>お支払方法</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <RadioGroup defaultValue="stripe">
-                                    <div className="flex items-center space-x-2">
-                                        <RadioGroupItem value="stripe" id="stripe" />
-                                        <Label htmlFor="stripe">Stripe</Label>
-                                    </div>
-                                </RadioGroup>
-                            </CardContent>
-                        </Card>
-                    </div>
-
-                    <hr className="w-full max-w-xl" />
-
-                    {/* CartItems */}
-                    <h2 className="text-2xl font-semibold">カート内商品</h2>
-                    <div>
-                        {cartItems.length > 0 ? (
-                            cartItems.map((item) => <CartItemCard key={item.id} item={item} />)
+                        {defaultAddress === null ? (
+                            <div>登録されている住所はありません。</div>
                         ) : (
-                            <span className="text-lg font-semibold">カート内に商品はありません</span>
+                            <RadioGroup defaultValue={String(defaultAddress.id)} onValueChange={handleChangeShippingAddressId}>
+                                <div className="flex items-center gap-x-2">
+                                    <RadioGroupItem value={String(defaultAddress.id)} id={String(defaultAddress.id)} />
+                                    <Label htmlFor={String(defaultAddress.id)} className="font-semibold">
+                                        {defaultAddress.full_address}
+                                    </Label>
+                                </div>
+
+                                {addresses !== null && (
+                                    <>
+                                        <hr className="my-2" />
+                                        <div className="flex flex-col gap-y-2">
+                                            {addresses.map((address) => (
+                                                <div className="flex items-center gap-x-2">
+                                                    <RadioGroupItem value={String(address.id)} id={String(address.id)} />
+                                                    <Label htmlFor={String(address.id)}>{address.full_address}</Label>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+                            </RadioGroup>
                         )}
+                        <div className="flex items-center justify-end">
+                            <CreateShippingAddressModal />
+                        </div>
+                    </div>
+
+                    {/* Payment method area */}
+                    <div className="space-y-3">
+                        <h2 className="text-2xl font-semibold">お支払方法</h2>
+                        <RadioGroup defaultValue="stripe">
+                            <div className="flex items-center gap-x-2">
+                                <RadioGroupItem value="stripe" id="stripe" />
+                                <Label htmlFor="stripe" className="font-semibold">
+                                    Stripe
+                                </Label>
+                            </div>
+                        </RadioGroup>
+                    </div>
+
+                    {/* Cart item area */}
+                    <div className="space-y-3">
+                        <h2 className="text-2xl font-semibold">カート内商品</h2>
+                        <div className="h-[900px] overflow-y-scroll">
+                            {cartItems.map((item) => (
+                                <CartItemCard key={item.id} item={item} />
+                            ))}
+                        </div>
                     </div>
                 </div>
 
-                <div className="col-span-5">
-                    <Card>
-                        <CardContent>
-                            <form onSubmit={handleCheckout}>
-                                <Button type="submit" variant={'addCart'}>
-                                    購入する
-                                </Button>
-                            </form>
-                            <hr className="my-6" />
-                            <div className="flex flex-col space-y-3">
-                                <span className="flex w-full items-center justify-between text-sm">
-                                    商品の小計 : <span>￥{subTotal.toLocaleString()}</span>
-                                </span>
-                                <span className="flex w-full items-center justify-between text-sm">
-                                    配送料 : <span>￥{shippingFee.toLocaleString()}</span>
-                                </span>
-                                <span className="flex w-full items-center justify-between text-sm">
-                                    合計 : <span>￥{totalPrice.toLocaleString()}</span>
-                                </span>
-                                <div className="flex w-full items-center justify-between text-lg font-semibold">
-                                    ご請求額 : <span>￥{totalPrice.toLocaleString()}</span>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
+                {/* Summary area */}
+                <div className="flex w-60 flex-col gap-y-3 p-8">
+                    <div className="flex items-center justify-between">
+                        <span>小計</span>
+                        <span className="text-lg font-semibold">￥{subTotal.toLocaleString('ja-JP')}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span>配送料</span>
+                        <span className="text-lg font-semibold">￥{shippingFee.toLocaleString('ja-JP')}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <span>合計</span>
+                        <span className="text-lg font-semibold">￥{totalPrice.toLocaleString('ja-JP')}</span>
+                    </div>
+                    <hr className="border-black" />
+                    <div className="flex items-center justify-between">
+                        <span className="text-lg font-semibold">ご請求額</span>
+                        <span className="text-lg font-semibold">￥{totalPrice.toLocaleString('ja-JP')}</span>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-end">
+                        <form onSubmit={handleCheckout}>
+                            <Button type="submit">購入する</Button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </AppLayout>

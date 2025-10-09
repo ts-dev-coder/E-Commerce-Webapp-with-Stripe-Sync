@@ -1,17 +1,13 @@
+import type { PropsWithChildren } from 'react';
+
 import { AppContent } from '@/components/app-content';
 import { AppHeader } from '@/components/app-header';
 import { AppShell } from '@/components/app-shell';
-import { type BreadcrumbItem } from '@/types';
-import type { PropsWithChildren } from 'react';
 
-export default function AppHeaderLayout({
-    children,
-    breadcrumbs,
-    cartItemCount,
-}: PropsWithChildren<{ breadcrumbs?: BreadcrumbItem[]; cartItemCount: number }>) {
+export default function AppHeaderLayout({ children, cartItemCount }: PropsWithChildren<{ cartItemCount: number }>) {
     return (
         <AppShell>
-            <AppHeader breadcrumbs={breadcrumbs} cartItemCount={cartItemCount} />
+            <AppHeader cartItemCount={cartItemCount} />
             <AppContent>{children}</AppContent>
         </AppShell>
     );

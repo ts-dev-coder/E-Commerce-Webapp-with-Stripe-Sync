@@ -1,24 +1,17 @@
+import { FormEventHandler } from 'react';
+
 import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-
-import { FormEventHandler } from 'react';
 
 import AppLayout from '@/layouts/app-layout';
 
 import InputError from '@/components/input-error';
-
+import { StockStatus } from '@/components/stock-status';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-import { type BreadcrumbItem, type Product } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Home',
-        href: '/',
-    },
-];
+import { type Product } from '@/types';
 
 type Props = {
     product: Product;
@@ -54,87 +47,60 @@ export default function ProductDetail({ product, cartItemCount }: Props) {
     };
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs} cartItemCount={cartItemCount}>
-            <Head title="Dashboard" />
+        <AppLayout cartItemCount={cartItemCount}>
+            <Head title={product.name} />
 
-            <div className="grid grid-cols-12 pt-4">
-                <div className="col-span-5">
-                    {/* 商品画像 */}
-                    <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} className="size-11/12" />
+            <div className="mx-auto flex w-full rounded-lg bg-white px-4 py-8 md:max-w-6xl">
+                <div className="h-[600px] w-[500px] flex-shrink-0 overflow-hidden">
+                    <img src="https://picsum.photos/id/163/500/600" alt={product.name} className="size-full object-contain" />
                 </div>
 
-                <div className="col-span-4 flex flex-col space-y-5">
-                    {/* 商品名 */}
-                    <span className="text-2xl">{product.name}</span>
+                <div className="flex flex-1 flex-col gap-4 p-6">
+                    <h1 className="text-2xl font-semibold break-all">{product.name}</h1>
+                    <span className="text-xl font-bold">￥{product.price.toLocaleString('ja-JP')}</span>
 
-                    {/* 商品説明 */}
-                    <div className="flex flex-col">
-                        <p className="mb-2 text-xl font-semibold">この商品について</p>
-                        {product.description}
+                    {/* Backend側で在庫状況を示すデータを作成して受け取るようにする */}
+                    <div className="w-fit">
+                        <StockStatus status="out-of-stock" />
                     </div>
 
-                    {/* 商品価格 */}
-                    <span className="text-2xl font-semibold">{product.price.toLocaleString('ja-JP')}円</span>
-                </div>
+                    {product.stock > 0 && (
+                        <>
+                            <div className="flex items-center">
+                                <Label className="mr-2 text-muted-foreground">数量:</Label>
+                                <Select onValueChange={handleQuantityChange} defaultValue="1">
+                                    <SelectTrigger className="w-50">
+                                        <SelectValue placeholder="個数" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {Array.from({ length: product.max_quantity }).map((_, i) => {
+                                            const num = String(i + 1);
+                                            return (
+                                                <SelectItem key={num} value={num}>
+                                                    {num}
+                                                </SelectItem>
+                                            );
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                            </div>
 
-                <div className="col-span-3">
-                    <div className="space-y-3 rounded-lg border p-3">
-                        {/* 商品価格 */}
-                        <p className="text-2xl font-semibold">{product.price.toLocaleString('ja-JP')}円</p>
+                            <div className="flex flex-col gap-y-2 py-2">
+                                <InputError message={errors.quantity} />
 
-                        {/* 在庫状況 */}
-                        {/* TODO: 在庫状況のUIをコンポーネント化する */}
-                        {product.stock > 0 ? (
-                            <p className="inline-flex rounded bg-green-50 px-2 py-0.5 text-green-600">在庫あり</p>
-                        ) : (
-                            <p className="inline-flex rounded bg-red-50 px-2 py-0.5 text-red-600">一時的に在庫切れ</p>
-                        )}
-
-                        {product.stock > 0 && (
-                            <>
-                                <div className="flex items-center">
-                                    <Label className="mr-2 text-muted-foreground">数量:</Label>
-                                    <Select onValueChange={handleQuantityChange} defaultValue="1">
-                                        <SelectTrigger className="w-50">
-                                            <SelectValue placeholder="個数" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {Array.from({ length: product.max_quantity }).map((_, i) => {
-                                                const num = String(i + 1);
-                                                return (
-                                                    <SelectItem key={num} value={num}>
-                                                        {num}
-                                                    </SelectItem>
-                                                );
-                                            })}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                {/* 各ボタン専用のVariantを追加する */}
-                                <div className="flex flex-col space-y-2">
-                                    {/* カート追加ボタン */}
+                                <div className="flex gap-x-4">
                                     <form onSubmit={submit}>
-                                        <Button
-                                            type="submit"
-                                            className="w-full"
-                                            variant={'addCart'}
-                                        >
+                                        <Button type="submit" disabled={processing}>
                                             {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                                             カートに入れる
                                         </Button>
-                                        <InputError message={errors.quantity} />
                                     </form>
 
-                                    <form onSubmit={() => console.log('Now buy.')}>
-                                        {/* 今すぐ買うボタン */}
-                                        <Button type="submit" className="w-full" variant={'buyNow'}>
-                                            今すぐ買う
-                                        </Button>
-                                    </form>
+                                    <Button variant={'outline'}>今すぐ購入する</Button>
                                 </div>
-                            </>
-                        )}
-                    </div>
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </AppLayout>
