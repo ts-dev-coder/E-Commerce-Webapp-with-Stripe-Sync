@@ -79,16 +79,19 @@ export default function Checkout({ cartItems, cartItemCount, defaultAddress, shi
                                     </Label>
                                 </div>
 
-                                <hr className="my-2" />
-
-                                <div className="flex flex-col gap-y-2">
-                                    {addresses?.map((address) => (
-                                        <div className="flex items-center gap-x-2">
-                                            <RadioGroupItem value={String(address?.id)} id={String(address?.id)} />
-                                            <Label htmlFor={String(address?.id)}>{address?.full_address}</Label>
+                                {addresses !== null && (
+                                    <>
+                                        <hr className="my-2" />
+                                        <div className="flex flex-col gap-y-2">
+                                            {addresses.map((address) => (
+                                                <div className="flex items-center gap-x-2">
+                                                    <RadioGroupItem value={String(address.id)} id={String(address.id)} />
+                                                    <Label htmlFor={String(address.id)}>{address.full_address}</Label>
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
-                                </div>
+                                    </>
+                                )}
                             </RadioGroup>
                         )}
                         <div className="flex items-center justify-end">
