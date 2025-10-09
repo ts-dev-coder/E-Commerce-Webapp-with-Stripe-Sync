@@ -18,7 +18,7 @@ type Props = {
     cartItemCount: number;
 };
 
-export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
+export default function Dashboard({ cartItemCount }: Props) {
     return (
         <AppLayout cartItemCount={cartItemCount}>
             <Head title="home" />
