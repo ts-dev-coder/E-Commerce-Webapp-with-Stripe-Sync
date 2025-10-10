@@ -1,32 +1,26 @@
 import { ReactNode } from 'react';
 
-export const CategoryNavigation = () => {
+type Props = {
+    categories: string[];
+};
+
+export const CategoryNavigation = ({ categories }: Props) => {
     return (
         <div className="flex w-96 flex-col items-end">
             <NavigationTitle title="カテゴリーから探す" />
 
             <NavigationList>
-                <div className="bg-gray-200/60 px-4 py-2 hover:cursor-pointer">
-                    <span className="text-sm">トップス</span>
-                </div>
-
-                <div className="px-4 py-2 text-black hover:cursor-pointer hover:bg-gray-200/60">
-                    <span className="text-sm">ジャケット / アウター</span>
-                </div>
-
-                <div className="px-4 py-2 text-black hover:cursor-pointer hover:bg-gray-200/60">
-                    <span className="text-sm">パンツ</span>
-                </div>
+                {categories.map((category) => (
+                    <div key={category} className="px-4 py-2 hover:cursor-pointer hover:bg-gray-200/60">
+                        <span className="line-clamp-1 text-sm">{category}</span>
+                    </div>
+                ))}
             </NavigationList>
-            
+
             <NavigationTitle title="お気に入り" />
             <NavigationList>
                 <div className="px-4 py-2 text-black hover:cursor-pointer hover:bg-gray-200/60">
                     <span className="text-sm">ブランド</span>
-                </div>
-
-                <div className="px-4 py-2 text-black hover:cursor-pointer hover:bg-gray-200/60">
-                    <span className="text-sm">ショップ</span>
                 </div>
             </NavigationList>
         </div>

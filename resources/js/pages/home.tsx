@@ -18,14 +18,16 @@ type Props = {
     cartItemCount: number;
 };
 
-export default function Dashboard({ cartItemCount }: Props) {
+export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
+    const categories = Object.keys(categoryProducts);
+
     return (
         <AppLayout cartItemCount={cartItemCount}>
             <Head title="home" />
             <BannerCarousel />
             <div className="flex w-full flex-1 flex-col md:max-w-7xl">
                 <div className="flex flex-1">
-                    <CategoryNavigation />
+                    <CategoryNavigation categories={categories} />
                     <div className="flex-1 px-6">
                         <div>
                             <FakeBanner
