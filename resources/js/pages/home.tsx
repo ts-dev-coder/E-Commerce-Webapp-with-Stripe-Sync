@@ -34,7 +34,7 @@ export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
                             <FakeBanner className="bg-gradient-to-r from-sky-300 to-blue-500 text-white" word="対象アイテム毎日更新" />
                         </div>
                         <div>
-                            <ProductCarousel />
+                            <ProductCarousel categoryProducts={categoryProducts}/>
                         </div>
                     </div>
                 </div>
