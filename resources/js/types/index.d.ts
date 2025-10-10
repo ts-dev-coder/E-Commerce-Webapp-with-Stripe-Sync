@@ -50,3 +50,7 @@ export interface Product {
     stock: number;
     max_quantity: number;
 }
+
+export interface CategoryProducts {
+    [categoryName: string]: Product[];
+}

@@ -7,11 +7,7 @@ import { ProductCarousel } from '@/components/product-carousel';
 
 import AppLayout from '@/layouts/app-layout';
 
-import { type Product } from '@/types';
-
-type CategoryProducts = {
-    [categoryName: string]: Product[];
-};
+import { type CategoryProducts } from '@/types';
 
 type Props = {
     categoryProducts: CategoryProducts;
