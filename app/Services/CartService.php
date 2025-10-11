@@ -90,7 +90,7 @@ class CartService {
     }
     else {
       $updatedQuantity = $cartItem->quantity + $requestedQuantity;
-      $this->cartRepository->updateQuantity($cartItem, $updatedQuantity);
+      $this->updateCartItemQuantity($cartItem, $updatedQuantity);
     }
   }
 
