@@ -26,14 +26,6 @@ export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
                     <CategoryNavigation categories={categories} />
                     <div className="flex-1 px-6">
                         <div>
-                            <FakeBanner
-                                className="bg-gradient-to-r from-red-400 to-pink-400 text-white"
-                                word="新規会員登録で１０００円クーポンプレゼント中"
-                            />
-
-                            <FakeBanner className="bg-gradient-to-r from-sky-300 to-blue-500 text-white" word="対象アイテム毎日更新" />
-                        </div>
-                        <div>
                             <ProductCarousel categoryProducts={categoryProducts}/>
                         </div>
                     </div>
