@@ -9,13 +9,6 @@ type Props = {
 export const ProductCarousel = ({ categoryProducts }: Props) => {
     return (
         <div className="py-4">
-            <div className="mb-3 flex items-center justify-between">
-                <h1 className="text-lg font-semibold">人気ショップのおすすめアイテム</h1>
-                <Link href="#">
-                    <span className="text-xs font-semibold text-blue-500 hover:underline">すべて見る</span>
-                </Link>
-            </div>
-
             <div className="flex flex-col gap-y-2">
                 {Object.keys(categoryProducts).map((category) => {
                     const products = categoryProducts[category];
