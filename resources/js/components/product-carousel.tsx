@@ -25,7 +25,7 @@ export const ProductCarousel = ({ categoryProducts }: Props) => {
                             <h2 className="text-2xl font-semibold">{category}</h2>
                             <div className="flex items-start gap-x-2">
                                 {products.map((product) => (
-                                    <Link href="#">
+                                    <Link href={`/products/${product.id}`}>
                                         <div className="w-40 cursor-pointer hover:bg-gray-200/60">
                                             <img src={'https://placehold.co/400x300?text=No+Image'} alt={product.name} />
                                             <div className="flex flex-col gap-y-4 p-2">
