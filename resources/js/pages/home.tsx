@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 
 import { BannerCarousel } from '@/components/banner-carousel';
 import { CategoryNavigation } from '@/components/category-navigation';
-import { FakeBanner } from '@/components/fake-banner';
 import { ProductCarousel } from '@/components/product-carousel';
 
 import AppLayout from '@/layouts/app-layout';
