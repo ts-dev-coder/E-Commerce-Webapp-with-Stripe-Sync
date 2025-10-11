@@ -9,17 +9,10 @@ import { Button } from './ui/button';
 import { CartItemQuantityForm } from './cart-item-quantity-form';
 import InputError from './input-error';
 
-import { Product } from '@/types';
+import { CartItem, Product } from '@/types';
 import { StockStatus } from './stock-status';
 
-type Response = {
-    id: number;
-    cart_id: number;
-    product_id: number;
-    quantity: number;
-    price: number;
-    created_at: string;
-    updated_at: string;
+type Response = CartItem & {
     product: Product;
 };
 
@@ -48,9 +41,7 @@ export const CartItemCard = ({ item }: { item: Response }) => {
                 <img src="https://picsum.photos/id/163/200/200" alt={item.product.name} className="size-full object-contain" />
             </div>
             <div className="flex flex-col gap-y-2 px-3">
-                <span className="line-clamp-1 text-xl font-semibold">
-                    {item.product.name}
-                </span>
+                <span className="line-clamp-1 text-xl font-semibold">{item.product.name}</span>
                 <span className="text-xl font-semibold">￥{item.product.price.toLocaleString('ja-JP')}</span>
                 <div className="w-fit">
                     <StockStatus status="in-stock" />
