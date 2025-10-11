@@ -19,14 +19,25 @@ export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
     return (
         <AppLayout cartItemCount={cartItemCount}>
             <Head title="home" />
-            <BannerCarousel />
-            <div className="flex w-full flex-1 flex-col md:max-w-7xl">
-                <div className="flex flex-1">
-                    <CategoryNavigation categories={categories} />
-                    <div className="flex-1 px-6">
-                        <div>
-                            <ProductCarousel categoryProducts={categoryProducts}/>
-                        </div>
+            <div className="w-full px-2 2xl:max-w-[2000px]">
+                <BannerCarousel />
+            </div>
+
+            {/* Main Content */}
+            <div className="flex size-full min-h-0 justify-center py-5">
+                <div className="flex w-full md:max-w-5xl">
+                    {/* Navigation area */}
+                    <div className="w-fit overflow-y-auto">
+                        <CategoryNavigation categories={categories} />
+                    </div>
+
+                    {/* Product Section area */}
+                    <div className="overflow-y-auto pr-3">
+                        {Object.keys(categoryProducts).map((category) => {
+                            const products = categoryProducts[category];
+
+                            return <ProductCarousel category={category} products={products} />;
+                        })}
                     </div>
                 </div>
             </div>

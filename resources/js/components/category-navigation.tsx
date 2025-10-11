@@ -6,7 +6,7 @@ type Props = {
 
 export const CategoryNavigation = ({ categories }: Props) => {
     return (
-        <div className="flex w-96 flex-col items-end">
+        <div className="flex h-full flex-col">
             <NavigationTitle title="カテゴリーから探す" />
 
             <NavigationList>
