@@ -1,3 +1,7 @@
+> [!CAUTION]
+This repository is being rewritten in the 
+[rewrite-e-commerce-webapp-with-stripe-sync](https://github.com/ts-dev-coder/rewrite-e-commerce-webapp-with-stripe-sync) repository, so this repository will be archived.
+
 # 📌 Overview
 
 This application is an e-commerce web app designed for selling both physical and digital products.  
