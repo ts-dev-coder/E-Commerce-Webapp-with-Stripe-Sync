@@ -32,7 +32,7 @@ export default function Dashboard({ categoryProducts, cartItemCount }: Props) {
                     </div>
 
                     {/* Product Section area */}
-                    <div className="flex flex-col gap-y-4 overflow-y-auto pr-3">
+                    <div className="flex flex-1 flex-col gap-y-4 overflow-y-auto pr-3">
                         {Object.keys(categoryProducts).map((category) => {
                             const products = categoryProducts[category];
 
