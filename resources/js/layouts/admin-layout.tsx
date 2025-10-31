@@ -13,6 +13,7 @@ import {
     SidebarMenuItem,
     SidebarProvider,
 } from '@/components/ui/sidebar';
+import { Link } from '@inertiajs/react';
 
 type NavItems = {
     id: string;
@@ -56,8 +57,9 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                         <SidebarHeader>
                             <div className="flex items-center gap-x-3">
                                 <h1 className="text-xl font-semibold">管理者画面</h1>
-                                {/* TODO:サイズを変更できる形に修正したら挿入する */}
-                                {/* <AppLogo /> */}
+                                <Link href="/">
+                                    <span className="text-xs text-gray-500 hover:text-gray-900">トップページへ戻る</span>
+                                </Link>
                             </div>
                         </SidebarHeader>
                         <SidebarContent>
