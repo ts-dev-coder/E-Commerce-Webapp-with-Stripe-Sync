@@ -3,6 +3,8 @@
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CartController;
@@ -44,6 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('admin.dashboard');
     Route::get('/products', ProductController::class)->name('admin.proudcts');
+    Route::get('/users', UserController::class)->name('admin.users');
+    Route::get('/settings', SettingController::class)->name('admin.settings');
 });
 
 
