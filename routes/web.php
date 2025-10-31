@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CartController;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // 管理者かどうかの確認のMiddlewareは後で実装するので、現段階は'auth', 'verified'のみの認証とする
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('admin.dashboard');
+    Route::get('/products', ProductController::class)->name('admin.proudcts');
 });
 
 
