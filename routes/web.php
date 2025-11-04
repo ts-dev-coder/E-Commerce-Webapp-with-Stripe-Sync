@@ -37,8 +37,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('checkout.cancel');
 
     Route::post('/shipping-addresses', [AddressController::class, 'store'])->name('shipping-addresses');
-
-    
 });
 
 // Admin page route
