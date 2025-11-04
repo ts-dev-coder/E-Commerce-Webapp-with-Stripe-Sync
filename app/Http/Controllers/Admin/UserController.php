@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Inertia\Inertia;
+
+use App\Http\Controllers\Controller;
+
+use App\Services\Admin\UserService;
 
 class UserController extends Controller
 {
-    public function __invoke()
+    public function __invoke(UserService $userService)
     {
-        return Inertia::render('admin/users');
+        $users = $userService->retrieveLatestUsers();
+        return Inertia::render('admin/users', [
+            'users' => $users
+        ]);
     }
 }
