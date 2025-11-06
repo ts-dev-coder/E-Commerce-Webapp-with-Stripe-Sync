@@ -49,6 +49,7 @@ export interface Product {
     price: number;
     stock: number;
     max_quantity: number;
+    is_published: number;
 }
 
 export interface CategoryProducts {
