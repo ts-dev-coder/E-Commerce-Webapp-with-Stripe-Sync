@@ -9,7 +9,7 @@ use App\Services\Admin\ProductService;
 
 class ProductController extends Controller
 {
-    public function __invoke(ProductService $productService)
+    public function index(ProductService $productService)
     {
         // 最新の商品データを１０件取得する
         $products = $productService->retrieveLatestProducts();
