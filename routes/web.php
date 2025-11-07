@@ -46,6 +46,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/products', [ProductController::class, 'index'])->name('admin.proudcts');
     Route::get('/users', UserController::class)->name('admin.users');
     Route::get('/settings', SettingController::class)->name('admin.settings');
+
+    Route::patch('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
 });
 
 
