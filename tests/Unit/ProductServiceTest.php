@@ -75,4 +75,26 @@ class ProductServiceTest extends TestCase
             'published_at' => null,
         ]);
     }
+
+    public function test_product_update_fails_with_invalid_data()
+    {
+        $product = Product::factory()->create([
+            'name' => 'test old product',
+            'description' => 'This is old product',
+            'price' => 1000,
+            'stock' => 100,
+            'max_quantity' => 10,
+            'is_published' => 1,
+            'published_at' => now()
+        ]);
+
+        $invalidUpdateData = [
+            'price' => null
+        ];
+        
+        $service = new ProductService();
+        
+        $this->expectException(\Illuminate\Database\QueryException::class);
+        $service->updateProduct($product, $invalidUpdateData);
+    }
 }
