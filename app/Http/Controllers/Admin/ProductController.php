@@ -17,4 +17,11 @@ class ProductController extends Controller
             'products' => $products
         ]);
     }
+
+    public function update(ProductService $productService)
+    {
+        $productService->updateProduct($product, $updatedData);
+
+        redirect()->route('admin.products');
+    }
 }
