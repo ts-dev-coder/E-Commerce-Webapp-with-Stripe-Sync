@@ -11,4 +11,9 @@ class ProductService
     {
         return Product::latest()->take($limit)->get();
     }
+
+    public function updateProduct(Product $product, array $updatedProduct): bool
+    {
+        return $product->update($updatedProduct);
+    }
 }
