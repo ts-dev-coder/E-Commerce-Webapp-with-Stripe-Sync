@@ -92,4 +92,21 @@ class UpdateProductRequstTest extends TestCase
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('is_published', $validator->errors()->toArray());
     }
+
+    public function test_name_must_not_be_exceed_255_characters()
+    {
+        $request = new UpdateProductRequest();
+
+        $validData = [
+            'name' => str_repeat('a', 256),
+            'price'=> 1000,
+            'stock' => 10,
+            'is_published' => true,
+        ];
+
+        $validator = Validator::make($validData, $request->rules());
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('name', $validator->errors()->toArray());
+    }
 }
