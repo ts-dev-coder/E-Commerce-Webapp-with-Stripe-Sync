@@ -43,9 +43,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // 管理者かどうかの確認のMiddlewareは後で実装するので、現段階は'auth', 'verified'のみの認証とする
 Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('admin.dashboard');
-    Route::get('/products', ProductController::class)->name('admin.proudcts');
+    Route::get('/products', [ProductController::class, 'index'])->name('admin.products');
     Route::get('/users', UserController::class)->name('admin.users');
     Route::get('/settings', SettingController::class)->name('admin.settings');
+
+    Route::patch('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
 });
 
 
