@@ -160,4 +160,70 @@ class UpdateProductRequstTest extends TestCase
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('is_published', $validator->errors()->toArray());
     }
+
+    public function test_price_must_not_be_negative()
+    {
+        $request = new UpdateProductRequest();
+
+        $validData = [
+            'name' => 'test name',
+            'price'=> -1,
+            'stock' => 10,
+            'is_published' => true,
+        ];
+
+        $validator = Validator::make($validData, $request->rules());
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('price', $validator->errors()->toArray());
+    }
+
+    public function test_price_can_be_zero()
+    {
+        $request = new UpdateProductRequest();
+
+        $validData = [
+            'name' => 'test name',
+            'price'=> 0,
+            'stock' => 10,
+            'is_published' => true,
+        ];
+
+        $validator = Validator::make($validData, $request->rules());
+
+        $this->assertFalse($validator->fails());
+    }
+
+    public function test_stock_must_not_be_negative()
+    {
+        $request = new UpdateProductRequest();
+
+        $validData = [
+            'name' => 'test name',
+            'price'=> 1000,
+            'stock' => -1,
+            'is_published' => true,
+        ];
+
+        $validator = Validator::make($validData, $request->rules());
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('stock', $validator->errors()->toArray());
+    }
+
+    public function test_stock_can_be_zero()
+    {
+        $request = new UpdateProductRequest();
+
+        $validData = [
+            'name' => 'test name',
+            'price'=> 1000,
+            'stock' => 0,
+            'is_published' => true,
+        ];
+
+        $validator = Validator::make($validData, $request->rules());
+
+        $this->assertFalse($validator->fails());
+    }
 }
