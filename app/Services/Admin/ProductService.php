@@ -16,4 +16,9 @@ class ProductService
     {
         return $product->update($updatedProduct);
     }
+
+    public function deleteProduct(Product $product): bool
+    {
+        return $product->delete();
+    }
 }

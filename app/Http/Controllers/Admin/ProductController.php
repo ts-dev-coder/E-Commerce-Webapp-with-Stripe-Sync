@@ -26,4 +26,11 @@ class ProductController extends Controller
 
         redirect()->route('admin.products');
     }
+
+    public function destroy(Product $product, ProductService $productService)
+    {
+        $productService->deleteProduct($product);
+
+        redirect()->route('admin.products');
+    }
 }

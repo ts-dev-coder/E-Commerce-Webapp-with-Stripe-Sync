@@ -48,6 +48,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
     Route::get('/settings', SettingController::class)->name('admin.settings');
 
     Route::patch('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 });
 
 
