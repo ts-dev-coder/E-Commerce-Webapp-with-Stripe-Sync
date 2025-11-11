@@ -67,4 +67,25 @@ class ProductControllerTest extends TestCase
             'is_published' => $updatedProduct['is_published'],
         ]);
     }
+
+    public function test_admin_can_be_deleted()
+    {
+        $product = Product::factory()->create([
+            'name' => 'test name',
+            'description' => 'hello world',
+            'price' => 1000,
+            'stock' => 100,
+            'max_quantity' => 10,
+            'is_published' => true,
+            'published_at' => now(),
+        ]);
+
+        /** @var \App\Models\User|\Illuminate\Contracts\Auth\Authenticatable $admin */
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $url = '/admin/products/' . $product->id;
+        $response = $this->actingAs($admin)->delete($url);
+
+        $response->assertStatus(200);
+    }
 }
