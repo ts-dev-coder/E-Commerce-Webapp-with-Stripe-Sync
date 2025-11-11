@@ -109,4 +109,38 @@ class UpdateProductRequstTest extends TestCase
         $this->assertTrue($validator->fails());
         $this->assertArrayHasKey('name', $validator->errors()->toArray());
     }
+
+    public function test_price_must_be_integer()
+    {
+        $request = new UpdateProductRequest();
+
+        $validData = [
+            'name' => 'test name',
+            'price'=> 'not_number',
+            'stock' => 10,
+            'is_published' => true,
+        ];
+
+        $validator = Validator::make($validData, $request->rules());
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('price', $validator->errors()->toArray());
+    }
+
+    public function test_stock_must_be_integer()
+    {
+        $request = new UpdateProductRequest();
+
+        $validData = [
+            'name' => 'test name',
+            'price'=> 1000,
+            'stock' => 'not_number',
+            'is_published' => true,
+        ];
+
+        $validator = Validator::make($validData, $request->rules());
+
+        $this->assertTrue($validator->fails());
+        $this->assertArrayHasKey('stock', $validator->errors()->toArray());
+    }
 }
