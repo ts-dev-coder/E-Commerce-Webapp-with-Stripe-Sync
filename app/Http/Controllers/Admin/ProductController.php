@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Inertia\Inertia;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\UpdateProductRequest;
+use App\Models\Product;
 use App\Services\Admin\ProductService;
 
 class ProductController extends Controller
@@ -18,9 +20,9 @@ class ProductController extends Controller
         ]);
     }
 
-    public function update(ProductService $productService)
+    public function update(UpdateProductRequest $request, Product $product, ProductService $productService)
     {
-        $productService->updateProduct($product, $updatedData);
+        $productService->updateProduct($product, $request->validated());
 
         redirect()->route('admin.products');
     }
