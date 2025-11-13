@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Product;
 use App\Services\Admin\ProductService;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -32,5 +33,20 @@ class ProductController extends Controller
         $productService->deleteProduct($product);
 
         redirect()->route('admin.products');
+    }
+
+    public function search(Request $request, ProductService $productService)
+    {
+        // queryの中身が空の場合は'/admin/products'へリダイレクトさせる
+        $query = $request->query();
+        if(empty($query)) {
+           return redirect()->route('admin.products');
+        }
+
+        // 検索を行う
+        $result = $productService->search($query);
+
+        // 検索結果画面をレンダリングする
+        return Inertia::render('admin/search', ['result' => $result]);
     }
 }
