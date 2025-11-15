@@ -3,13 +3,11 @@
 namespace Tests\Unit;
 
 use App\Services\Admin\SalesAnalyticsService;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use Tests\TestCase;
 
 class SalesAnalyticsServiceTest extends TestCase
 {
-    use RefreshDatabase;
-
     protected SalesAnalyticsService $service;
 
     public function setUp(): void
@@ -17,6 +15,4 @@ class SalesAnalyticsServiceTest extends TestCase
         parent::setUp();
         $this->service = new SalesAnalyticsService();
     }
-
-    
 }
