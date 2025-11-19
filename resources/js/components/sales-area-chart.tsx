@@ -1,162 +1,121 @@
-import React from "react"
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "./ui/chart"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select"
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
-import type { SalesTrend } from "@/pages/admin/dashboard"
-
-export const description = "An interactive area chart"
+import type { SalesTrend } from '@/pages/admin/dashboard';
+import React from 'react';
+import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from './ui/chart';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 
 type Props = {
-  salesTrend: SalesTrend
-}
+    salesTrend: SalesTrend;
+    cardTitle: string;
+    cardDescription: string;
+    label: string;
+    color: 'var(--chart-1)' | 'var(--chart-2)' | 'var(--chart-3)' | 'var(--chart-4)' | 'var(--chart-5)';
+};
 
-// chartConfig も 1 系列に最適化
-const chartConfig = {
-  total: {
-    label: "Sales",
-    color: "var(--chart-1)",
-  },
-} satisfies ChartConfig
+export function SalesAreaChart({ salesTrend, cardTitle, cardDescription, label, color }: Props) {
+    const chartConfig = {
+        total: {
+            label,
+            color,
+        },
+    } satisfies ChartConfig;
 
-export function SalesAreaChart({ salesTrend }: Props) {
-  const [timeRange, setTimeRange] = React.useState("90d")
+    const [timeRange, setTimeRange] = React.useState('90d');
 
-  // --- Recharts 用にフィールドを desktop に合わせる ---
-  const formattedData = salesTrend.map((item) => ({
-    date: item.date,
-    total: item.total,
-  }))
+    const formattedData = salesTrend.map((item) => ({
+        date: item.date,
+        total: item.total,
+    }));
 
-  // --- timeRange フィルタ ---
-  const filteredData = formattedData.filter((item) => {
-    const date = new Date(item.date)
-    
-    const referenceDate = new Date()
-    let daysToSubtract = 90
-    if (timeRange === "30d") daysToSubtract = 30
-    if (timeRange === "7d") daysToSubtract = 7
+    const filteredData = formattedData.filter((item) => {
+        const date = new Date(item.date);
 
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
+        const referenceDate = new Date();
+        let daysToSubtract = 90;
+        if (timeRange === '30d') daysToSubtract = 30;
+        if (timeRange === '7d') daysToSubtract = 7;
 
-    return date >= startDate
-  })
-  
+        const startDate = new Date(referenceDate);
+        startDate.setDate(startDate.getDate() - daysToSubtract);
 
-  return (
-    <Card className="pt-0 border-none shadow-none">
-      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-        <div className="grid flex-1 gap-1">
-          <CardTitle>売上推移</CardTitle>
-          <CardDescription>期間別の売上トレンド</CardDescription>
-        </div>
+        return date >= startDate;
+    });
 
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger
-            className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
-            aria-label="Select a value"
-          >
-            <SelectValue placeholder="Last 3 months" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
-              Last 3 months
-            </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
-              Last 30 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
-            </SelectItem>
-          </SelectContent>
-        </Select>
-      </CardHeader>
+    return (
+        <Card className="border-none pt-0 shadow-none">
+            <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+                <div className="grid flex-1 gap-1">
+                    <CardTitle>{cardTitle}</CardTitle>
+                    <CardDescription>{cardDescription}</CardDescription>
+                </div>
 
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={filteredData}>
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-total)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-total)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
+                <Select value={timeRange} onValueChange={setTimeRange}>
+                    <SelectTrigger className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex" aria-label="Select a value">
+                        <SelectValue placeholder="Last 3 months" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl">
+                        <SelectItem value="90d" className="rounded-lg">
+                            Last 3 months
+                        </SelectItem>
+                        <SelectItem value="30d" className="rounded-lg">
+                            Last 30 days
+                        </SelectItem>
+                        <SelectItem value="7d" className="rounded-lg">
+                            Last 7 days
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+            </CardHeader>
 
-            <CartesianGrid vertical={false} />
+            <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+                <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
+                    <AreaChart data={filteredData}>
+                        <defs>
+                            <linearGradient id={`fill${label}`} x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="var(--color-total)" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="var(--color-total)" stopOpacity={0.1} />
+                            </linearGradient>
+                        </defs>
 
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString("ja-JP", {
-                  month: "short",
-                  day: "numeric",
-                })
-              }}
-            />
+                        <CartesianGrid vertical={false} />
 
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("ja-JP", {
-                      month: "short",
-                      day: "numeric",
-                    })
-                  }}
-                  indicator="dot"
-                />
-              }
-            />
+                        <XAxis
+                            dataKey="date"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            minTickGap={32}
+                            tickFormatter={(value) => {
+                                const date = new Date(value);
+                                return date.toLocaleDateString('ja-JP', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                });
+                            }}
+                        />
 
-            <Area
-              dataKey="total"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-total)"
-              stackId="a"
-            />
+                        <ChartTooltip
+                            cursor={false}
+                            content={
+                                <ChartTooltipContent
+                                    labelFormatter={(value) => {
+                                        return new Date(value).toLocaleDateString('ja-JP', {
+                                            month: 'short',
+                                            day: 'numeric',
+                                        });
+                                    }}
+                                    indicator="dot"
+                                />
+                            }
+                        />
 
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
-  )
+                        <Area dataKey="total" type="natural" fill={`url(#fill${label}`} stroke="var(--color-total)" stackId="a" />
+
+                        <ChartLegend content={<ChartLegendContent />} />
+                    </AreaChart>
+                </ChartContainer>
+            </CardContent>
+        </Card>
+    );
 }
