@@ -1,4 +1,4 @@
-import { SalesAreaChart } from '@/components/sales-area-chart';
+import { TrendChart } from '@/components/admin/trend-chart';
 import AdminLayout from '@/layouts/admin-layout';
 
 type TrendData = {
@@ -19,7 +19,7 @@ export default function Dashboard({ salesTrend, userTrend }: Props) {
         <AdminLayout>
             <div className="w-full">
                 <div>
-                    <SalesAreaChart
+                    <TrendChart
                         salesTrend={salesTrend}
                         cardTitle="売上推移"
                         cardDescription="期間別の売上トレンド"
@@ -28,7 +28,7 @@ export default function Dashboard({ salesTrend, userTrend }: Props) {
                     />
                 </div>
                 <div>
-                    <SalesAreaChart
+                    <TrendChart
                         salesTrend={userTrend}
                         cardTitle="ユーザー推移"
                         cardDescription="期間別のユーザートレンド"
