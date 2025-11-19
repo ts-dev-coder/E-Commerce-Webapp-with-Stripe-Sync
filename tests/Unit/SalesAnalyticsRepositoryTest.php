@@ -53,12 +53,48 @@ class SalesAnalyticsRepositoryTest extends TestCase
 
         $this->assertEquals([
             [
+                'date' => '2024-03-31',
+                'total' => 0,
+            ],
+            [
                 'date' => '2024-04-01',
                 'total' => 3000,
             ],
             [
                 'date' => '2024-04-02',
                 'total' => 500,
+            ],
+            [
+                'date' => '2024-04-03',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-04',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-05',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-06',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-07',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-08',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-09',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-10',
+                'total' => 0,
             ],
         ], $results);
     }
