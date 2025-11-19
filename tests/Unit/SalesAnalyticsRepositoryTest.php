@@ -19,11 +19,17 @@ class SalesAnalyticsRepositoryTest extends TestCase
     {
         parent::setUp();
         $this->repository = new SalesAnalyticsRepository();
+        Carbon::setTestNow('2024-04-10 00:00:00');
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Carbon::setTestNow();
     }
 
     public function test_it_returns_daily_sales_in_shadcn_chart_format()
     {
-        Carbon::setTestNow('2024-04-10 00:00:00');
 
         $order1 = Order::factory()->create(['created_at' => '2024-04-01']);
         OrderItem::factory()->create([
@@ -53,12 +59,48 @@ class SalesAnalyticsRepositoryTest extends TestCase
 
         $this->assertEquals([
             [
+                'date' => '2024-03-31',
+                'total' => 0,
+            ],
+            [
                 'date' => '2024-04-01',
                 'total' => 3000,
             ],
             [
                 'date' => '2024-04-02',
                 'total' => 500,
+            ],
+            [
+                'date' => '2024-04-03',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-04',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-05',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-06',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-07',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-08',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-09',
+                'total' => 0,
+            ],
+            [
+                'date' => '2024-04-10',
+                'total' => 0,
             ],
         ], $results);
     }
