@@ -19,11 +19,17 @@ class SalesAnalyticsRepositoryTest extends TestCase
     {
         parent::setUp();
         $this->repository = new SalesAnalyticsRepository();
+        Carbon::setTestNow('2024-04-10 00:00:00');
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Carbon::setTestNow();
     }
 
     public function test_it_returns_daily_sales_in_shadcn_chart_format()
     {
-        Carbon::setTestNow('2024-04-10 00:00:00');
 
         $order1 = Order::factory()->create(['created_at' => '2024-04-01']);
         OrderItem::factory()->create([
