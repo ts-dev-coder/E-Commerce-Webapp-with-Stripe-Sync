@@ -29,58 +29,33 @@ class UserAnalyticsRepositoryTest extends TestCase
 
     public function test_it_returns_daily_users_count_trend()
     {
-        // 3日分のユーザー登録を行う
-        // 2日前
         User::factory()->count(2)->create([
-            'created_at' => now()->subDays(2)
+            'created_at' => '2025-04-01'
         ]);
-        // 1日前
+
         User::factory()->count(3)->create([
-            'created_at' => now()->subDays(1)
+            'created_at' => '2025-04-02'
         ]);
-        // 当日
+
         User::factory()->count(1)->create([
-            'created_at' => now()
+            'created_at' => '2025-04-03'
         ]);
 
-        // 3日分のユーザー数の推移を取得する
-        $trend = $this->repository->getDailyUsersCountTrend(2);
-
-        // $trendが配列かどうか
-        $this->assertIsArray($trend);
-        // $trendが空ではないかどうか
-        $this->assertNotEmpty($trend);
+        $trend = $this->repository->getDailyUsersCountTrend(10);
         
-        // キーが一致しているかどうか
-        $first = $trend[0];
-        $this->assertArrayHasKey('date', $first);
-        $this->assertArrayHasKey('total', $first);
-
-        // データの数が3日分かどうか
-        $this->assertCount(3, $trend);
-
-        // 日付順が古いものから新しいものになっているかどうか
-        $this->assertEquals(
-            now()->subDays(2)->format('Y-m-d'),
-            $trend[0]['date']
-        );
-
-        $this->assertEquals(
-            now()->subDays(1)->format('Y-m-d'),
-            $trend[1]['date']
-        );
-
-        $this->assertEquals(
-            now()->format('Y-m-d'),
-            $trend[2]['date']
-        );
-        
-        // ユーザー数が正しいか
         $this->assertEquals(
         [
-            ['date' => '2025-04-08', 'total' => 2],
-            ['date' => '2025-04-09', 'total' => 3],
-            ['date' => '2025-04-10', 'total' => 1],
+            ['date' => '2025-03-31', 'total' => 0],
+            ['date' => '2025-04-01', 'total' => 2],
+            ['date' => '2025-04-02', 'total' => 3],
+            ['date' => '2025-04-03', 'total' => 1],
+            ['date' => '2025-04-04', 'total' => 0],
+            ['date' => '2025-04-05', 'total' => 0],
+            ['date' => '2025-04-06', 'total' => 0],
+            ['date' => '2025-04-07', 'total' => 0],
+            ['date' => '2025-04-08', 'total' => 0],
+            ['date' => '2025-04-09', 'total' => 0],
+            ['date' => '2025-04-10', 'total' => 0],   
         ],
             $trend
         );
