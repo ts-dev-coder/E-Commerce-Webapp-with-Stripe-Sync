@@ -33,7 +33,8 @@ class OrderItemSeeder extends Seeder
                 ->subDays(rand(0, 365))
                 ->subHours(rand(0, 23))
                 ->subMinutes(rand(0, 59));
-            }
+            },
+            'updated_at' => fn($attr) => $attr['created_at'],
         ]);
     }
 }
