@@ -23,8 +23,6 @@ class OrderFactory extends Factory
             'user_id'    => User::factory(),
             'shipping_address_id' => Address::factory(),
             'total_amount'      => 0,
-            'created_at' => now(),
-            'updated_at' => now(),
         ];
     }
 }
