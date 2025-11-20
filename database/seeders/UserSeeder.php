@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +14,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        User::factory(100)->create([
+            'created_at' => function () {
+                return Carbon::now()
+                ->subDays(rand(0, 365))
+                ->subHours(rand(0, 23))
+                ->subMinutes(rand(0, 59));
+            },
+            'updated_at' => fn($attr) => $attr['created_at'],
+        ]);
     }
 }
