@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 class CategoryProductSeeder extends Seeder
 {
+    use WithoutModelEvents;
+    
     /**
      * Run the database seeds.
      */
