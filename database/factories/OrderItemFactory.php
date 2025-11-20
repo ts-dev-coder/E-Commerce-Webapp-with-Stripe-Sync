@@ -23,8 +23,6 @@ class OrderItemFactory extends Factory
             'product_id' => Product::factory(),
             'quantity'   => $this->faker->numberBetween(1, 5),
             'price'      => $this->faker->numberBetween(1000, 10000),
-            'created_at' => now(),
-            'updated_at' => now(),
         ];
     }
 }
