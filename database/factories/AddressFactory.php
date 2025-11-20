@@ -37,8 +37,6 @@ class AddressFactory extends Factory
             'building'       => $this->faker->optional()->secondaryAddress(),
             'phone_number'   => $this->faker->numerify('0##########'),
             'is_default'     => false,
-            'created_at'     => now(),
-            'updated_at'     => now(),
         ];
     }
 }
