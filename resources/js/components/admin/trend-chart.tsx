@@ -113,7 +113,7 @@ export function TrendChart({ trendData, cardTitle, cardDescription, label, color
                             }
                         />
 
-                        <Area dataKey="total" type="natural" fill={`url(#fill${label}`} stroke="var(--color-total)" stackId="a" />
+                        <Area dataKey="total" type="basis" fill={`url(#fill${label}`} stroke="var(--color-total)" stackId="a" />
 
                         <ChartLegend content={<ChartLegendContent />} />
                     </AreaChart>
