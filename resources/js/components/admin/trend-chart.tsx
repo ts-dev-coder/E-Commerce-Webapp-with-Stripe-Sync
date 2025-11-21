@@ -1,19 +1,22 @@
-import type { SalesTrend } from '@/pages/admin/dashboard';
+
 import React from 'react';
+
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '../ui/chart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
+import { type TrendData } from '@/pages/admin/dashboard';
+
 type Props = {
-    salesTrend: SalesTrend;
+    trendData: TrendData[];
     cardTitle: string;
     cardDescription: string;
     label: string;
     color: 'var(--chart-1)' | 'var(--chart-2)' | 'var(--chart-3)' | 'var(--chart-4)' | 'var(--chart-5)';
 };
 
-export function TrendChart({ salesTrend, cardTitle, cardDescription, label, color }: Props) {
+export function TrendChart({ trendData, cardTitle, cardDescription, label, color }: Props) {
     const chartConfig = {
         total: {
             label,
@@ -23,7 +26,7 @@ export function TrendChart({ salesTrend, cardTitle, cardDescription, label, colo
 
     const [timeRange, setTimeRange] = React.useState('90d');
 
-    const formattedData = salesTrend.map((item) => ({
+    const formattedData = trendData.map((item) => ({
         date: item.date,
         total: item.total,
     }));
