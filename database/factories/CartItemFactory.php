@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Order;
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\=OrderItem>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\=CartItem>
  */
-class OrderItemFactory extends Factory
+class CartItemFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,10 +19,10 @@ class OrderItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'order_id'   => Order::factory(),
             'product_id' => Product::factory(),
-            'quantity'   => $this->faker->numberBetween(1, 5),
-            'price'      => fn($attr) => Product::find($attr['product_id'])->price,
+            'cart_id' => Cart::factory(),
+            'quantity' => $this->faker->numberBetween(1, 5),
+            'price' => fn($attr) => Product::find($attr['product_id'])->price,
         ];
     }
 }
