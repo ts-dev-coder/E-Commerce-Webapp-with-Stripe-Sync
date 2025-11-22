@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '../ui/chart';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -97,6 +97,8 @@ export function TrendChart({ trendData, cardTitle, cardDescription, label, color
                                 });
                             }}
                         />
+
+                        <YAxis dataKey='total' tickLine={true} axisLine={false} domain={[0, 'auto']}/>
 
                         <ChartTooltip
                             cursor={false}
