@@ -16,7 +16,15 @@ class Product extends Model
         'stock',
         'is_published',
         'published_at', 
-        'max_quantity'
+        'max_quantity',
+        'stripe_id',
+        'stripe_price_id',
+        'currency',
+        'is_physical',
+        'creator',
+        'seo_titile',
+        'seo_description',
+        'deleted_at'
     ];
 
     # TODO: Add relation definition
