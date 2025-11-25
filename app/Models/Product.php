@@ -22,7 +22,7 @@ class Product extends Model
         'currency',
         'is_physical',
         'creator',
-        'seo_titile',
+        'seo_title',
         'seo_description',
         'deleted_at'
     ];
