@@ -2,13 +2,20 @@
 
 namespace App\Services\Admin;
 
-use App\Models\User;
+use App\Repositories\Admin\UserRepository;
 use Illuminate\Support\Collection;
 
 class UserService
 {    
-    public function retrieveLatestUsers(int $limit = 10): Collection
+    protected UserRepository $repository;
+
+    public function __construct()
     {
-        return User::latest()->take($limit)->get();
+        $this->repository = new UserRepository();    
+    }
+
+    public function retrieveLatestUsers(array $filters, int $limit = 10): Collection
+    {
+        return $this->repository->findByFilters($filters, $limit);
     }
 }
