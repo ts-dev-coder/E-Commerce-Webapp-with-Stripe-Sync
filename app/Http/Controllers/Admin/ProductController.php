@@ -12,10 +12,9 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(ProductService $productService)
+    public function index(Request $request, ProductService $productService)
     {
-        // 最新の商品データを１０件取得する
-        $products = $productService->retrieveLatestProducts();
+        $products = $productService->retrieveLatestProducts($request->query());
         return Inertia::render('admin/products', [
             'products' => $products
         ]);
