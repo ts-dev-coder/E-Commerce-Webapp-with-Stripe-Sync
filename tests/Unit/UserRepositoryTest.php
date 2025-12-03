@@ -118,7 +118,42 @@ class UserRepositoryTest extends TestCase
 
         $this->assertInstanceOf(User::class, $result->first());
     }
-    
     // name, emailの両方
+    public function test_findByFilters_returns_users_when_filter_is_name_and_email()
+    {
+        User::factory()->create([
+            'name' => 'test user',
+            'email' => 'hiImEnginerr@gmail.com'
+        ]);
+        
+        User::factory()
+            ->count(20)
+            ->sequence(fn ($seq) => [
+                'email' => "other{$seq->index}@example.co.jp",
+                'created_at' => now()->subMinutes(100 + $seq->index),
+            ])
+            ->create();
+        
+        $filters = [
+            'name' => 'test user',
+            'email' => 'hiImEnginerr@gmail.com'
+        ];
+
+        $result = $this->repository->findByFilters($filters);
+
+        $this->assertCount(1, $result);
+
+        $this->assertTrue(
+            $result->every(fn ($user) => str_contains($user->name, 'test user')),
+            'Name filter did not apply correctly.'
+        );
+
+        $this->assertTrue(
+            $result->every(fn ($user) => $user->email === 'hiImEnginerr@gmail.com'),
+            'Email filter did not apply correctly.'
+        );
+
+        $this->assertInstanceOf(User::class, $result->first());
+    }
     // 検索結果がマッチしなかった場合
 }
