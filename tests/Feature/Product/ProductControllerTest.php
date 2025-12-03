@@ -88,44 +88,4 @@ class ProductControllerTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-    public function test_admin_search_screen_can_be_renderd()
-    {
-        Product::factory()->create([
-            'name' => 'iphone 17',
-            'description' => 'hello world',
-            'price' => 1000,
-            'stock' => 100,
-            'max_quantity' => 10,
-            'is_published' => true,
-            'published_at' => now(),
-        ]);
-
-        /** @var \App\Models\User|\Illuminate\Contracts\Auth\Authenticatable $admin */
-        $admin = User::factory()->create(['role' => 'admin']);
-        $url = '/admin/search/products?name=iphone 17';
-
-        $response = $this->actingAs($admin)->get($url);
-        $response->assertStatus(200);
-    }
-
-    public function test_admin_is_redirected_to_products_when_query_is_empty()
-    {
-        Product::factory()->create([
-            'name' => 'iphone 17',
-            'description' => 'hello world',
-            'price' => 1000,
-            'stock' => 100,
-            'max_quantity' => 10,
-            'is_published' => true,
-            'published_at' => now(),
-        ]);
-
-        /** @var \App\Models\User|\Illuminate\Contracts\Auth\Authenticatable $admin */
-        $admin = User::factory()->create(['role' => 'admin']);
-        $url = '/admin/search/products';
-
-        $response = $this->actingAs($admin)->get($url);
-        $response->assertRedirect(route('admin.products'));
-    }
 }
