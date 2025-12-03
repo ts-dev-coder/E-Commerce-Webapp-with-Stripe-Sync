@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\User;
 use App\Repositories\Admin\UserRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class UserRepositoryTest extends TestCase
@@ -156,4 +157,19 @@ class UserRepositoryTest extends TestCase
         $this->assertInstanceOf(User::class, $result->first());
     }
     // 検索結果がマッチしなかった場合
+    public function test_findByFilters_returns_empty_collection_when_no_match()
+    {
+        User::factory()->create(['name' => 'goodmorninguser']);
+        User::factory()->create(['name' => 'goodafternoonuser']);
+        User::factory()->create(['name' => 'goodevninguser']);
+
+        $filters = ['name' => 'test'];
+
+        $result = $this->repository->findByFilters($filters);
+
+        $this->assertInstanceOf(Collection::class, $result);
+
+        $this->assertTrue($result->isEmpty());
+        $this->assertCount(0, $result);
+    }
 }
