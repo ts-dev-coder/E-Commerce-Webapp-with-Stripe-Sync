@@ -20,7 +20,7 @@ class UserRepositoryTest extends TestCase
     }
 
     // query parameterが空の場合
-    public function test_retrieveLatestUsers_return_users_when_filters_is_empty()
+    public function test_findByFilters_return_users_when_filters_is_empty()
     {
         User::factory()
             ->count(40)
@@ -37,7 +37,7 @@ class UserRepositoryTest extends TestCase
 
         $this->assertTrue(
             $result->first()->created_at->gt($result->last()->created_at),
-            'Products are not ordered by latest.'
+            'Users are not ordered by latest.'
         );
 
         $this->assertInstanceOf(User::class, $result->first());
