@@ -14,7 +14,7 @@ class UserService
         $this->repository = new UserRepository();    
     }
 
-    public function retrieveLatestUsers(array $filters, int $limit = 10): Collection
+    public function retrieveLatestUsers(array $filters, int $limit = 30): Collection
     {
         return $this->repository->findByFilters($filters, $limit);
     }
