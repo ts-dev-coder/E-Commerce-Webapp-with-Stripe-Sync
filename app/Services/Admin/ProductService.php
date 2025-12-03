@@ -15,7 +15,7 @@ class ProductService
         $this->repository = $repository ?? new ProductRepository;
     }
 
-    public function retrieveLatestProducts(array $filters, int $limit = 10): Collection
+    public function retrieveLatestProducts(array $filters, int $limit = 30): Collection
     {
         return $this->repository->findByFilters($filters, $limit);
     }
