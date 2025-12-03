@@ -20,7 +20,7 @@ class UserRepositoryTest extends TestCase
         $this->repository = new UserRepository();
     }
 
-    // query parameterが空の場合
+    
     public function test_findByFilters_return_users_when_filters_is_empty()
     {
         User::factory()
@@ -43,7 +43,7 @@ class UserRepositoryTest extends TestCase
 
         $this->assertInstanceOf(User::class, $result->first());
     }
-    // nameのみの場合
+    
     public function test_findByFilters_returns_users_when_filter_is_only_name()
     {
         User::factory()
@@ -81,7 +81,7 @@ class UserRepositoryTest extends TestCase
 
         $this->assertInstanceOf(User::class, $result->first());
     }
-    // emailのみの場合
+    
     public function test_findByFilters_returns_users_when_filter_is_only_email()
     {
         User::factory()
@@ -119,7 +119,7 @@ class UserRepositoryTest extends TestCase
 
         $this->assertInstanceOf(User::class, $result->first());
     }
-    // name, emailの両方
+    
     public function test_findByFilters_returns_users_when_filter_is_name_and_email()
     {
         User::factory()->create([
@@ -156,7 +156,7 @@ class UserRepositoryTest extends TestCase
 
         $this->assertInstanceOf(User::class, $result->first());
     }
-    // 検索結果がマッチしなかった場合
+    
     public function test_findByFilters_returns_empty_collection_when_no_match()
     {
         User::factory()->create(['name' => 'goodmorninguser']);
