@@ -49,8 +49,6 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->group(functio
 
     Route::patch('/products/{product}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
-
-    Route::get('/search/products', [ProductController::class, 'search'])->name('admin.products.search');
 });
 
 
