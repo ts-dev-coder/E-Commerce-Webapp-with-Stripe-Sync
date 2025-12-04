@@ -42,4 +42,14 @@ class SalesAnalyticsRepository
 
         return $filled->toArray();
     }
+
+    public function getTodayTotalSales(): int
+    {
+        // TODO: change created_at to purchase_at
+        $result = OrderItem::selectRaw('SUM(price * quantity) as total')
+            ->whereBetween('created_at', [now()->startOfDay(), now()->endOfDay()])
+            ->value('total');
+
+        return (int) ($result ?? 0);
+    }
 }

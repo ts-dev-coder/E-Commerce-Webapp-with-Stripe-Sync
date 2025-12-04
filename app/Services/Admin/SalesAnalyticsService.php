@@ -16,4 +16,9 @@ class SalesAnalyticsService
     {
         return $this->repository->getDailySales($days);
     }
+    
+    public function retrieveTodayTotalSales()
+    {
+        return $this->repository->getTodayTotalSales();
+    }
 }

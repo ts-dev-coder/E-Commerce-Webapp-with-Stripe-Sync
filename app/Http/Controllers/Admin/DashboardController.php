@@ -14,9 +14,12 @@ class DashboardController extends Controller
         $sales = $salesAnalyticsService->getDailySales(365);
         $users = $userAnalyticsService->getDailyUsersCountTrend(365);
 
+        $todayTotalSales = $salesAnalyticsService->retrieveTodayTotalSales();
+        
         return Inertia::render('admin/dashboard', [
             'salesTrend' => $sales,
-            'userTrend' => $users
+            'userTrend' => $users,
+            'todayTotalSales' => $todayTotalSales,
         ]);
     }
 }
