@@ -145,4 +145,11 @@ class SalesAnalyticsRepositoryTest extends TestCase
 
         $this->assertEquals(8000, $result, 'TodayTotalSales should be 8000.');
     }
+
+    public function test_getTodayTotalSales_returns_zero_when_no_sales_exist_today()
+    {
+        $result = $this->repository->getTodayTotalSales();
+
+        $this->assertEquals(0, $result);
+    }
 }
