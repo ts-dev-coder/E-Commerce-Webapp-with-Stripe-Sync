@@ -5,6 +5,7 @@ namespace Tests\Unit\Repositories;
 use Tests\TestCase;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Repositories\Admin\SalesAnalyticsRepository;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Carbon\Carbon;
@@ -103,5 +104,45 @@ class SalesAnalyticsRepositoryTest extends TestCase
                 'total' => 0,
             ],
         ], $results);
+    }
+
+    public function test_getTodayTotalSales_returns_today_total_sales_data()
+    {
+        // 商品データ
+        $product1 = Product::factory()->create([
+            'price' => 500,
+        ]);
+        $product2 = Product::factory()->create([
+            'price' => 200,
+        ]);
+        $product3 = Product::factory()->create([
+            'price' => 100,
+        ]);
+        
+        // 注文データ
+        $order1 = Order::factory()->create();
+        $order2 = Order::factory()->create();
+        $order3 = Order::factory()->create();
+
+        // 注文商品データ
+        OrderItem::factory()->create([
+            'order_id' => $order1->id,
+            'product_id' => $product1->id,
+            'quantity' => 10,
+        ]);
+        OrderItem::factory()->create([
+            'order_id' => $order2->id,
+            'product_id' => $product2->id,
+            'quantity' => 10,
+        ]);
+        OrderItem::factory()->create([
+            'order_id' => $order3->id,
+            'product_id' => $product3->id,
+            'quantity' => 10,
+        ]);
+
+        $result = $this->repository->getTodayTotalSales();
+
+        $this->assertEquals(8000, $result, 'TodayTotalSales should be 8000.');
     }
 }
