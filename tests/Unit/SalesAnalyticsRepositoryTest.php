@@ -129,16 +129,19 @@ class SalesAnalyticsRepositoryTest extends TestCase
             'order_id' => $order1->id,
             'product_id' => $product1->id,
             'quantity' => 10,
+            'purchase_at' => now(),
         ]);
         OrderItem::factory()->create([
             'order_id' => $order2->id,
             'product_id' => $product2->id,
             'quantity' => 10,
+            'purchase_at' => now(),
         ]);
         OrderItem::factory()->create([
             'order_id' => $order3->id,
             'product_id' => $product3->id,
             'quantity' => 10,
+            'purchase_at' => now(),
         ]);
 
         $result = $this->repository->getTodayTotalSales();
