@@ -10,12 +10,19 @@ use Illuminate\Database\Seeder;
 class UserSeeder extends Seeder
 {
     use WithoutModelEvents;
-    
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        // Create Admin User
+        User::factory()->create([
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'role' => 'admin',
+        ]);
+
         User::factory(100)->create([
             'created_at' => function () {
                 return Carbon::now()
