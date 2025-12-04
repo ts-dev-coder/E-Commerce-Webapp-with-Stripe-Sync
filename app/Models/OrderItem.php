@@ -13,8 +13,7 @@ class OrderItem extends Model
         'order_id',
         'product_id',
         'quantity',
-        'price'
+        'price',
+        'purchase_at',
     ];
-
-    # TODO: Add relation definition
 }
