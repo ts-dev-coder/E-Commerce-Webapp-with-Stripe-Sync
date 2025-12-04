@@ -23,6 +23,7 @@ class OrderItemFactory extends Factory
             'product_id' => Product::factory(),
             'quantity'   => $this->faker->numberBetween(1, 5),
             'price'      => fn($attr) => Product::find($attr['product_id'])->price,
+            'purchase_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
         ];
     }
 }
