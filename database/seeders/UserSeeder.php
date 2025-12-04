@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
          * Seeder fileの実行日より一年の間でユーザー生成を行いかつ、実際のアプリのように
          * 日付が新しくなればなるほどユーザーの登録数が増えるような仕様
          */
-        User::factory(100)->create([
+        User::factory()->count(100)->create([
             'created_at' => function () {
                 $maxDays = 365;
                 // 調整値: lambdaが大きいほど最近にユーザーの作成日が集中する
