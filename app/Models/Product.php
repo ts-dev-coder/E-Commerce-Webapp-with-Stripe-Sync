@@ -17,14 +17,6 @@ class Product extends Model
         'is_published',
         'published_at', 
         'max_quantity',
-        'stripe_id',
-        'stripe_price_id',
-        'currency',
-        'is_physical',
-        'creator',
-        'seo_title',
-        'seo_description',
-        'deleted_at'
     ];
 
     # TODO: Add relation definition

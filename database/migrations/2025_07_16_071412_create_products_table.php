@@ -22,8 +22,7 @@ return new class extends Migration
             $table->boolean('is_published')->default(false);
             $table->dateTime('published_at')->nullable();
 
-            $table->dateTime('available_from')->nullable(); // 商品販売日
-            $table->dateTime('available_until')->nullable(); // 商品販売終了日
+            $table->unsignedInteger('max_quantity')->default(10);
             
             $table->timestamps();
         });
