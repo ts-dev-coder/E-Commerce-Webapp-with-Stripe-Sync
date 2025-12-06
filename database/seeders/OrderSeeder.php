@@ -26,9 +26,13 @@ class OrderSeeder extends Seeder
                 'recipient_name' => $user->name,
             ]);
 
+            $orderCreatedAt = fake()->dateTimebetween($user->created_at, now());
+
             Order::factory()->create([
                 'user_id' => $user->id,
                 'shipping_address_id' => $address->id,
+                'created_at' => $orderCreatedAt,
+                'updated_at' => fn($attr) => $attr['created_at'],
             ]);
         }
     }
