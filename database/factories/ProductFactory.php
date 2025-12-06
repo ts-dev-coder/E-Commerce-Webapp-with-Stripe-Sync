@@ -17,10 +17,19 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        // nameの$faker->companyでのみ使用
+        $fakerEn = \Faker\Factory::create('en_US');
+
         $isPublished = $this->faker->boolean(50);
 
         return [
-            'name' => $this->faker->words(3, true),
+            'name' => function () use ($fakerEn) {
+                $brand = $fakerEn->company();
+                $item = $this->faker->randomElement(['Chair', 'Table', 'Lamp', 'Mug', 'Bag']);
+                $model = strtoupper($this->faker->bothify('??-###'));
+
+                return "{$brand} {$item} {$model}";
+            },
             'description' => $this->faker->paragraph(),
             'price' => $this->faker->numberBetween(500, 10000),
             'stock' => $this->faker->numberBetween(0, 100),
