@@ -120,33 +120,19 @@ class SalesAnalyticsRepositoryTest extends TestCase
         ]);
         
         // 注文データ
-        $order1 = Order::factory()->create();
-        $order2 = Order::factory()->create();
-        $order3 = Order::factory()->create();
-
-        // 注文商品データ
-        OrderItem::factory()->create([
-            'order_id' => $order1->id,
-            'product_id' => $product1->id,
-            'quantity' => 10,
-            'purchase_at' => now(),
+        Order::factory()->create([
+            'total_amount' => 1000,
         ]);
-        OrderItem::factory()->create([
-            'order_id' => $order2->id,
-            'product_id' => $product2->id,
-            'quantity' => 10,
-            'purchase_at' => now(),
+        Order::factory()->create([
+            'total_amount' => 1000,
         ]);
-        OrderItem::factory()->create([
-            'order_id' => $order3->id,
-            'product_id' => $product3->id,
-            'quantity' => 10,
-            'purchase_at' => now(),
+        Order::factory()->create([
+            'total_amount' => 1000,
         ]);
 
         $result = $this->repository->getTodayTotalSales();
 
-        $this->assertEquals(8000, $result, 'TodayTotalSales should be 8000.');
+        $this->assertEquals(3000, $result, 'TodayTotalSales should be 3000.');
     }
 
     public function test_getTodayTotalSales_returns_zero_when_no_sales_exist_today()

@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Admin;
 
+use App\Models\Order;
 use App\Models\OrderItem;
 use Carbon\CarbonPeriod;
 
@@ -45,9 +46,11 @@ class SalesAnalyticsRepository
 
     public function getTodayTotalSales(): int
     {
-        $result = OrderItem::selectRaw('SUM(price * quantity) as total')
-            ->whereBetween('purchase_at', [now()->startOfDay(), now()->endOfDay()])
-            ->value('total');
+        $result = Order::whereBetween('created_at', [
+            now()->startOfDay(),
+            now()->endOfDay(),
+        ])
+        ->sum('total_amount');
 
         return (int) ($result ?? 0);
     }
