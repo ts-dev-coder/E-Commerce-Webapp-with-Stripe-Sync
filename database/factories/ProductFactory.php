@@ -19,14 +19,6 @@ class ProductFactory extends Factory
     {
         $isPublished = $this->faker->boolean(50);
 
-        // TODO: 販売日と販売終了日に関しては、予約機能を実装時にデータを
-        //       挿入するので、それまでは,nullにしておく
-        // 販売開始日: 今日以降（0～30日後）
-        // $startDate = Carbon::now()->addDays(rand(0, 30));
-
-        // 販売終了日: 販売開始日から1～30日後
-        // $endDate = (clone $startDate)->addDays(rand(1, 30));
-
         return [
             'name' => $this->faker->words(3, true),
             'description' => $this->faker->paragraph(),
