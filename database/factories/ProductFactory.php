@@ -34,16 +34,6 @@ class ProductFactory extends Factory
             'stock' => $this->faker->numberBetween(0, 100),
             'is_published' => $isPublished,
             'published_at' => $isPublished ? Carbon::now()->subDays(rand(0, 30)) : null,
-            'available_from' => null,
-            'available_until' => null,
-            'stripe_id' => 'prod_test_00000',
-            'stripe_price_id' => 'price_test',
-            'currency' => 'jpy',
-            'is_physical' => true,
-            'creator' => 'test creator',
-            'seo_title' => 'test seo title',
-            'seo_description' => 'test seo description',
-            'deleted_at' => null,
         ];
     }
 }
