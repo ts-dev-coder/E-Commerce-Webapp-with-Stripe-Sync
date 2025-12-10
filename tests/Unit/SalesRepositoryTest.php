@@ -76,4 +76,13 @@ class SalesRepositoryTest extends TestCase
 
         $this->assertEquals(0, $result, 'Expected sales data to be 0 for the default date range');
     }
+
+    public function test_it_returns_zero_when_start_is_after_end()
+    {
+        $start = Carbon::now()->endOfDay();
+        $end = Carbon::now()->startOfDay();
+        $result = $this->repository->fetchSalesByDateRange($start, $end);
+
+        $this->assertEquals(0, $result, 'Expected sales data to be 0 for the default date range');
+    }
 }
