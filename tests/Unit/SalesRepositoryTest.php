@@ -146,4 +146,26 @@ class SalesRepositoryTest extends TestCase
 
         $this->assertEquals(2000, $result, 'Expected sales data to be 2000 for the default date range');
     }
+
+    public function test_it_counts_sales_regardless_of_time_within_the_day()
+    {
+        Order::factory()->create([
+            'total_amount' => 1000,
+            'created_at' => Carbon::now()->setTime(1, 0, 0),
+        ]);
+        Order::factory()->create([
+            'total_amount' => 2000,
+            'created_at' => Carbon::now()->setTime(15, 30, 0),
+        ]);
+        Order::factory()->create([
+            'total_amount' => 3000,
+            'created_at' => Carbon::now()->setTime(23, 59, 59),
+        ]);
+
+        $start = Carbon::now()->startOfDay();
+        $end = Carbon::now()->endOfDay();
+        $result = $this->repository->fetchSalesByDateRange($start, $end);
+
+        $this->assertEquals(6000, $result, 'Expected sales data to be 6000 for the default date range');
+    }
 }
