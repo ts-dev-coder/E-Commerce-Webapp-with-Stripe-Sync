@@ -16,7 +16,7 @@ class UserAddressTest extends TestCase
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
 
-        $result = $user->addAddress([
+        $address = $user->addAddress([
             'recipient_name' => '山田 太郎',
             'postal_code'    => '1000001',
             'prefecture'     => '東京都',
@@ -26,6 +26,6 @@ class UserAddressTest extends TestCase
             'phone_number'   => '09012345678',
         ]);
 
-        $this->assertTrue($result->is_default);
+        $this->assertTrue($address->is_default);
     }    
 }
