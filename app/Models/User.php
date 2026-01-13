@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -78,4 +79,24 @@ class User extends Authenticatable
         return $this->role === self::ROLE_ADMIN;
     }
 
+    public function unsetDefaultAddress(): void
+    {
+        $this->defaultAddress?->update(['is_default' => false]);
+    }
+
+    public function addAddress(array $data): Address
+    {
+        return DB::transaction(function () use ($data) {
+
+            if ($this->addresses()->doesntExist()) {
+                $data['is_default'] = true;
+            }
+
+            if (!empty($data['is_default'])) {
+                $this->unsetDefaultAddress();
+            }
+
+            return $this->addresses()->create($data);
+        });
+    }
 }
