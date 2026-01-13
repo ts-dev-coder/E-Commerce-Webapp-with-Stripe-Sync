@@ -11,7 +11,7 @@ class UserAddressTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_first_address_becomes_default()
+    public function test_it_sets_default_if_user_has_no_addresses()
     {
         /** @var \App\Models\User $user */
         $user = User::factory()->create();
