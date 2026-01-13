@@ -14,21 +14,29 @@ return new class extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
 
-            $table->string('recipient_name', 50); // お届け先氏名
+            $table->string('recipient_name', 50);
 
-            $table->string('postal_code', 16);     // 例: 1000001, 100-0001 など（バリデーションはアプリ側で）
-            $table->string('prefecture', 50);      // 都道府県
-            $table->string('city', 100);           // 市区町村（区を含む）
-            $table->string('street', 150);         // 町名・丁目・番地・号
-            $table->string('building', 150)->nullable(); // 建物名・部屋番号
+            $table->string('postal_code', 16);
+            $table->string('prefecture', 50);
+            $table->string('city', 100);
+            $table->string('street', 150);
+            $table->string('building', 150)->nullable();
 
-            $table->string('phone_number', 11); // 電話番号
+            $table->string('phone_number', 11);
 
-            $table->boolean('is_default')->default(false); // デフォルトとするかどうかの判定フラグ
+            $table->boolean('is_default')->default(false);
 
             $table->timestamps();
+
+            // 同一 user に対して is_default = true は 1 件だけ
+            $table->unique(
+                ['user_id'],
+                'unique_default_address_per_user'
+            )->where('is_default', true);
         });
     }
 
